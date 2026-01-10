@@ -177,6 +177,30 @@ body::before {
         width: 100%;
     }
 }
+
+/* Hiệu ứng hover cho cả 2 ô */
+.input-box {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+/* Khi click / focus vào input */
+.input-box input:focus {
+    outline: none;
+}
+
+.input-box:has(input:focus) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+}
+.input-box:has(input:focus) {
+    outline: 1px solid rgba(255,255,255,0.12);
+}
+
 </style>
 </head>
 

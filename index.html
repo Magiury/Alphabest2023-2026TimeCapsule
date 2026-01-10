@@ -1,199 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Alphabest Time Capsule</title>
+<meta charset="UTF-8">
+<title>Alphabest Time Capsule</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: "Segoe UI", Arial, sans-serif;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
 
-        body {
-            margin: 0;
-            height: 100vh;
-            background: url("https://img.goodfon.com/wallpaper/big/b/47/karta-mira-zemlia-fon-materiki.webp")
-                        center / cover no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
+body {
+    margin: 0;
+    height: 100vh;
+    background: url("https://images.pexels.com/photos/41949/earth-earth-at-night-night-lights-41949.jpeg?cs=srgb&dl=pexels-pixabay-41949.jpg&fm=jpg")
+                center / cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
 
-        /* Dark overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(3px);
-            z-index: 0;
-        }
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(3px);
+    z-index: 0;
+}
 
-        .login-wrapper {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
+.login-wrapper {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
 
-        /* Logo placeholder */
-        .logo img {
-            width: 80px;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
+.logo img {
+    width: 80px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
 
-        .input-group {
-            display: flex;
-            width: 520px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
+/* INPUT GROUP */
+.input-group {
+    display: flex;
+    width: 520px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto;
+}
 
-        .input-box {
-            position: relative;
-            width: 50%;
-        }
+/* USERNAME */
+.input-box.username {
+    background: rgba(90, 160, 255, 0.5);
+}
 
-        .input-box:not(:last-child) {
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
+/* PASSWORD */
+.input-box.password {
+    background: rgba(200, 200, 200, 0.5);
+}
 
-        .input-box input {
-            width: 100%;
-            padding: 16px 16px 16px 46px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: white;
-            font-size: 16px;
-        }
+.input-box {
+    position: relative;
+    width: 50%;
+}
 
-        .input-box input::placeholder {
-            color: #d0d0d0;
-        }
+.input-box input {
+    width: 100%;
+    padding: 16px 16px 16px 46px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 16px;
+}
 
-        .input-box .icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0.8;
-            font-size: 18px;
-        }
+.input-box input::placeholder {
+    color: #f0f0f0;
+}
 
-        .options {
-            width: 520px;
-            margin: 12px auto 30px;
-            text-align: left;
-            font-size: 14px;
-            color: #e5e5e5;
-        }
+.input-box .icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    opacity: 0.9;
+}
 
-        .options input {
-            margin-right: 8px;
-            transform: scale(1.1);
-        }
+/* CHECKBOX */
+.options {
+    width: 520px;
+    margin: 14px auto 30px;
+    text-align: left;
+    font-size: 14px;
+}
 
-        .login-btn {
-            width: 240px;
-            padding: 14px;
-            background: #2e9d6f;
-            border: none;
-            color: white;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #eee;
+}
 
-        .login-btn:hover {
-            background: #25845d;
-        }
+.checkbox input {
+    display: none;
+}
 
-        .error {
-            margin-top: 15px;
-            color: #ffb3b3;
-        }
+.custom-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: white;
+    margin-right: 10px;
+    position: relative;
+}
 
-        @media (max-width: 600px) {
-            .input-group,
-            .options {
-                width: 90%;
-            }
+.checkbox input:checked + .custom-check {
+    background: #2e9dff;
+}
 
-            .input-group {
-                flex-direction: column;
-            }
+.checkbox input:checked + .custom-check::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -55%);
+}
 
-            .input-box {
-                width: 100%;
-            }
+/* BUTTON */
+.login-btn {
+    width: 240px;
+    padding: 14px;
+    background: #2e9d6f;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
 
-            .input-box:not(:last-child) {
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.2);
-            }
-        }
-    </style>
+.login-btn:hover {
+    background: #25845d;
+}
+
+.error {
+    margin-top: 15px;
+    color: #ffb3b3;
+}
+
+@media (max-width: 600px) {
+    .input-group,
+    .options {
+        width: 90%;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .input-box {
+        width: 100%;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="login-wrapper">
 
-    <!-- Logo (upload logo.png sau này nếu muốn) -->
+    <!-- LOGO -->
     <div class="logo">
         <img src="logo.png" alt="Logo">
     </div>
 
-    <!-- Inputs -->
+    <!-- INPUTS -->
     <div class="input-group">
-        <div class="input-box">
+        <div class="input-box username">
             <span class="icon">👤</span>
             <input type="text" id="username" placeholder="Username">
         </div>
 
-        <div class="input-box">
+        <div class="input-box password">
             <span class="icon">🔒</span>
             <input type="password" id="password" placeholder="Password">
         </div>
     </div>
 
-    <!-- Options -->
+    <!-- CHECKBOX -->
     <div class="options">
-        <label>
-            <input type="checkbox" id="eraseData" checked>
+        <label class="checkbox">
+            <input type="checkbox" checked>
+            <span class="custom-check"></span>
             Erase data after log out?
         </label>
     </div>
 
-    <!-- Button -->
+    <!-- BUTTON -->
     <button class="login-btn" onclick="login()">Sign In</button>
 
     <div class="error" id="error"></div>
 </div>
 
 <script>
-    const USERNAME = "admin";
-    const PASSWORD = "alphabest";
+const USERNAME = "admin";
+const PASSWORD = "alphabest";
 
-    function login() {
-        const u = document.getElementById("username").value;
-        const p = document.getElementById("password").value;
-        const error = document.getElementById("error");
+function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+    const error = document.getElementById("error");
 
-        if (u === USERNAME && p === PASSWORD) {
-            localStorage.setItem("loggedIn", "true");
-            alert("Access granted 🔓");
-            // window.location.href = "home.html";
-        } else {
-            error.innerText = "Invalid credentials";
-        }
+    if (u === USERNAME && p === PASSWORD) {
+        alert("Access granted 🔓");
+    } else {
+        error.innerText = "Invalid credentials";
     }
+}
 </script>
 
 </body>

@@ -13,29 +13,31 @@
         body {
             margin: 0;
             height: 100vh;
-            background: url("background.jpg") center/cover no-repeat;
+            background: url("https://images.pexels.com/photos/41949/earth-earth-at-night-night-lights-41949.jpeg?cs=srgb&dl=pexels-pixabay-41949.jpg&fm=jpg")
+                        center / cover no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: white;
         }
 
-        /* Dark overlay like the image */
+        /* Dark overlay */
         body::before {
             content: "";
-            position: absolute;
+            position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(3px);
+            z-index: 0;
         }
 
         .login-wrapper {
             position: relative;
             z-index: 1;
             text-align: center;
-            color: white;
         }
 
-        /* LOGO IMAGE (replace later) */
+        /* Logo placeholder */
         .logo img {
             width: 80px;
             margin-bottom: 30px;
@@ -45,28 +47,42 @@
         .input-group {
             display: flex;
             width: 520px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 4px;
             overflow: hidden;
+            margin: 0 auto;
         }
 
-        .input-group input {
+        .input-box {
+            position: relative;
             width: 50%;
-            padding: 16px;
+        }
+
+        .input-box:not(:last-child) {
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 16px 16px 16px 46px;
+            background: transparent;
             border: none;
             outline: none;
-            background: transparent;
             color: white;
             font-size: 16px;
         }
 
-        .input-group input::placeholder {
-            color: #cfcfcf;
+        .input-box input::placeholder {
+            color: #d0d0d0;
         }
 
-        .input-group input:first-child {
-            border-right: 1px solid rgba(255,255,255,0.2);
+        .input-box .icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+            font-size: 18px;
         }
 
         .options {
@@ -74,7 +90,7 @@
             margin: 12px auto 30px;
             text-align: left;
             font-size: 14px;
-            color: #e0e0e0;
+            color: #e5e5e5;
         }
 
         .options input {
@@ -113,9 +129,12 @@
                 flex-direction: column;
             }
 
-            .input-group input {
+            .input-box {
                 width: 100%;
-                border-right: none !important;
+            }
+
+            .input-box:not(:last-child) {
+                border-right: none;
                 border-bottom: 1px solid rgba(255,255,255,0.2);
             }
         }
@@ -126,19 +145,25 @@
 
 <div class="login-wrapper">
 
-    <!-- LOGO PLACEHOLDER -->
+    <!-- Logo (upload logo.png sau này nếu muốn) -->
     <div class="logo">
-        <!-- Sau này chỉ cần upload hình và đổi src -->
         <img src="logo.png" alt="Logo">
     </div>
 
-    <!-- INPUTS -->
+    <!-- Inputs -->
     <div class="input-group">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
+        <div class="input-box">
+            <span class="icon">👤</span>
+            <input type="text" id="username" placeholder="Username">
+        </div>
+
+        <div class="input-box">
+            <span class="icon">🔒</span>
+            <input type="password" id="password" placeholder="Password">
+        </div>
     </div>
 
-    <!-- OPTIONS -->
+    <!-- Options -->
     <div class="options">
         <label>
             <input type="checkbox" id="eraseData" checked>
@@ -146,7 +171,7 @@
         </label>
     </div>
 
-    <!-- BUTTON -->
+    <!-- Button -->
     <button class="login-btn" onclick="login()">Sign In</button>
 
     <div class="error" id="error"></div>
@@ -159,20 +184,11 @@
     function login() {
         const u = document.getElementById("username").value;
         const p = document.getElementById("password").value;
-        const erase = document.getElementById("eraseData").checked;
         const error = document.getElementById("error");
 
         if (u === USERNAME && p === PASSWORD) {
             localStorage.setItem("loggedIn", "true");
-
-            if (erase) {
-                window.addEventListener("beforeunload", () => {
-                    localStorage.clear();
-                });
-            }
-
             alert("Access granted 🔓");
-            // sau này redirect sang home.html
             // window.location.href = "home.html";
         } else {
             error.innerText = "Invalid credentials";
@@ -182,4 +198,3 @@
 
 </body>
 </html>
-

@@ -1,63 +1,185 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kho Kỉ Niệm Alphabest</title>
+    <title>Alphabest Time Capsule</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(120deg, #89f7fe, #66a6ff);
-            min-height: 100vh;
+            margin: 0;
+            height: 100vh;
+            background: url("background.jpg") center/cover no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0;
         }
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 320px;
+
+        /* Dark overlay like the image */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(3px);
+        }
+
+        .login-wrapper {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 15px 0;
-        }
-        button {
-            padding: 10px 20px;
-            background: #4a6cf7;
             color: white;
+        }
+
+        /* LOGO IMAGE (replace later) */
+        .logo img {
+            width: 80px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .input-group {
+            display: flex;
+            width: 520px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.55);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .input-group input {
+            width: 50%;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
+            outline: none;
+            background: transparent;
+            color: white;
+            font-size: 16px;
+        }
+
+        .input-group input::placeholder {
+            color: #cfcfcf;
+        }
+
+        .input-group input:first-child {
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .options {
+            width: 520px;
+            margin: 12px auto 30px;
+            text-align: left;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+
+        .options input {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+
+        .login-btn {
+            width: 240px;
+            padding: 14px;
+            background: #2e9d6f;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
+            transition: 0.2s;
         }
-        button:hover {
-            background: #3451d1;
+
+        .login-btn:hover {
+            background: #25845d;
         }
-        #error {
-            color: red;
-            margin-top: 10px;
+
+        .error {
+            margin-top: 15px;
+            color: #ffb3b3;
+        }
+
+        @media (max-width: 600px) {
+            .input-group,
+            .options {
+                width: 90%;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group input {
+                width: 100%;
+                border-right: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="login-box">
-    <h2>🔒 Alphabest Time Capsule</h2>
-    <p>Nhập mật khẩu để mở kho kỉ niệm 💙</p>
+<div class="login-wrapper">
 
-    <input type="password" id="password" placeholder="Mật khẩu chung">
-    <button onclick="login()">Mở kho</button>
+    <!-- LOGO PLACEHOLDER -->
+    <div class="logo">
+        <!-- Sau này chỉ cần upload hình và đổi src -->
+        <img src="logo.png" alt="Logo">
+    </div>
 
-    <p id="error"></p>
+    <!-- INPUTS -->
+    <div class="input-group">
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="options">
+        <label>
+            <input type="checkbox" id="eraseData" checked>
+            Erase data after log out?
+        </label>
+    </div>
+
+    <!-- BUTTON -->
+    <button class="login-btn" onclick="login()">Sign In</button>
+
+    <div class="error" id="error"></div>
 </div>
 
 <script>
-    const CLASS_PASSWORD = "alphabest";
+    const USERNAME = "admin";
+    const PASSWORD = "alphabest";
 
     function login() {
-        const pass = document.getElementById("password").value;
-        const error = document.getElementById
+        const u = document.getElementById("username").value;
+        const p = document.getElementById("password").value;
+        const erase = document.getElementById("eraseData").checked;
+        const error = document.getElementById("error");
+
+        if (u === USERNAME && p === PASSWORD) {
+            localStorage.setItem("loggedIn", "true");
+
+            if (erase) {
+                window.addEventListener("beforeunload", () => {
+                    localStorage.clear();
+                });
+            }
+
+            alert("Access granted 🔓");
+            // sau này redirect sang home.html
+            // window.location.href = "home.html";
+        } else {
+            error.innerText = "Invalid credentials";
+        }
+    }
+</script>
+
+</body>
+</html>
+

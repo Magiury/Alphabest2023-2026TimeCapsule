@@ -44,9 +44,8 @@ body::before {
     text-align: center;
 }
 
-/* ===== LOGO ===== */
+/* LOGO gốc */
 .logo {
-    position: relative; /* giữ relative để lúc load vẫn đúng giữa form */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -59,7 +58,7 @@ body::before {
     opacity: 0.95;
 }
 
-/* ===== INPUT GROUP ===== */
+/* INPUTS */
 .input-group {
     display: flex;
     width: 520px;
@@ -109,7 +108,7 @@ body::before {
     font-size: 18px;
 }
 
-/* ===== CHECKBOX ===== */
+/* CHECKBOX */
 .options {
     width: 520px;
     margin: 14px auto 30px;
@@ -151,7 +150,7 @@ body::before {
     transform: translate(-50%, -55%);
 }
 
-/* ===== BUTTON ===== */
+/* BUTTON */
 .login-btn {
     width: 240px;
     padding: 14px;
@@ -171,7 +170,6 @@ body::before {
     background: #333333;
 }
 
-/* ===== MESSAGE ===== */
 .error {
     margin-top: 15px;
     min-height: 20px;
@@ -192,6 +190,17 @@ body::before {
     .input-box {
         width: 100%;
     }
+}
+
+/* CLONE LOGO animation */
+.clone-logo {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    z-index: 10;
+    transition: transform 1.8s cubic-bezier(.4,0,.2,1);
 }
 </style>
 </head>
@@ -251,23 +260,21 @@ function login() {
     setTimeout(() => {
         const logos = document.getElementById("logoGroup");
 
-        // Lấy tọa độ hiện tại để chuyển sang fixed
+        // tạo clone logo
+        const clone = logos.cloneNode(true);
+        clone.classList.add("clone-logo");
+        document.body.appendChild(clone);
+
+        // lấy vị trí hiện tại của logo gốc
         const rect = logos.getBoundingClientRect();
-        logos.style.position = "fixed";
-        logos.style.left = rect.left + "px";
-        logos.style.top = rect.top + "px";
-        logos.style.margin = 0;
+        clone.style.left = rect.left + "px";
+        clone.style.top = rect.top + "px";
 
-        // đặt transition trước
-        logos.style.transition = "transform 1.8s cubic-bezier(.4,0,.2,1)";
+        // force browser nhận style
+        clone.offsetHeight;
 
-        // force browser nhận diện style cũ
-        logos.offsetHeight;
-
-        // trigger transform trong tick riêng để animation chạy
-        setTimeout(() => {
-            logos.style.transform = "translate(-220px, -260px) scale(0.5)";
-        }, 10);
+        // di chuyển clone lên góc trên bên trái
+        clone.style.transform = "translate(-220px, -260px)";
 
         document.getElementById("fade-black").style.opacity = "0.85";
         document.body.style.pointerEvents = "none";

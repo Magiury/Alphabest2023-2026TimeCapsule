@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Alphabest Time Capsule</title>
+<title>Alphabest Login</title>
 
 <style>
 * {
@@ -18,38 +18,33 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
     overflow: hidden;
 }
 
-/* overlay background */
-#bg-overlay {
+/* overlay for fade */
+#fade {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(1px);
-    transition: opacity 1.2s ease;
-    z-index: 0;
+    background: black;
+    opacity: 0;
+    transition: opacity 2s ease;
+    z-index: 1;
 }
 
-/* ================= LOGIN ================= */
+/* LOGIN */
 #login {
     position: relative;
     z-index: 2;
-    transition: opacity 0.8s ease;
-}
-
-.login-wrapper {
     text-align: center;
 }
 
 /* LOGO */
 .logo {
     display: flex;
-    justify-content: center;
     gap: 16px;
+    justify-content: center;
     margin-bottom: 30px;
-    transition: all 1.2s cubic-bezier(.4,0,.2,1);
+    transition: all 1.8s cubic-bezier(.4,0,.2,1);
 }
 
 .logo img {
@@ -60,7 +55,6 @@ body {
 .input-group {
     display: flex;
     width: 520px;
-    overflow: hidden;
     margin: 0 auto;
 }
 
@@ -68,11 +62,6 @@ body {
     width: 50%;
     position: relative;
     background: rgba(0,0,0,0.5);
-    transition: transform .2s ease;
-}
-
-.input-box:hover {
-    transform: translateY(-2px);
 }
 
 .input-box input {
@@ -91,132 +80,49 @@ body {
     transform: translateY(-50%);
 }
 
-/* CHECKBOX */
-.options {
-    width: 520px;
-    margin: 14px auto 20px;
-    text-align: left;
-    font-size: 14px;
-}
-
-.checkbox {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.checkbox input {
-    display: none;
-}
-
-.custom-check {
-    width: 18px;
-    height: 18px;
-    border-radius: 6px;
-    background: white;
-    margin-right: 10px;
-}
-
-.checkbox input:checked + .custom-check {
-    background: #2e9dff;
-}
-
 /* BUTTON */
-.login-btn {
-    width: 240px;
-    padding: 14px;
+button {
+    margin-top: 24px;
+    padding: 14px 40px;
     background: #111;
     border: none;
     color: white;
     cursor: pointer;
 }
 
-.login-btn:hover {
-    background: #333;
-}
-
 /* MESSAGE */
-.message {
-    margin-top: 14px;
+#msg {
+    margin-top: 16px;
+    color: #9dffb3;
     min-height: 20px;
-    font-size: 14px;
-}
-
-/* ================= HOME ================= */
-#home {
-    position: fixed;
-    inset: 0;
-    background: #0b0b0b;
-    display: none;
-    z-index: 1;
-}
-
-header {
-    height: 64px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-}
-
-header img {
-    height: 36px;
-    margin-right: 12px;
-}
-
-.main {
-    padding: 60px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="bg-overlay"></div>
+<div id="fade"></div>
 
-<!-- LOGIN -->
 <div id="login">
-    <div class="login-wrapper">
 
-        <div class="logo" id="logoGroup">
-            <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
-            <img src="Alphabest Logo.png">
-        </div>
-
-        <div class="input-group">
-            <div class="input-box">
-                <span class="icon">👤</span>
-                <input id="username" placeholder="Username">
-            </div>
-            <div class="input-box">
-                <span class="icon">🔒</span>
-                <input id="password" type="password" placeholder="Password">
-            </div>
-        </div>
-
-        <div class="options">
-            <label class="checkbox">
-                <input type="checkbox" checked>
-                <span class="custom-check"></span>
-                Erase data after log out?
-            </label>
-        </div>
-
-        <button class="login-btn" onclick="login()">Sign In</button>
-        <div class="message" id="message"></div>
-    </div>
-</div>
-
-<!-- HOME -->
-<div id="home">
-    <header>
+    <div class="logo" id="logoGroup">
         <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
         <img src="Alphabest Logo.png">
-    </header>
-
-    <div class="main">
-        <h1>Welcome to Alphabest Time Capsule</h1>
-        <p>Memories · Moments · History</p>
     </div>
+
+    <div class="input-group">
+        <div class="input-box">
+            <span class="icon">👤</span>
+            <input id="username" placeholder="Username">
+        </div>
+        <div class="input-box">
+            <span class="icon">🔒</span>
+            <input id="password" type="password" placeholder="Password">
+        </div>
+    </div>
+
+    <button onclick="login()">Sign In</button>
+    <div id="msg"></div>
 </div>
 
 <script>
@@ -224,41 +130,32 @@ const USERNAME = "admin";
 const PASSWORD = "alphabest";
 
 function login() {
-    const msg = document.getElementById("message");
-    const u = username.value;
-    const p = password.value;
-
-    if (u !== USERNAME || p !== PASSWORD) {
+    if (username.value !== USERNAME || password.value !== PASSWORD) {
         msg.style.color = "#ffb3b3";
         msg.innerText = "Invalid credentials";
         return;
     }
 
-    // success message
     msg.style.color = "#9dffb3";
-    msg.innerText = "Login successful. Redirecting...";
+    msg.innerText = "Login successful...";
 
-    // animate logos to top-right
-    const logos = document.getElementById("logoGroup");
-    logos.style.position = "fixed";
-    logos.style.top = "20px";
-    logos.style.right = "20px";
-    logos.style.margin = "0";
-    logos.style.transform = "scale(0.8)";
-
-    // fade background
-    document.getElementById("bg-overlay").style.opacity = "0";
-
-    // hide login
+    // pause to let user catch up
     setTimeout(() => {
-        document.getElementById("login").style.opacity = "0";
-    }, 400);
+        const logos = document.getElementById("logoGroup");
 
-    // show home
+        logos.style.position = "fixed";
+        logos.style.top = "20px";
+        logos.style.left = "20px";
+        logos.style.transform = "scale(0.75)";
+        logos.style.margin = "0";
+
+        document.getElementById("fade").style.opacity = "1";
+    }, 1600);
+
+    // redirect to home
     setTimeout(() => {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("home").style.display = "block";
-    }, 1200);
+        window.location.href = "home.html";
+    }, 3600);
 }
 </script>
 

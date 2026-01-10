@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Kho Kỉ Niệm Alphabest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #89f7fe, #66a6ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #3451d1;
+        }
+        #error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2>🔒 Alphabest Time Capsule</h2>
+    <p>Nhập mật khẩu để mở kho kỉ niệm 💙</p>
+
+    <input type="password" id="password" placeholder="Mật khẩu chung">
+    <button onclick="login()">Mở kho</button>
+
+    <p id="error"></p>
+</div>
+
+<script>
+    const CLASS_PASSWORD = "alphabest";
+
+    function login() {
+        const pass = document.getElementById("password").value;
+        const error = document.getElementById

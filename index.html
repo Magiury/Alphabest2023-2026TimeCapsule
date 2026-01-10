@@ -44,18 +44,22 @@ body::before {
     text-align: center;
 }
 
-/* LOGO gốc */
+/* LOGO */
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 16px;
     margin-bottom: 30px;
+    transition: all 1.8s cubic-bezier(.4,0,.2,1);
 }
 
-.logo img {
-    width: 70px;
-    opacity: 0.95;
+/* LOGO khi bay lên góc */
+.logo.fly {
+    position: absolute;      /* responsive: vẫn trong flow wrapper */
+    top: 10px;               /* gần góc trên */
+    left: 10px;              /* gần góc trái */
+    margin: 0;
 }
 
 /* INPUTS */
@@ -191,17 +195,6 @@ body::before {
         width: 100%;
     }
 }
-
-/* CLONE LOGO animation */
-.clone-logo {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    z-index: 10;
-    transition: transform 1.8s cubic-bezier(.4,0,.2,1);
-}
 </style>
 </head>
 <body>
@@ -259,30 +252,16 @@ function login() {
 
     setTimeout(() => {
         const logos = document.getElementById("logoGroup");
-
-        // tạo clone logo
-        const clone = logos.cloneNode(true);
-        clone.classList.add("clone-logo");
-        document.body.appendChild(clone);
-
-        // lấy vị trí hiện tại của logo gốc
-        const rect = logos.getBoundingClientRect();
-        clone.style.left = rect.left + "px";
-        clone.style.top = rect.top + "px";
-
-        // force browser nhận style
-        clone.offsetHeight;
-
-        // di chuyển clone lên góc trên bên trái
-        clone.style.transform = "translate(-220px, -260px)";
+        // thêm class fly, CSS sẽ handle mọi thứ mượt mà
+        logos.classList.add("fly");
 
         document.getElementById("fade-black").style.opacity = "0.85";
         document.body.style.pointerEvents = "none";
-    }, 1500);
+    }, 500);
 
     setTimeout(() => {
         window.location.href = "home.html";
-    }, 3800);
+    }, 2500);
 }
 </script>
 

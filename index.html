@@ -35,8 +35,8 @@ body::before {
 }
 
 .logo {
-    position: absolute;     /* để di chuyển dễ dàng */
-    top: 50%;               /* căn giữa màn hình */
+    position: fixed;             /* luôn tính theo viewport */
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -44,14 +44,13 @@ body::before {
     transition: top 1s cubic-bezier(0.4,0,0.2,1),
                 left 1s cubic-bezier(0.4,0,0.2,1),
                 transform 1s cubic-bezier(0.4,0,0.2,1);
-    z-index: 2;             /* trên form */
+    z-index: 10;                 /* luôn nổi trên các element khác */
 }
 
-/* Khi login thành công */
 .logo.fly {
-    top: 10px;
-    left: 10px;
-    transform: translate(0, 0); /* giữ size, không scale */
+    top: 10px;                   /* sát mép trên */
+    left: 10px;                  /* sát mép trái */
+    transform: translate(0, 0);  /* giữ size, không scale */
 }
 
 .logo img {
@@ -224,13 +223,15 @@ body::before {
 
 <body>
 
-<div class="login-wrapper">
+    <!-- LOGO ở ngoài form -->
+    <div class="logo">
+        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png" alt="Logo 1">
+        <img src="Alphabest Logo.png" alt="Logo 2">
+    </div>
 
-    <!-- LOGO -->
-<div class="logo">
-    <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png" alt="Logo 1">
-    <img src="Alphabest Logo.png" alt="Logo 2">
-</div>
+    <div class="login-wrapper">
+        <!-- input group, checkbox, button -->
+    </div>
 
     <!-- INPUTS -->
     <div class="input-group">

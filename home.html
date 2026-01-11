@@ -209,20 +209,29 @@ updateCountdown();
 
 /* ===== PAGE TRANSITION ===== */
 
+<script>
 document.addEventListener("DOMContentLoaded", () => {
     const fade = document.getElementById("page-fade");
 
     document.querySelectorAll(".menu a").forEach(link => {
         link.addEventListener("click", e => {
             e.preventDefault();
+
             fade.classList.add("active");
 
-            setTimeout(() => {
-                window.location.href = link.href;
-            }, 700);
+            /* force browser to draw 1 frame */
+            fade.getBoundingClientRect();
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    window.location.href = link.href;
+                }, 700);
+            });
         });
     });
 });
+</script>
+
 </script>
 
 <div class="top-ui">

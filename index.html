@@ -214,6 +214,39 @@ body::before {
     transition: opacity 1s ease;
     pointer-events: none;
 }
+.terminal {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 380px;
+    height: 160px;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(0,255,120,0.4);
+    font-family: "Consolas", monospace;
+    font-size: 12px;
+    color: #4cff9a;
+    overflow: hidden;
+    padding: 10px;
+    z-index: 5;
+    box-shadow: 0 0 20px rgba(0,255,120,0.2);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
+
+.terminal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: flicker 0.15s infinite alternate;
+}
+
+@keyframes flicker {
+    from { opacity: 0.95; }
+    to   { opacity: 1; }
+}
+
 </style>
 </head>
 
@@ -259,40 +292,83 @@ body::before {
 const USERNAME = "admin";
 const PASSWORD = "alphabest";
 
+/* ===== TERMINAL SYSTEM ===== */
+const terminal = document.getElementById("terminal");
+
+const terminalLines = [
+    "Initializing secure session...",
+    "Loading Alphabest core modules...",
+    "Decrypting access layer...",
+    "Handshake with remote node 12A9...",
+    "Verifying biometric token...",
+    "Routing through proxy relay...",
+    "Access tunnel established",
+    "Syncing user credentials...",
+    "Injecting security payload...",
+    "Awaiting user authentication...",
+    "System integrity: OK",
+    "Listening on port 443...",
+    "Encrypted channel active...",
+    "Monitoring data stream...",
+    "Ready for command input..."
+];
+
+let lineIndex = 0;
+let terminalTimer = null;
+
+function startTerminal() {
+    if (terminalTimer) return;
+
+    terminalTimer = setInterval(() => {
+        const line = document.createElement("div");
+        line.textContent = "> " + terminalLines[lineIndex % terminalLines.length];
+        terminal.appendChild(line);
+
+        lineIndex++;
+
+        if (terminal.children.length > 10) {
+            terminal.removeChild(terminal.children[0]);
+        }
+
+        terminal.scrollTop = terminal.scrollHeight;
+    }, 600);
+}
+
+/* ===== LOGIN ===== */
 function login() {
     const u = document.getElementById("username").value;
     const p = document.getElementById("password").value;
     const error = document.getElementById("error");
 
-    // Clear previous message
     error.innerHTML = "";
 
     if (u === USERNAME && p === PASSWORD) {
-        // Show spinner + text
         error.style.color = "#9dffb3";
-        error.innerHTML = `
-            Valid credentials. Redirecting...
-            <span class="spinner"></span>
-        `;
+        error.innerHTML = `Valid credentials. Redirecting... <span class="spinner"></span>`;
 
-        // Disable button để tránh nhấn lại
         const btn = document.querySelector(".login-btn");
         btn.disabled = true;
 
-        // Chọn tất cả phần cần fade, bao gồm logo
         const toFade = document.querySelectorAll(".logo, .input-group, .options, .login-btn, #error");
         toFade.forEach(el => {
-        // delay 0.2s trước khi fade để người dùng thấy spinner
+            setTimeout(() => {
+                el.classList.add("fade-out");
+            }, 700);
+        });
+
         setTimeout(() => {
-        el.classList.add("fade-out");
-        }, 700);
-    });
+            const terminalBox = document.querySelector(".terminal");
+            terminalBox.style.opacity = "1";   // hiện terminal
+            startTerminal();                  // bắt đầu chữ chạy
+        }, 1200);
 
 
-        // Redirect sau khi fade xong (1s animation + 0.2s delay)
+        /* ===== SHOW TERMINAL AFTER FADE ===== */
         setTimeout(() => {
-            window.location.href = "home.html";
-        }, 1400);
+            const terminalBox = document.querySelector(".terminal");
+            terminalBox.style.opacity = "1";
+            startTerminal();
+        }, 1200);
 
     } else {
         error.style.color = "#ffb3b3";
@@ -300,6 +376,10 @@ function login() {
     }
 }
 </script>
+    
+<div class="terminal">
+    <div class="terminal-content" id="terminal"></div>
+</div>
 
 </body>
 </html>

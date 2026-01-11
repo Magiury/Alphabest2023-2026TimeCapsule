@@ -104,8 +104,6 @@ body::before {
     text-shadow: 0 0 6px rgba(255,255,255,0.5);
 }
 
-/* ================= ANIMATIONS ================= */
-
 @keyframes logoFade {
     from { opacity: 0; transform: translateY(-15px); }
     to { opacity: 1; transform: translateY(0); }
@@ -167,6 +165,39 @@ body::before {
     transform: translateY(-120px);
     opacity: 0;
 }
+.countdown {
+    transition: opacity 1.2s ease;
+}
+
+.countdown.glitch-out {
+    animation: pixelGlitch 1.2s steps(8) forwards;
+    filter: contrast(180%) brightness(140%);
+}
+
+@keyframes pixelGlitch {
+    0% {
+        opacity: 1;
+        filter: none;
+        transform: scale(1);
+    }
+    30% {
+        filter: blur(2px) contrast(200%);
+    }
+    60% {
+        filter: blur(4px) contrast(300%);
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(8px) contrast(400%);
+        transform: scale(1.05);
+    }
+}
+.top-ui.slide-up {
+    transform: translateY(-120px);
+    opacity: 0;
+    transition: 1.2s ease;
+}
 
 </style>
 </head>
@@ -208,6 +239,21 @@ function goPage(e, url){
     }, 1200);
 }
 </script>
+<script>
+function goTo(page) {
+    // Cho toàn bộ UI trượt lên
+    document.querySelector(".top-ui").classList.add("slide-up");
+
+    // Cho countdown glitch rồi tan
+    const cd = document.querySelector(".countdown");
+    if (cd) cd.classList.add("glitch-out");
+
+    // Chờ animation xong rồi mới chuyển trang
+    setTimeout(() => {
+        window.location.href = page;
+    }, 1200);
+}
+</script>
 
 <div class="page-ui">
   <div class="top-ui">
@@ -225,11 +271,12 @@ function goPage(e, url){
 
     <!-- MENU -->
     <div class="menu">
-        <a href="about.html" onclick="goPage(event, 'about.html')">ABOUT US</a>
-        <a href="album.html" onclick="goPage(event, 'album.html')">ALBUM</a>
-        <a href="thought.html" onclick="goPage(event, 'thought.html')">OUR THOUGHT</a>
-        <a href="chat.html" onclick="goPage(event, 'chat.html')">CHAT</a>
+        <a onclick="goTo('about.html')">ABOUT US</a>
+        <a onclick="goTo('album.html')">ALBUM</a>
+        <a onclick="goTo('thought.html')">OUR THOUGHT</a>
+        <a onclick="goTo('chat.html')">CHAT</a>
     </div>
+
     <div class="countdown-hud" id="countdown">
         <div class="cd-title">NATIONAL HIGHSCHOOL EXAM</div>
         <div class="cd-time" id="cd-time">00:00:00:00</div>

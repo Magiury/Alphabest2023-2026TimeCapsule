@@ -120,10 +120,72 @@ body::before {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* ================= TACTICAL COUNTDOWN ================= */
+
+.countdown-hud {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 5;
+    pointer-events: none;
+    font-family: "Consolas", "Courier New", monospace;
+}
+
+.cd-title {
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgba(180,255,200,0.7);
+    margin-bottom: 10px;
+}
+
+.cd-time {
+    font-size: 58px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #9dffb3;
+    text-shadow:
+        0 0 6px rgba(157,255,179,0.6),
+        0 0 18px rgba(157,255,179,0.35);
+}
+
+.cd-sub {
+    margin-top: 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(180,255,200,0.5);
+}
+
 </style>
 </head>
 
 <body>
+<script>
+const targetDate = new Date("2026-06-11T00:00:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+        document.getElementById("cd-time").innerText = "00:00:00:00";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("cd-time").innerText =
+        `${String(days).padStart(2,"0")}:${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
 
 <div class="top-ui">
 
@@ -146,6 +208,12 @@ body::before {
         <a href="chat.html">CHAT</a>
     </div>
 
+</div>
+    
+<div class="countdown-hud" id="countdown">
+    <div class="cd-title">FINAL EXAM COUNTDOWN</div>
+    <div class="cd-time" id="cd-time">00:00:00:00</div>
+    <div class="cd-sub">TARGET DATE — 11 JUNE 2026</div>
 </div>
 
 </body>

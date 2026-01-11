@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Alphabest – Album Gallery</title>
+<title>Alphabest – Journey Album</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-/* ================= KẾ THỪA TỪ TRANG MẪU ================= */
-/* Giữ nguyên toàn bộ style cơ bản, background, sidebar, và animations */
+/* ================= GIỮ NGUYÊN STYLE CỐT LÕI ================= */
 * {
     box-sizing: border-box;
     font-family: "Segoe UI", Arial, sans-serif;
@@ -17,7 +17,6 @@
 body {
     margin: 0;
     min-height: 100vh;
-    /* Lưu ý: Bạn cần file class.jpg hoặc đổi ảnh khác */
     background: url("class.jpg") center / cover no-repeat fixed;
     color: #eaeaea;
     display: flex;
@@ -27,11 +26,10 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.55); /* Tối hơn chút để ảnh nổi bật */
     z-index: 0;
 }
 
-/* fade out overlay */
 #fade-out {
     position: fixed;
     inset: 0;
@@ -43,7 +41,7 @@ body::before {
 }
 #fade-out.active { opacity: 1; }
 
-/* SIDEBAR STYLES (Giữ nguyên) */
+/* SIDEBAR */
 .sidebar {
     position: fixed;
     left: 0;
@@ -78,13 +76,15 @@ body::before {
     opacity: 0;
     transform: translateX(-6px);
     animation: fadeLeft 1.2s ease forwards;
+    transition: color 0.3s;
 }
 .sidebar a:nth-child(2){animation-delay:1s;}
 .sidebar a:nth-child(3){animation-delay:1.2s;}
 .sidebar a:nth-child(4){animation-delay:1.4s;}
+.sidebar a:nth-child(5){animation-delay:1.6s;}
 .sidebar a:hover { color:#9dffb3; }
 
-/* RETURN BUTTON (Giữ nguyên) */
+/* RETURN BTN */
 .return {
     position: fixed;
     left: 26px;
@@ -99,131 +99,183 @@ body::before {
     animation: fadeLeft 1.4s ease forwards;
     animation-delay: 1.8s;
 }
-.return span { font-size: 22px; margin-right: 6px; transition: transform 0.2s ease; }
+.return span { font-size: 22px; margin-right: 6px; }
 .return:hover { color:#9dffb3; }
-.return:hover span { transform: translateX(-4px); }
 
-/* CONTENT BASIC (Giữ nguyên) */
+/* CONTENT */
 .content {
     position: relative;
     z-index: 1;
     margin-left: 260px;
-    padding: 80px 80px 140px;
-    max-width: 1000px;
+    padding: 60px 80px 140px;
+    max-width: 1100px;
+    width: 100%;
 }
-.section { margin-bottom: 140px; }
+
+.section { margin-bottom: 120px; }
+
+/* Tiêu đề Section có màu nhấn theo từng năm */
 .section h1 {
-    font-size: 36px;
-    margin-bottom: 26px;
+    font-size: 32px;
+    margin-bottom: 10px;
     letter-spacing: 1px;
     opacity: 0;
     transform: translateY(15px);
     animation: fadeUp 1.4s ease forwards;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
+
 .section p {
-font-family: "Merriweather", serif;
-    font-size: 17px;
-    line-height: 1.9;
+    font-family: "Merriweather", serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #ccc;
+    margin-bottom: 30px;
     opacity: 0;
     transform: translateY(10px);
     animation: fadeUp 1.4s ease forwards;
 }
 
-/* ANIMATIONS DEFINITIONS (Giữ nguyên) */
-@keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
-@keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
-@keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
-
-
-/* ================= STYLE MỚI CHO TRANG ALBUM ================= */
-
-/* Lưới hiển thị ảnh (Photo Grid) */
-.photo-grid {
-    display: grid;
-    /* Tự động điều chỉnh số cột tùy theo kích thước màn hình, tối thiểu 220px */
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
-    margin-top: 40px;
+/* ================= SLIDESHOW STYLE ================= */
+.slideshow-wrapper {
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 80px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1.4s ease forwards;
+    animation-delay: 0.5s;
 }
 
-/* Item ảnh riêng lẻ */
+.slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    transform: scale(1.05); /* Zoom nhẹ để tạo hiệu ứng */
+}
+
+.slide.active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 1.5s ease-in-out, transform 6s ease;
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    background: rgba(0,0,0,0.6);
+    padding: 10px 20px;
+    border-radius: 4px;
+    border-left: 3px solid #9dffb3;
+    color: #fff;
+    font-family: "Merriweather", serif;
+    font-size: 14px;
+}
+
+/* ================= GRID & HOVER EFFECTS ================= */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
 .gallery-item {
     position: relative;
-    height: 280px; /* Chiều cao cố định cho đồng bộ */
+    height: 260px;
     border-radius: 8px;
     overflow: hidden;
-    background: #222; /* Màu nền khi ảnh chưa load */
+    background: #222;
     cursor: pointer;
-
-    /* Áp dụng animation xuất hiện giống trang mẫu */
     opacity: 0;
     transform: translateY(20px);
     animation: fadeUp 1.4s ease forwards;
 }
 
-/* Tạo hiệu ứng xuất hiện so le cho các ảnh */
-.gallery-item:nth-child(1) { animation-delay: 1.0s; }
-.gallery-item:nth-child(2) { animation-delay: 1.2s; }
-.gallery-item:nth-child(3) { animation-delay: 1.4s; }
-.gallery-item:nth-child(4) { animation-delay: 1.6s; }
-.gallery-item:nth-child(n+5) { animation-delay: 1.8s; } /* Các ảnh từ thứ 5 trở đi xuất hiện cùng lúc */
-
+/* Hiệu ứng delay xuất hiện cho lưới ảnh */
+.gallery-item:nth-child(1) { animation-delay: 0.2s; }
+.gallery-item:nth-child(2) { animation-delay: 0.4s; }
+.gallery-item:nth-child(3) { animation-delay: 0.6s; }
+.gallery-item:nth-child(4) { animation-delay: 0.8s; }
+.gallery-item:nth-child(n+5) { animation-delay: 1s; }
 
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000); /* Hiệu ứng zoom mượt mà */
+    transition: transform 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
-/* Hiệu ứng hover lên ảnh: Zoom ảnh */
 .gallery-item:hover img {
     transform: scale(1.1);
 }
 
-/* Lớp phủ caption khi hover (theo tông màu chủ đạo) */
+/* Overlay thông tin */
 .caption-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.6); /* Nền tối bán trong suốt */
+    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.1));
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 20px;
-    
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-.gallery-item:hover .caption-overlay {
-    opacity: 1;
-}
+.gallery-item:hover .caption-overlay { opacity: 1; }
 
 .caption-overlay h3 {
-    margin: 0 0 5px 0;
-    font-size: 16px;
-    color: #9dffb3; /* Màu nhấn xanh ngọc của trang mẫu */
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: #fff;
     font-weight: 700;
-    letter-spacing: 1px;
-    transform: translateY(10px);
-    transition: transform 0.4s ease;
 }
 
 .caption-overlay span {
     font-family: "Merriweather", serif;
-    font-size: 13px;
-    color: #ccc;
+    font-size: 12px;
+    color: #bbb;
     font-style: italic;
-    transform: translateY(10px);
-    transition: transform 0.4s ease;
-    transition-delay: 0.1s;
+    margin-bottom: 10px;
 }
 
-/* Đẩy text lên nhẹ khi hover */
-.gallery-item:hover .caption-overlay h3,
-.gallery-item:hover .caption-overlay span {
-    transform: translateY(0);
+/* Nút Download */
+.download-btn {
+    align-self: flex-start;
+    padding: 6px 12px;
+    background: rgba(157, 255, 179, 0.2); /* Màu xanh nhạt trong suốt */
+    border: 1px solid #9dffb3;
+    color: #9dffb3;
+    font-size: 11px;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
 }
+
+.download-btn:hover {
+    background: #9dffb3;
+    color: #000;
+}
+
+/* Animation */
+@keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
+@keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
+@keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
 
 </style>
 </head>
@@ -233,10 +285,12 @@ font-family: "Merriweather", serif;
 <div id="fade-out"></div>
 
 <div class="sidebar">
-    <h2>ALBUM</h2>
-    <a href="#events">School Events</a>
-    <a href="#activities">Class Activities</a>
-    <a href="#memories">Memories</a>
+    <h2>TIMELINE</h2>
+    <a href="#slideshow">Highlights</a>
+    <a href="#grade10">Lớp 10</a>
+    <a href="#grade11">Lớp 11</a>
+    <a href="#grade12">Lớp 12</a>
+    <a href="#yearbook">Kỷ Yếu</a>
 </div>
 
 <a href="#" class="return" id="returnBtn">
@@ -245,80 +299,181 @@ font-family: "Merriweather", serif;
 
 <div class="content">
 
-    <div class="section" id="events">
-        <h1>SCHOOL EVENTS</h1>
-        <p>Những khoảnh khắc đáng nhớ trong các sự kiện lớn của trường.</p>
+    <div id="slideshow" class="slideshow-wrapper">
+        <div class="slide active" style="background-image: url('https://via.placeholder.com/1200x500/111/9dffb3?text=Highlight+Memory+1');">
+            <div class="slide-caption">Chuyến đi Đà Lạt - Hè 2024</div>
+        </div>
+        <div class="slide" style="background-image: url('https://via.placeholder.com/1200x500/222/9dffb3?text=Highlight+Memory+2');">
+            <div class="slide-caption">Hội trại truyền thống 26/3</div>
+        </div>
+        <div class="slide" style="background-image: url('https://via.placeholder.com/1200x500/333/9dffb3?text=Highlight+Memory+3');">
+            <div class="slide-caption">Lễ Tri Ân & Trưởng Thành</div>
+        </div>
+    </div>
+
+    <div class="section" id="grade10">
+        <h1>📘 NĂM LỚP 10 – NGÀY ĐẦU GẶP NHAU</h1>
+        <p>Những bỡ ngỡ ban đầu, những cái bắt tay ngượng ngùng và những nụ cười làm quen. Khởi đầu của một hành trình đáng nhớ.</p>
 
         <div class="photo-grid">
             <div class="gallery-item">
-                <img src="https://via.placeholder.com/400x500/333/9dffb3?text=Event+Photo+1" alt="Event 1">
+                <img src="https://via.placeholder.com/400x400/333/fff?text=Lop+10-1">
                 <div class="caption-overlay">
-                    <h3>Graduation Day</h3>
-                    <span>June 2023</span>
+                    <h3>Ngày khai giảng</h3>
+                    <span>Tháng 9/2021</span>
+                    <a href="image_url_here.jpg" download class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="https://via.placeholder.com/500x400/444/9dffb3?text=Event+Photo+2" alt="Event 2">
-                 <div class="caption-overlay">
-                    <h3>Sports Festival</h3>
-                    <span>Outdoor Stadium</span>
+                <img src="https://via.placeholder.com/400x500/444/fff?text=Lop+10-2">
+                <div class="caption-overlay">
+                    <h3>Buổi học quân sự</h3>
+                    <span>Trung tâm GDQP</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="https://via.placeholder.com/400x400/222/9dffb3?text=Event+Photo+3" alt="Event 3">
-                 <div class="caption-overlay">
-                    <h3>Art Exhibition</h3>
-                    <span>Main Hall</span>
+                <img src="https://via.placeholder.com/400x300/222/fff?text=Lop+10-3">
+                <div class="caption-overlay">
+                    <h3>Văn nghệ 20/11</h3>
+                    <span>Sân trường</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="grade11">
+        <h1>📗 NĂM LỚP 11 – TRƯỞNG THÀNH HƠN</h1>
+        <p>Đã quen với trường lớp, chúng ta gắn kết hơn qua những hoạt động ngoại khóa, những lần trốn học đi ăn và những bài kiểm tra khó nhằn.</p>
+
+        <div class="photo-grid">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x400/334/fff?text=Lop+11-1">
+                <div class="caption-overlay">
+                    <h3>Cắm trại Xuân</h3>
+                    <span>Công viên thành phố</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/500x400/445/fff?text=Lop+11-2">
+                <div class="caption-overlay">
+                    <h3>Giải bóng đá lớp</h3>
+                    <span>Huy chương bạc</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
                 </div>
             </div>
              <div class="gallery-item">
-                <img src="https://via.placeholder.com/300x500/555/9dffb3?text=Event+Photo+4" alt="Event 4">
-                 <div class="caption-overlay">
-                    <h3>Welcome New Students</h3>
-                    <span>Fall Semester</span>
+                <img src="https://via.placeholder.com/300x400/223/fff?text=Lop+11-3">
+                <div class="caption-overlay">
+                    <h3>Sinh nhật tập thể</h3>
+                    <span>Tháng 5</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="section" id="activities">
-        <h1>CLASS ACTIVITIES</h1>
-        <p>Hình ảnh học tập và các hoạt động ngoại khóa sôi nổi.</p>
+    <div class="section" id="grade12">
+        <h1>📕 NĂM LỚP 12 – THANH XUÂN RỰC RỠ</h1>
+        <p>Năm cuối cấp với bao áp lực nhưng cũng đầy ắp tiếng cười. Trân trọng từng khoảnh khắc bên nhau trước khi mỗi người một ngả.</p>
 
         <div class="photo-grid">
             <div class="gallery-item">
-                <img src="https://via.placeholder.com/400x300/333/9dffb3?text=Activity+1">
-                <div class="caption-overlay"><h3>Group Project</h3><span>Science Lab</span></div>
+                <img src="https://via.placeholder.com/400x300/533/fff?text=Lop+12-1">
+                <div class="caption-overlay">
+                    <h3>Ôn thi tốt nghiệp</h3>
+                    <span>Thư viện</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
             </div>
             <div class="gallery-item">
-                <img src="https://via.placeholder.com/400x300/444/9dffb3?text=Activity+2">
-                <div class="caption-overlay"><h3>Reading Week</h3><span>Library</span></div>
-            </div>
-            <div class="gallery-item">
-                <img src="https://via.placeholder.com/400x300/222/9dffb3?text=Activity+3">
-                <div class="caption-overlay"><h3>Coding Session</h3><span>Computer Room</span></div>
+                <img src="https://via.placeholder.com/400x500/644/fff?text=Lop+12-2">
+                <div class="caption-overlay">
+                    <h3>Chụp ảnh thẻ</h3>
+                    <span>Hồ sơ thi ĐH</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
             </div>
         </div>
     </div>
-<div class="section" id="memories">
-        <h1>MEMORIES</h1>
-        <p>Lưu giữ những kỷ niệm đẹp của tập thể lớp.</p>
+
+    <div class="section" id="yearbook">
+        <h1>📷 KỶ YẾU – CHIA TAY TUỔI HỌC TRÒ</h1>
+        <p>Bộ ảnh cuối cùng, lưu giữ lại những gương mặt thân thương nhất. Tạm biệt nhé, hẹn ngày gặp lại!</p>
+
+        <div class="photo-grid">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/600x400/111/9dffb3?text=Yearbook+Group">
+                <div class="caption-overlay">
+                    <h3>Ảnh tập thể lớp</h3>
+                    <span>Concept: Áo dài</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x400/222/9dffb3?text=Yearbook+Fun">
+                <div class="caption-overlay">
+                    <h3>Ném bột màu</h3>
+                    <span>Sân vận động</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x400/333/9dffb3?text=Yearbook+Night">
+                <div class="caption-overlay">
+                    <h3>Tiệc chia tay</h3>
+                    <span>Gala Night</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://via.placeholder.com/400x300/444/9dffb3?text=Yearbook+Teacher">
+                <div class="caption-overlay">
+                    <h3>Chụp cùng GVCN</h3>
+                    <span>Người lái đò</span>
+                    <a href="#" class="download-btn"><i class="fas fa-download"></i> Tải ảnh</a>
+                </div>
+            </div>
         </div>
+    </div>
 
 </div>
 
 <script>
-document.getElementById("returnBtn").addEventListener("click", e => {
-    e.preventDefault();
-    document.getElementById("fade-out").classList.add("active");
-    // Chuyển hướng về trang chủ giả định
-    setTimeout(() => location.href = "home.html", 1200);
-});
+    // 1. Script chuyển trang
+    document.getElementById("returnBtn").addEventListener("click", e => {
+        e.preventDefault();
+        document.getElementById("fade-out").classList.add("active");
+        setTimeout(() => location.href = "home.html", 1200);
+    });
 
-// Tùy chọn: Thêm script click vào ảnh để xem full màn hình (Lightbox) nếu cần.
-// Hiện tại chỉ dừng lại ở mức hiển thị lưới ảnh theo phong cách yêu cầu.
+    // 2. Script Slideshow tự chạy
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    function showSlides() {
+        // Ẩn tất cả slide
+        slides.forEach(slide => {
+            slide.classList.remove("active");
+        });
+        
+        // Tăng index
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+
+        // Hiện slide hiện tại
+        slides[slideIndex - 1].classList.add("active");
+        
+        // Lặp lại sau 4 giây
+        setTimeout(showSlides, 4000); 
+    }
+
+    // Khởi chạy slideshow
+    showSlides();
 </script>
 
 </body>
 </html>
+

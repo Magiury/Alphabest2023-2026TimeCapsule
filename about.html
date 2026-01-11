@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Alphabest – About Us</title>
 
-<!-- Merriweather -->
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -21,7 +20,6 @@ body {
     display: flex;
 }
 
-/* Dark overlay giống home */
 body::before {
     content: "";
     position: fixed;
@@ -30,7 +28,7 @@ body::before {
     z-index: 0;
 }
 
-/* ===== FADE OUT OVERLAY (FIX FLASH) ===== */
+/* fade out overlay */
 #fade-out {
     position: fixed;
     inset: 0;
@@ -40,10 +38,7 @@ body::before {
     transition: opacity 1.2s ease;
     z-index: 999;
 }
-
-#fade-out.active {
-    opacity: 1;
-}
+#fade-out.active { opacity: 1; }
 
 /* ================= SIDEBAR ================= */
 
@@ -68,7 +63,6 @@ body::before {
     font-size: 14px;
     letter-spacing: 2px;
     margin-bottom: 30px;
-
     opacity: 0;
     animation: fadeUp 1.2s ease forwards;
     animation-delay: 0.8s;
@@ -86,13 +80,11 @@ body::before {
     animation: fadeLeft 1.2s ease forwards;
 }
 
-.sidebar a:nth-child(2) { animation-delay: 1s; }
-.sidebar a:nth-child(3) { animation-delay: 1.2s; }
-.sidebar a:nth-child(4) { animation-delay: 1.4s; }
+.sidebar a:nth-child(2){animation-delay:1s;}
+.sidebar a:nth-child(3){animation-delay:1.2s;}
+.sidebar a:nth-child(4){animation-delay:1.4s;}
 
-.sidebar a:hover {
-    color: #9dffb3;
-}
+.sidebar a:hover { color:#9dffb3; }
 
 /* ================= RETURN ================= */
 
@@ -101,11 +93,8 @@ body::before {
     left: 26px;
     bottom: 24px;
     z-index: 3;
-
-    font-size: 18px;              /* TO HƠN */
-    font-weight: 500;
+    font-size: 18px;
     letter-spacing: 1.5px;
-
     color: rgba(255,255,255,0.85);
     text-decoration: none;
 
@@ -116,17 +105,12 @@ body::before {
 }
 
 .return span {
-    display: inline-block;
+    font-size: 22px;
+    margin-right: 6px;
     transition: transform 0.2s ease;
 }
-
-.return:hover {
-    color: #9dffb3;
-}
-
-.return:hover span {
-    transform: translateX(-4px);
-}
+.return:hover { color:#9dffb3; }
+.return:hover span { transform: translateX(-4px); }
 
 /* ================= CONTENT ================= */
 
@@ -135,7 +119,7 @@ body::before {
     z-index: 1;
     margin-left: 260px;
     padding: 80px 80px 140px;
-    max-width: 900px;
+    max-width: 1000px;
 }
 
 .section {
@@ -152,54 +136,78 @@ body::before {
     animation: fadeUp 1.4s ease forwards;
 }
 
-.section:nth-of-type(1) h1 { animation-delay: 1s; }
-.section:nth-of-type(2) h1 { animation-delay: 1.4s; }
-.section:nth-of-type(3) h1 { animation-delay: 1.8s; }
-
 .section p {
     font-family: "Merriweather", serif;
     font-size: 17px;
     line-height: 1.9;
-    color: #e0e0e0;
-
     opacity: 0;
     transform: translateY(10px);
     animation: fadeUp 1.4s ease forwards;
 }
 
-.section:nth-of-type(1) p { animation-delay: 1.3s; }
-.section:nth-of-type(2) p { animation-delay: 1.7s; }
-.section:nth-of-type(3) p { animation-delay: 2.1s; }
+/* ================= LEADER BLOCK ================= */
 
-html {
-    scroll-behavior: smooth;
+.leader {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 60px;
+    align-items: center;
+
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1.4s ease forwards;
+}
+
+.leader:nth-child(2){animation-delay:1.4s;}
+.leader:nth-child(3){animation-delay:1.8s;}
+.leader:nth-child(4){animation-delay:2.2s;}
+
+.leader img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #222;
+}
+
+.leader-text {
+    font-family: "Merriweather", serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #e0e0e0;
+}
+
+/* teacher name style */
+.teacher {
+    display: inline-block;
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #9dffb3;
 }
 
 /* ================= ANIMATIONS ================= */
 
 @keyframes sidebarIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to   { opacity: 1; transform: translateX(0); }
+    from {opacity:0; transform:translateX(-20px);}
+    to {opacity:1; transform:translateX(0);}
 }
-
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {opacity:0; transform:translateY(15px);}
+    to {opacity:1; transform:translateY(0);}
 }
-
 @keyframes fadeLeft {
-    from { opacity: 0; transform: translateX(-10px); }
-    to   { opacity: 1; transform: translateX(0); }
+    from {opacity:0; transform:translateX(-10px);}
+    to {opacity:1; transform:translateX(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- FADE OUT LAYER -->
 <div id="fade-out"></div>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
     <h2>ABOUT</h2>
     <a href="#one">We are the one</a>
@@ -207,38 +215,61 @@ html {
     <a href="#done">What we have done</a>
 </div>
 
-<!-- RETURN -->
 <a href="#" class="return" id="returnBtn">
     <span>←</span> Return
 </a>
 
-<!-- CONTENT -->
 <div class="content">
+
     <div class="section" id="one">
         <h1>We are the one</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Lorem ipsum placeholder content for this section.</p>
     </div>
 
+    <!-- ===== LEADERS ===== -->
     <div class="section" id="lead">
         <h1>The one who lead the way</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+        <div class="leader">
+            <img src="https://via.placeholder.com/400x260">
+            <div class="leader-text">
+                <span class="teacher">TEACHER NAME</span><br>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div class="leader">
+            <img src="https://via.placeholder.com/400x260">
+            <div class="leader-text">
+                <span class="teacher">TEACHER NAME</span><br>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Ut enim ad minim veniam, quis nostrud exercitation.
+            </div>
+        </div>
+
+        <div class="leader">
+            <img src="https://via.placeholder.com/400x260">
+            <div class="leader-text">
+                <span class="teacher">TEACHER NAME</span><br>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Duis aute irure dolor in reprehenderit in voluptate velit.
+            </div>
+        </div>
     </div>
 
     <div class="section" id="done">
         <h1>What we have done</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Lorem ipsum placeholder content for achievements.</p>
     </div>
+
 </div>
 
 <script>
-document.getElementById("returnBtn").addEventListener("click", function(e) {
+document.getElementById("returnBtn").addEventListener("click", e => {
     e.preventDefault();
-
     document.getElementById("fade-out").classList.add("active");
-
-    setTimeout(() => {
-        window.location.href = "home.html";
-    }, 1200);
+    setTimeout(() => location.href = "home.html", 1200);
 });
 </script>
 

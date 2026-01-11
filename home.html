@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Alphabest – Home</title>
 
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: url("class.jpg") center / cover no-repeat;
+    overflow: hidden;
+    color: white;
+}
+
+/* Dark overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
+}
+
+/* ================= TOP UI ================= */
+
+.top-ui {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+    padding-top: 18px;
+}
+
+/* LOGO */
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    opacity: 0;
+    transform: translateY(-15px);
+    animation: logoFade 2s ease forwards;
+    animation-delay: 0.8s;
+}
+
+.logo img {
+    width: 70px;
+    opacity: 0.95;
+}
+
+/* SEARCH BAR */
+.search-bar {
+    margin: 18px auto 10px;
+    width: 520px;
+    max-width: 90%;
+    position: relative;
+
+    opacity: 0;
+    transform: translateY(10px);
+    animation: searchFade 2s ease forwards;
+    animation-delay: 1.3s;   /* sau logo */
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 15px;
+}
+
+/* MENU */
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 12px;
+
+    opacity: 0;
+    animation: menuFade 1.8s ease forwards;
+    animation-delay: 1.9s;   /* sau search */
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+    opacity: 0.85;
+    transition: 0.2s;
+}
+
+.menu a:hover {
+    opacity: 1;
+    text-shadow: 0 0 6px rgba(255,255,255,0.5);
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes logoFade {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes searchFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes menuFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-ui">
+
+    <!-- LOGO -->
+    <div class="logo">
+        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
+        <img src="Alphabest Logo.png">
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search memories...">
+    </div>
+
+    <!-- MENU -->
+    <div class="menu">
+        <a href="about.html">ABOUT US</a>
+        <a href="album.html">ALBUM</a>
+        <a href="thought.html">OUR THOUGHT</a>
+        <a href="chat.html">CHAT</a>
+    </div>
+
+</div>
+
+</body>
+</html>

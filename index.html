@@ -227,6 +227,11 @@ function login(){
             document.body.classList.add("bg-fade");
         },700);
 
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 4200);
+
+
     } else {
         error.style.color="#ffb3b3";
         error.innerText="Invalid credentials";

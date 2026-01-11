@@ -18,7 +18,7 @@ body {
     color: white;
 }
 
-/* Dark overlay nhẹ */
+/* Dark overlay */
 body::before {
     content: "";
     position: fixed;
@@ -37,14 +37,14 @@ body::before {
     padding-top: 18px;
 }
 
-/* Logo container */
+/* LOGO */
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 18px;
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-15px);
     animation: logoFade 2s ease forwards;
     animation-delay: 0.8s;
 }
@@ -54,12 +54,17 @@ body::before {
     opacity: 0.95;
 }
 
-/* Search bar */
+/* SEARCH BAR */
 .search-bar {
     margin: 18px auto 10px;
     width: 520px;
     max-width: 90%;
     position: relative;
+
+    opacity: 0;
+    transform: translateY(10px);
+    animation: searchFade 2s ease forwards;
+    animation-delay: 1.3s;   /* sau logo */
 }
 
 .search-bar input {
@@ -73,15 +78,16 @@ body::before {
     font-size: 15px;
 }
 
-/* Menu */
+/* MENU */
 .menu {
     display: flex;
     justify-content: center;
     gap: 40px;
     margin-top: 12px;
+
     opacity: 0;
     animation: menuFade 1.8s ease forwards;
-    animation-delay: 1.6s;
+    animation-delay: 1.9s;   /* sau search */
 }
 
 .menu a {
@@ -101,14 +107,13 @@ body::before {
 /* ================= ANIMATIONS ================= */
 
 @keyframes logoFade {
-    from {
-        opacity: 0;
-        transform: translateY(-15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes searchFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes menuFade {

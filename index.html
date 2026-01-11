@@ -31,26 +31,17 @@ body::before {
 }
 
 .login-wrapper {
-    position: relative; /* container để logo absolute */
+    position: relative;
+    z-index: 1;
+    text-align: center;
 }
 
 .logo {
-    position: fixed;             /* luôn tính theo viewport */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
-    gap: 16px;
-    transition: top 1s cubic-bezier(0.4,0,0.2,1),
-                left 1s cubic-bezier(0.4,0,0.2,1),
-                transform 1s cubic-bezier(0.4,0,0.2,1);
-    z-index: 10;                 /* luôn nổi trên các element khác */
-}
-
-.logo.fly {
-    top: 10px;                   /* sát mép trên */
-    left: 10px;                  /* sát mép trái */
-    transform: translate(0, 0);  /* giữ size, không scale */
+    justify-content: center;
+    align-items: center;
+    gap: 16px;        /* khoảng cách giữa 2 logo */
+    margin-bottom: 30px;
 }
 
 .logo img {
@@ -223,15 +214,13 @@ body::before {
 
 <body>
 
-    <!-- LOGO ở ngoài form -->
-    <div class="logo">
-        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png" alt="Logo 1">
-        <img src="Alphabest Logo.png" alt="Logo 2">
-    </div>
+<div class="login-wrapper">
 
-    <div class="login-wrapper">
-        <!-- input group, checkbox, button -->
-    </div>
+    <!-- LOGO -->
+<div class="logo">
+    <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png" alt="Logo 1">
+    <img src="Alphabest Logo.png" alt="Logo 2">
+</div>
 
     <!-- INPUTS -->
     <div class="input-group">
@@ -284,10 +273,6 @@ function login() {
         // Disable button để tránh nhấn lại
         const btn = document.querySelector(".login-btn");
         btn.disabled = true;
-        
-        // **Logo bay lên góc**
-        const logo = document.querySelector(".logo");
-        logo.classList.add("fly"); // trigger transform animation
 
         // Bắt đầu fade out toàn bộ phần login-wrapper (chỉ fade input, checkbox, button, error)
         const toFade = document.querySelectorAll(".input-group, .options, .login-btn, #error");

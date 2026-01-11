@@ -13,26 +13,51 @@
 body {
     margin: 0;
     height: 100vh;
-    background: url("https://img.goodfon.com/original/1920x1080/b/47/karta-mira-zemlia-fon-materiki.jpg")
-                center / cover no-repeat;
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+    overflow: hidden;
 }
 
+/* BACKGROUND LAYERS */
+.bg {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 2s ease;
+    z-index: -3;
+}
+.bg-old {
+    background-image: url("https://img.goodfon.com/original/1920x1080/b/47/karta-mira-zemlia-fon-materiki.jpg");
+    opacity: 1;
+}
+.bg-new {
+    background-image: url("class.jpg"); /* ảnh lớp */
+    opacity: 0;
+}
+
+/* overlay mờ */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.45);
     backdrop-filter: blur(1px);
-    z-index: 0;
+    transition: opacity 2s ease;
+    z-index: -2;
 }
+
+/* khi login xong */
+.bg-fade .bg-old { opacity: 0; }
+.bg-fade .bg-new { opacity: 1; }
+.bg-fade::before { opacity: 0.2; }
 
 .login-wrapper {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     text-align: center;
 }
 
@@ -40,12 +65,12 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px;        /* khoảng cách giữa 2 logo */
+    gap: 16px;
     margin-bottom: 30px;
 }
 
 .logo img {
-    width: 70px;      /* chỉnh size nếu muốn */
+    width: 70px;
     opacity: 0.95;
 }
 
@@ -58,20 +83,12 @@ body::before {
     margin: 0 auto;
 }
 
-/* USERNAME */
-.input-box.username {
-    background: rgba(0, 0, 0, 0.45);
-}
-
-/* PASSWORD */
-.input-box.password {
-    background: rgba(0, 0, 0, 0.55);
-}
-
 .input-box {
     position: relative;
     width: 50%;
 }
+.input-box.username { background: rgba(0,0,0,0.45); }
+.input-box.password { background: rgba(0,0,0,0.55); }
 
 .input-box input {
     width: 100%;
@@ -83,17 +100,11 @@ body::before {
     font-size: 16px;
 }
 
-.input-box input::placeholder {
-    color: #f0f0f0;
-}
-
 .input-box .icon {
     position: absolute;
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 18px;
-    opacity: 0.9;
 }
 
 /* CHECKBOX */
@@ -101,19 +112,10 @@ body::before {
     width: 520px;
     margin: 14px auto 30px;
     text-align: left;
-    font-size: 14px;
 }
 
-.checkbox {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: #eee;
-}
-
-.checkbox input {
-    display: none;
-}
+.checkbox { display:flex; align-items:center; cursor:pointer; }
+.checkbox input { display:none; }
 
 .custom-check {
     width: 18px;
@@ -121,72 +123,24 @@ body::before {
     border-radius: 6px;
     background: white;
     margin-right: 10px;
-    position: relative;
 }
 
 .checkbox input:checked + .custom-check {
     background: #2e9dff;
 }
 
-.checkbox input:checked + .custom-check::after {
-    content: "✓";
-    position: absolute;
-    color: white;
-    font-size: 14px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -55%);
-}
-
 /* BUTTON */
 .login-btn {
     width: 240px;
     padding: 14px;
-    background: #111111;
+    background: #111;
     border: none;
-    color: #ffffff;
-    font-size: 16px;
+    color: white;
     border-radius: 4px;
     cursor: pointer;
-    transition: 0.2s;
-    outline: 1px solid rgba(255,255,255,0.08)
 }
 
-.login-btn:hover {
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.08),
-                0 12px 30px rgba(0,0,0,0.6);
-    background: #333333;
-}
-
-.error {
-    margin-top: 15px;
-    color: #ffb3b3;
-}
-
-@media (max-width: 600px) {
-    .input-group,
-    .options {
-        width: 90%;
-    }
-
-    .input-group {
-        flex-direction: column;
-    }
-
-    .input-box {
-        width: 100%;
-    }
-}
-/* Hover nhẹ cho ô input */
-.input-box {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.input-box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-}
-/* Spinner nhỏ bên cạnh text */
+/* spinner */
 .spinner {
     display: inline-block;
     width: 16px;
@@ -196,107 +150,83 @@ body::before {
     border-top: 2px solid transparent;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    vertical-align: middle;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg);}
-    100% { transform: rotate(360deg);}
+    to { transform: rotate(360deg); }
 }
-/* Fade out animation */
+
+/* FADE */
 .fade-out {
-    opacity: 0;
-    transition: opacity 1s ease;
-    pointer-events: none; /* tránh click khi đang fade */
-}
-.logo.fade-out {
     opacity: 0;
     transition: opacity 1s ease;
     pointer-events: none;
 }
+
 </style>
 </head>
 
 <body>
 
+<div class="bg bg-old"></div>
+<div class="bg bg-new"></div>
+
 <div class="login-wrapper">
 
-    <!-- LOGO -->
 <div class="logo">
-    <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png" alt="Logo 1">
-    <img src="Alphabest Logo.png" alt="Logo 2">
+    <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
+    <img src="Alphabest Logo.png">
 </div>
 
-    <!-- INPUTS -->
-    <div class="input-group">
-        <div class="input-box username">
-            <span class="icon">👤</span>
-            <input type="text" id="username" placeholder="Username">
-        </div>
-
-        <div class="input-box password">
-            <span class="icon">🔒</span>
-            <input type="password" id="password" placeholder="Password">
-        </div>
+<div class="input-group">
+    <div class="input-box username">
+        <span class="icon">👤</span>
+        <input id="username" placeholder="Username">
     </div>
-
-    <!-- CHECKBOX -->
-    <div class="options">
-        <label class="checkbox">
-            <input type="checkbox" checked>
-            <span class="custom-check"></span>
-            Erase data after log out?
-        </label>
+    <div class="input-box password">
+        <span class="icon">🔒</span>
+        <input type="password" id="password" placeholder="Password">
     </div>
+</div>
 
-    <!-- BUTTON -->
-    <button class="login-btn" onclick="login()">Sign In</button>
+<div class="options">
+<label class="checkbox">
+<input type="checkbox" checked>
+<span class="custom-check"></span>
+Erase data after log out?
+</label>
+</div>
 
-    <div class="error" id="error"></div>
+<button class="login-btn" onclick="login()">Sign In</button>
+<div class="error" id="error"></div>
+
 </div>
 
 <script>
-const USERNAME = "admin";
-const PASSWORD = "alphabest";
+const USERNAME="admin";
+const PASSWORD="alphabest";
 
-function login() {
-    const u = document.getElementById("username").value;
-    const p = document.getElementById("password").value;
-    const error = document.getElementById("error");
+function login(){
+    const u=username.value;
+    const p=password.value;
+    const error=document.getElementById("error");
 
-    // Clear previous message
-    error.innerHTML = "";
+    if(u===USERNAME && p===PASSWORD){
+        error.style.color="#9dffb3";
+        error.innerHTML=`Valid credentials... <span class="spinner"></span>`;
 
-    if (u === USERNAME && p === PASSWORD) {
-        // Show spinner + text
-        error.style.color = "#9dffb3";
-        error.innerHTML = `
-            Valid credentials. Redirecting...
-            <span class="spinner"></span>
-        `;
+        document.querySelectorAll(".logo,.input-group,.options,.login-btn,#error")
+        .forEach(el=>{
+            setTimeout(()=>el.classList.add("fade-out"),700);
+        });
 
-        // Disable button để tránh nhấn lại
-        const btn = document.querySelector(".login-btn");
-        btn.disabled = true;
-
-        // Chọn tất cả phần cần fade, bao gồm logo
-        const toFade = document.querySelectorAll(".logo, .input-group, .options, .login-btn, #error");
-        toFade.forEach(el => {
-        // delay 0.2s trước khi fade để người dùng thấy spinner
-        setTimeout(() => {
-        el.classList.add("fade-out");
-        }, 700);
-    });
-
-
-        // Redirect sau khi fade xong (1s animation + 0.2s delay)
-        setTimeout(() => {
-            window.location.href = "home.html";
-        }, 1400);
+        setTimeout(()=>{
+            document.body.classList.add("bg-fade");
+        },700);
 
     } else {
-        error.style.color = "#ffb3b3";
-        error.innerText = "Invalid credentials";
+        error.style.color="#ffb3b3";
+        error.innerText="Invalid credentials";
     }
 }
 </script>

@@ -27,22 +27,31 @@ body::before {
     z-index: 0;
 }
 
-/* ================= TOP UI ================= */
+/* ================= APP WRAPPER ================= */
 
-.top-ui {
+#app {
     position: relative;
     z-index: 2;
     width: 100%;
     text-align: center;
     padding-top: 18px;
+
+    transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
-/* LOGO */
+#app.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* ================= LOGO ================= */
+
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 18px;
+
     opacity: 0;
     transform: translateY(-15px);
     animation: logoFade 2s ease forwards;
@@ -54,7 +63,8 @@ body::before {
     opacity: 0.95;
 }
 
-/* SEARCH BAR */
+/* ================= SEARCH ================= */
+
 .search-bar {
     margin: 18px auto 10px;
     width: 520px;
@@ -64,7 +74,7 @@ body::before {
     opacity: 0;
     transform: translateY(10px);
     animation: searchFade 2s ease forwards;
-    animation-delay: 1.3s;   /* sau logo */
+    animation-delay: 1.3s;
 }
 
 .search-bar input {
@@ -78,7 +88,8 @@ body::before {
     font-size: 15px;
 }
 
-/* MENU */
+/* ================= MENU ================= */
+
 .menu {
     display: flex;
     justify-content: center;
@@ -87,7 +98,7 @@ body::before {
 
     opacity: 0;
     animation: menuFade 1.8s ease forwards;
-    animation-delay: 1.9s;   /* sau search */
+    animation-delay: 1.9s;
 }
 
 .menu a {
@@ -104,24 +115,7 @@ body::before {
     text-shadow: 0 0 6px rgba(255,255,255,0.5);
 }
 
-/* ================= ANIMATIONS ================= */
-
-@keyframes logoFade {
-    from { opacity: 0; transform: translateY(-15px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes searchFade {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes menuFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* ================= TACTICAL COUNTDOWN ================= */
+/* ================= COUNTDOWN ================= */
 
 .countdown-hud {
     position: fixed;
@@ -158,11 +152,60 @@ body::before {
     color: rgba(180,255,200,0.5);
 }
 
+/* ================= ANIMATIONS ================= */
+
+@keyframes logoFade {
+    from { opacity: 0; transform: translateY(-15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes searchFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes menuFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
 </style>
 </head>
 
 <body>
+
+<div id="app">
+
+    <!-- LOGO -->
+    <div class="logo">
+        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
+        <img src="Alphabest Logo.png">
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search memories...">
+    </div>
+
+    <!-- MENU -->
+    <div class="menu">
+        <a href="about.html" onclick="navigate(event, 'about.html')">ABOUT US</a>
+        <a href="album.html" onclick="navigate(event, 'album.html')">ALBUM</a>
+        <a href="thought.html" onclick="navigate(event, 'thought.html')">OUR THOUGHT</a>
+        <a href="chat.html" onclick="navigate(event, 'chat.html')">CHAT</a>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-hud">
+        <div class="cd-title">FINAL EXAM COUNTDOWN</div>
+        <div class="cd-time" id="cd-time">00:00:00:00</div>
+        <div class="cd-sub">TARGET DATE — 11 JUNE 2026</div>
+    </div>
+
+</div>
+
 <script>
+/* ================= COUNTDOWN ================= */
+
 const targetDate = new Date("2026-06-11T00:00:00").getTime();
 
 function updateCountdown() {
@@ -185,36 +228,19 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+/* ================= PAGE TRANSITION ================= */
+
+function navigate(e, url) {
+    e.preventDefault();
+    const app = document.getElementById("app");
+    app.classList.add("fade-out");
+
+    setTimeout(() => {
+        window.location.href = url;
+    }, 1200);
+}
 </script>
-
-<div class="top-ui">
-
-    <!-- LOGO -->
-    <div class="logo">
-        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
-        <img src="Alphabest Logo.png">
-    </div>
-
-    <!-- SEARCH -->
-    <div class="search-bar">
-        <input type="text" placeholder="Search memories...">
-    </div>
-
-    <!-- MENU -->
-    <div class="menu">
-        <a href="about.html">ABOUT US</a>
-        <a href="album.html">ALBUM</a>
-        <a href="thought.html">OUR THOUGHT</a>
-        <a href="chat.html">CHAT</a>
-    </div>
-    
-    <div class="countdown-hud" id="countdown">
-        <div class="cd-title">FINAL EXAM COUNTDOWN</div>
-        <div class="cd-time" id="cd-time">00:00:00:00</div>
-        <div class="cd-sub">TARGET DATE — 11 JUNE 2026</div>
-    </div>
-
-</div>
 
 </body>
 </html>

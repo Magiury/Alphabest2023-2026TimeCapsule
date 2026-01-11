@@ -15,9 +15,19 @@
 
 body {
     margin: 0;
-    background: #0e0e0e;
+    min-height: 100vh;
+    background: url("class.jpg") center / cover no-repeat fixed;
     color: #eaeaea;
     display: flex;
+}
+
+/* Dark overlay – giống home */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
 }
 
 /* ================= SIDEBAR ================= */
@@ -28,16 +38,18 @@ body {
     top: 0;
     width: 260px;
     height: 100vh;
-    background: #111;
     padding: 40px 30px;
+    background: rgba(10,10,10,0.65);
+    backdrop-filter: blur(6px);
     border-right: 1px solid rgba(255,255,255,0.08);
+    z-index: 2;
 }
 
 .sidebar h2 {
     font-size: 14px;
     letter-spacing: 2px;
     font-weight: 600;
-    opacity: 0.6;
+    opacity: 0.7;
     margin-bottom: 30px;
 }
 
@@ -60,18 +72,20 @@ body {
 /* ================= CONTENT ================= */
 
 .content {
+    position: relative;
+    z-index: 1;
     margin-left: 260px;
-    padding: 80px 80px 120px;
+    padding: 80px 80px 140px;
     max-width: 900px;
 }
 
 .section {
-    margin-bottom: 120px;
+    margin-bottom: 140px;
 }
 
 .section h1 {
     font-size: 36px;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
     font-weight: 600;
     letter-spacing: 1px;
 }
@@ -80,7 +94,7 @@ body {
     font-family: "Merriweather", serif;
     font-size: 17px;
     line-height: 1.9;
-    color: #d6d6d6;
+    color: #e0e0e0;
 }
 
 /* smooth scroll */
@@ -88,7 +102,8 @@ html {
     scroll-behavior: smooth;
 }
 
-/* responsive */
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px) {
     .sidebar {
         position: relative;
@@ -100,7 +115,7 @@ html {
 
     .content {
         margin-left: 0;
-        padding: 40px 30px;
+        padding: 50px 30px 100px;
     }
 }
 </style>
@@ -122,10 +137,10 @@ html {
     <div class="section" id="one">
         <h1>We are the one</h1>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
         </p>
     </div>
@@ -133,9 +148,9 @@ html {
     <div class="section" id="lead">
         <h1>The one who lead the way</h1>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. 
-            Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. 
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
+            Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
             Praesent mauris. Fusce nec tellus sed augue semper porta.
         </p>
     </div>
@@ -143,9 +158,9 @@ html {
     <div class="section" id="done">
         <h1>What we have done</h1>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-            Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. 
-            Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque 
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.
+            Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque
             sem at dolor. Maecenas mattis. Sed convallis tristique sem.
         </p>
     </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alphabest – Journey Album</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Bangers&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -18,6 +18,8 @@
             background: url("class.jpg") center / cover no-repeat fixed;
             color: #eaeaea;
             display: flex;
+            overflow-x: hidden;
+            transition: margin-left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
         body::before {
@@ -28,7 +30,6 @@
             z-index: 0;
         }
 
-        /* fade out */
         #fade-out {
             position: fixed;
             inset: 0;
@@ -48,20 +49,24 @@
             width: 260px;
             height: 100vh;
             padding: 40px 30px;
-            background: rgba(10,10,10,0.75);
-            backdrop-filter: blur(10px);
+            background: rgba(10,10,10,0.85);
+            backdrop-filter: blur(15px);
             border-right: 1px solid rgba(255,255,255,0.1);
-            z-index: 2;
+            z-index: 100;
             display: flex;
             flex-direction: column;
-            animation: sidebarIn 1.6s ease forwards;
+            transition: width 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow: hidden;
         }
+
+        .sidebar.extended { width: 50vw; }
 
         .sidebar h2 {
             font-size: 14px;
             letter-spacing: 2px;
             margin-bottom: 30px;
             color: #9dffb3;
+            white-space: nowrap;
         }
 
         .sidebar a.nav-link {
@@ -71,13 +76,25 @@
             margin-bottom: 22px;
             font-size: 15px;
             transition: 0.3s;
+            white-space: nowrap;
         }
-        .sidebar a.nav-link:hover {
-            color:#9dffb3;
-            padding-left: 5px;
-        }
+        .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
 
-        /* return */
+        /* Nút mở rộng ở giữa */
+        .extend-btn {
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(157, 255, 179, 0.1);
+            border: 1px solid #9dffb3;
+            color: #9dffb3;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .extend-btn:hover { background: #9dffb3; color: #000; }
+
         .return {
             margin-top: auto;
             margin-bottom: 30px;
@@ -86,10 +103,105 @@
             text-decoration: none;
             font-size: 19px;
             transition: 0.3s;
-            cursor: pointer;
         }
-        .return span { font-size: 22px; margin-right: 5px; }
-        .return:hover { color:#9dffb3; transform: translateX(-3px); }
+
+        /* ================= TIMELINE MARVEL SYSTEM ================= */
+        .timeline-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.5s;
+            position: relative;
+        }
+        .sidebar.extended .timeline-container { display: flex; opacity: 1; transform: translateY(0); }
+
+        /* Đường dây kết nối (Timeline Line) */
+        .timeline-container::before {
+            content: "";
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, #9dffb3, #ff4dff);
+            top: 100px;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .timeline-box {
+            width: 220px;
+            height: 120px;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .timeline-box:hover { transform: scale(1.1); }
+
+        /* Lớp 10: Tường gạch Blue */
+        .box-10 {
+            background: #1a3a5f;
+            border: 4px solid #0d1b2e;
+            box-shadow: 5px 5px 0px #000;
+            position: relative;
+        }
+        .box-10::after {
+            content: ""; position: absolute; inset: 0;
+            background-image: linear-gradient(90deg, transparent 95%, rgba(0,0,0,0.3) 95%), linear-gradient(transparent 95%, rgba(0,0,0,0.3) 95%);
+            background-size: 30px 20px;
+        }
+        .box-10 span { font-family: 'Bangers', cursive; font-size: 28px; color: #fff; z-index: 1; text-shadow: 2px 2px #000; }
+
+        /* Lớp 11: Đám mây */
+        .box-11 {
+            background: #fff;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+        }
+        .box-11::before, .box-11::after {
+            content: ""; position: absolute; background: #fff; border-radius: 50%;
+        }
+        .box-11::before { width: 100px; height: 100px; top: -40px; left: 20px; }
+        .box-11::after { width: 80px; height: 80px; top: -30px; right: 20px; }
+        .box-11 span { font-family: 'Bangers', cursive; font-size: 28px; color: #333; z-index: 1; }
+
+        /* Lớp 12: Nón tốt nghiệp */
+        .box-12 {
+            background: #222;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            border: 2px solid #9dffb3;
+        }
+        .box-12 span { font-family: 'Bangers', cursive; font-size: 24px; color: #9dffb3; }
+
+        /* Box 4: Mystery ??? */
+        .box-mystery {
+            background: #4b0082;
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        .box-mystery span { font-size: 30px; font-weight: bold; color: #fff; z-index: 2; }
+        .fog-effect {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(147,112,219,0.4) 0%, transparent 70%);
+            animation: fogMove 4s infinite linear;
+            z-index: 1;
+        }
+        @keyframes fogMove {
+            0% { transform: translate(-20%, -20%); }
+            50% { transform: translate(10%, 10%); }
+            100% { transform: translate(-20%, -20%); }
+        }
+        .coming-soon { color: #ff69b4; font-size: 12px; margin-top: -30px; font-weight: bold; letter-spacing: 2px; }
 
         /* ================= CONTENT ================= */
         .content {
@@ -98,10 +210,10 @@
             margin-left: 260px;
             padding: 80px 80px;
             width: 100%;
+            transition: margin-left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .section { margin-bottom: 120px; }
-        .section h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 1px; }
+        body.shifted .content { margin-left: calc(50vw + 20px); }
 
         .photo-grid {
             display: grid;
@@ -109,61 +221,26 @@
             gap: 22px;
         }
 
-        .gallery-item {
-            height: 250px;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #1a1a1a;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-        }
+        .gallery-item { height: 250px; border-radius: 10px; overflow: hidden; background: #1a1a1a; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .gallery-item:hover img { transform: scale(1.1); }
 
         .add-photo-box {
-            height: 250px;
-            border: 2px dashed rgba(157, 255, 179, 0.3);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #9dffb3;
-            transition: 0.3s;
-            background: rgba(157, 255, 179, 0.02);
+            height: 250px; border: 2px dashed rgba(157, 255, 179, 0.3); border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; color: #9dffb3; transition: 0.3s; background: rgba(157, 255, 179, 0.02);
+            text-decoration: none;
         }
-        .add-photo-box:hover {
-            background: rgba(157, 255, 179, 0.1);
-            border-color: #9dffb3;
-        }
+        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
 
         .view-more-box {
-            height: 250px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #888;
-            transition: 0.3s;
+            height: 250px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; text-decoration: none;
+            color: #888; transition: 0.3s;
         }
-        .view-more-box:hover {
-            color: #fff;
-            border-color: rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.05);
-        }
+        .view-more-box:hover { color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
 
-        @keyframes sidebarIn {
-            from {opacity:0; transform:translateX(-20px);}
-            to {opacity:1; transform:translateX(0);}
-        }
+        @keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
     </style>
 </head>
 
@@ -171,11 +248,32 @@
 
 <div id="fade-out"></div>
 
-<nav class="sidebar">
+<nav class="sidebar" id="mainSidebar">
     <h2>ALPHABEST</h2>
     <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
     <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
     <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
+
+    <div class="extend-btn" onclick="toggleSidebar()">
+        <i class="fas fa-project-diagram"></i> <span id="btnText">OPEN TIMELINE</span>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-box box-10" onclick="location.href='#grade10'">
+            <span>LỚP 10</span>
+        </div>
+        <div class="timeline-box box-11" onclick="location.href='#grade11'">
+            <span>LỚP 11</span>
+        </div>
+        <div class="timeline-box box-12" onclick="location.href='#grade12'">
+            <span>LỚP 12</span>
+        </div>
+        <div class="timeline-box box-mystery">
+            <div class="fog-effect"></div>
+            <span>???</span>
+        </div>
+        <div class="coming-soon">COMING SOON</div>
+    </div>
 
     <a href="home.html" class="return" id="returnBtn">
         <span>←</span> Return
@@ -190,15 +288,11 @@
             <div class="gallery-item">
                 <img src="https://via.placeholder.com/400x300/222/9dffb3?text=Memory+1">
             </div>
-
-            <div class="add-photo-box">
+            <a href="albumspaces.html" class="add-photo-box">
                 <i class="fas fa-plus-circle"></i>
                 <span>Thêm ảnh</span>
-            </div>
-
-            <a href="album-10.html" class="view-more-box fade-link">
-                Nhấn để xem thêm
             </a>
+            <a href="album-10.html" class="view-more-box fade-link">Nhấn để xem thêm</a>
         </div>
     </section>
 
@@ -208,15 +302,11 @@
             <div class="gallery-item">
                 <img src="https://via.placeholder.com/400x300/333/9dffb3?text=Memory+2">
             </div>
-
-            <div class="add-photo-box">
+            <a href="albumspaces.html" class="add-photo-box">
                 <i class="fas fa-plus-circle"></i>
                 <span>Thêm ảnh</span>
-            </div>
-
-            <a href="album-11.html" class="view-more-box fade-link">
-                Nhấn để xem thêm
             </a>
+            <a href="album-11.html" class="view-more-box fade-link">Nhấn để xem thêm</a>
         </div>
     </section>
 
@@ -226,37 +316,46 @@
             <div class="gallery-item">
                 <img src="https://via.placeholder.com/400x300/444/9dffb3?text=Memory+3">
             </div>
-
-            <div class="add-photo-box">
+            <a href="albumspaces.html" class="add-photo-box">
                 <i class="fas fa-plus-circle"></i>
                 <span>Thêm ảnh</span>
-            </div>
-
-            <a href="album-12.html" class="view-more-box fade-link">
-                Nhấn để xem thêm
             </a>
+            <a href="album-12.html" class="view-more-box fade-link">Nhấn để xem thêm</a>
         </div>
     </section>
 
 </main>
 
 <script>
-/* return */
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    const body = document.body;
+    const btnText = document.getElementById('btnText');
+    
+    sidebar.classList.toggle('extended');
+    body.classList.toggle('shifted');
+    
+    if(sidebar.classList.contains('extended')) {
+        btnText.innerText = "CLOSE TIMELINE";
+    } else {
+        btnText.innerText = "OPEN TIMELINE";
+    }
+}
+
+/* return logic */
 document.getElementById("returnBtn").addEventListener("click", e => {
     e.preventDefault();
     document.getElementById("fade-out").classList.add("active");
     setTimeout(() => location.href = "home.html", 1200);
 });
 
-/* fade link to album pages */
+/* fade link */
 document.querySelectorAll(".fade-link").forEach(link => {
     link.addEventListener("click", e => {
         e.preventDefault();
         const url = link.getAttribute("href");
         document.getElementById("fade-out").classList.add("active");
-        setTimeout(() => {
-            window.location.href = url;
-        }, 1200);
+        setTimeout(() => { window.location.href = url; }, 1200);
     });
 });
 </script>

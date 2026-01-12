@@ -106,7 +106,7 @@
         }
         body.shifted .triangle-btn { transform: rotate(180deg); }
 
-        /* ================= TIMELINE DÒNG SÔNG ================= */
+        /* ================= TIMELINE THẲNG HÀNG (MỐC TẬP TRUNG) ================= */
         .timeline-container {
             display: none;
             flex-direction: column;
@@ -117,51 +117,51 @@
         }
         .sidebar.extended .timeline-container { display: flex; }
 
+        /* Đường kẻ chính xuyên suốt các box */
         .timeline-container::before {
             content: "";
             position: absolute;
-            width: 6px;
-            background: linear-gradient(to bottom, #9dffb3, #fff, #9dffb3);
+            width: 4px;
+            background: linear-gradient(to bottom, transparent, #9dffb3, #fff, #9dffb3, transparent);
             top: 0; bottom: 0;
             left: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            box-shadow: 0 0 15px rgba(157, 255, 179, 0.3);
             z-index: 1;
-            border-radius: 10px;
         }
 
-        /* ANIMATION CHO CÁC BOX KHI XUẤT HIỆN */
         @keyframes boxSlideIn {
-            from { opacity: 0; transform: translateY(50px) scale(0.8); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .timeline-box { 
-            width: 180px; 
-            height: 100px; 
-            margin: 40px 0; 
+            width: 200px; 
+            height: 120px; 
+            margin: 30px 0; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             position: relative; 
             cursor: pointer; 
-            transition: 0.4s; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             text-decoration: none;
             z-index: 5;
             background-size: cover;
             background-position: center;
-            /* Animation mặc định khi sidebar mở */
-            animation: boxSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            animation: boxSlideIn 0.8s both;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
         
-        /* Delay cho từng box tạo hiệu ứng lướt */
         .sidebar.extended .timeline-box:nth-child(1) { animation-delay: 0.2s; }
         .sidebar.extended .timeline-box:nth-child(2) { animation-delay: 0.4s; }
         .sidebar.extended .timeline-box:nth-child(3) { animation-delay: 0.6s; }
         .sidebar.extended .timeline-box:nth-child(4) { animation-delay: 0.8s; }
 
-        .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); box-shadow: 0 0 30px rgba(157, 255, 179, 0.4); }
 
-        /* Khung chứa ảnh làm nền (Overlay để chữ rõ hơn) */
+        /* Overlay khung ảnh */
         .timeline-box::before {
             content: "";
             position: absolute;
@@ -170,56 +170,35 @@
             z-index: 1;
             transition: 0.3s;
         }
-        .timeline-box:hover::before { background: rgba(0,0,0,0.2); }
+        .timeline-box:hover::before { background: rgba(0,0,0,0.1); }
 
-        .timeline-box:nth-child(odd) { align-self: flex-start; margin-left: 15%; }
-        .timeline-box:nth-child(even) { align-self: flex-end; margin-right: 15%; }
-
+        /* ĐIỂM CHỐT TẠI MỖI BOX */
         .timeline-box::after {
             content: "";
             position: absolute;
-            top: 50%;
-            height: 80px;
-            width: calc(25vw - 150px);
-            border: 4px solid transparent;
-            z-index: -1;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border: 3px solid #9dffb3;
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -22px; /* Điểm mốc nằm dưới mỗi box */
+            box-shadow: 0 0 10px #9dffb3;
+            z-index: 10;
         }
 
-        .timeline-box:nth-child(odd)::after {
-            left: 100%;
-            border-top: 4px solid currentColor;
-            border-right: 4px solid currentColor;
-            border-top-right-radius: 40px;
-            margin-top: -40px;
-            mask-image: linear-gradient(to right, black 20%, rgba(0,0,0,0.3) 100%);
-        }
+        .box-10 { background-image: url(https://i.ibb.co/FLvm3RQj/Gemini-Generated-Image-sb1ntesb1ntesb1n-1.png); border: 2px solid #3498db; }
+        .box-11 { background-image: url(https://i.ibb.co/WNsJK9V3/image-2026-01-13-040629956.png); border: 2px solid #2ecc71; }
+        .box-12 { background-image: url(https://i.ibb.co/Zpzd7nSY/image-2026-01-13-040507521.png); border: 2px solid #e74c3c; }
+        .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; }
 
-        .timeline-box:nth-child(even)::after {
-            right: 100%;
-            border-top: 4px solid currentColor;
-            border-left: 4px solid currentColor;
-            border-top-left-radius: 40px;
-            margin-top: -40px;
-            mask-image: linear-gradient(to left, black 20%, rgba(0,0,0,0.3) 100%);
-        }
-
-        /* Thay thế thành khung có ảnh nền (Sửa URL ảnh tại đây) */
-        .box-10 { background-image: url(https://i.ibb.co/FLvm3RQj/Gemini-Generated-Image-sb1ntesb1ntesb1n-1.png); border: 2px solid #3498db; color: #3498db; border-radius: 8px; }
-        .box-11 { background-image: url(https://i.ibb.co/WNsJK9V3/image-2026-01-13-040629956.png); border: 2px solid #2ecc71; color: #2ecc71; border-radius: 40px; }
-        .box-12 { 
-            background-image: url(https://i.ibb.co/Zpzd7nSY/image-2026-01-13-040507521.png); 
-            border: 2px solid #e74c3c;
-            color: #e74c3c;
-            clip-path: polygon(10% 0, 100% 0%, 90% 100%, 0% 100%); 
-        }
-        .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; color: #9b59b6; border-radius: 15px; overflow: hidden; }
-
-        .timeline-box span { font-family: 'Bangers'; font-size: 22px; z-index: 10; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+        .timeline-box span { font-family: 'Bangers'; font-size: 24px; z-index: 10; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
         
         .fog-effect { position: absolute; inset: 0; background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%); animation: fogMove 4s infinite linear; z-index: 2;}
         @keyframes fogMove { 0% {transform: translate(-5%, -5%);} 50% {transform: translate(5%, 5%);} 100% {transform: translate(-5%, -5%);} }
         
-        .coming-soon { color: #9b59b6; font-size: 11px; font-weight: bold; margin-top: -20px; letter-spacing: 2px; z-index: 10; opacity: 0.8; }
+        .coming-soon { color: #9b59b6; font-size: 12px; font-weight: bold; margin-top: 10px; letter-spacing: 3px; z-index: 10; opacity: 0.8; }
 
         .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; z-index: 10; }
         .return:hover { opacity: 1; color: #9dffb3; }
@@ -326,13 +305,11 @@ function toggleSidebar() {
     document.body.classList.toggle('shifted');
     sidebar.classList.toggle('extended');
 
-    // Logic xử lý animation reset khi đóng/mở
     const boxes = document.querySelectorAll('.timeline-box');
     if (!isExtended) {
-        // Khi mở: Animation chạy nhờ CSS keyframes
-        boxes.forEach((box, index) => {
+        boxes.forEach((box) => {
             box.style.animation = 'none';
-            box.offsetHeight; // trigger reflow
+            box.offsetHeight; 
             box.style.animation = null; 
         });
     }

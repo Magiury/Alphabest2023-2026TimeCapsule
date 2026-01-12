@@ -47,6 +47,7 @@
             overflow-y: auto;
             scrollbar-width: none;
         }
+        .sidebar::-webkit-scrollbar { display: none; }
         .sidebar.extended { 
             width: 50vw; 
             background: rgba(10,10,10,0.98); 
@@ -75,6 +76,9 @@
         .nav-links-wrapper { transition: opacity 0.5s; }
         .sidebar.extended .nav-links-wrapper { opacity: 0; visibility: hidden; height: 0; overflow: hidden; }
 
+        .sidebar a.nav-link { display: block; color: #ddd; text-decoration: none; margin-bottom: 22px; transition: 0.3s; white-space: nowrap; }
+        .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
+
         /* ================= NÚT TAM GIÁC ================= */
         .toggle-container {
             position: fixed;
@@ -95,7 +99,7 @@
         }
         body.shifted .triangle-btn { transform: rotate(180deg); }
 
-        /* ================= TIMELINE ================= */
+        /* ================= TIMELINE NEON ================= */
         .timeline-container {
             display: none;
             flex-direction: column;
@@ -124,7 +128,7 @@
             margin: 25px 0;
         }
 
-        /* ANIMATION CHO CHẤM NEON */
+        /* Chấm Neon */
         @keyframes dotGrow {
             0% { transform: translateX(-50%) scale(0); opacity: 0; }
             100% { transform: translateX(-50%) scale(1); opacity: 1; }
@@ -139,29 +143,27 @@
             border-radius: 50%;
             transform: translateX(-50%);
             z-index: 10;
-            opacity: 0; /* Mặc định ẩn để đợi animation */
+            opacity: 0;
         }
 
-        /* Animation xuất hiện sau khi các box đã hiện xong (delay > 1.2s) */
         .sidebar.extended .timeline-dot {
             animation: dotGrow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             animation-delay: 1.5s; 
         }
 
-        /* MÀU NEON RIÊNG CHO TỪNG CHẤM */
         .dot-10 { border: 2px solid #3498db; box-shadow: 0 0 15px #3498db, inset 0 0 5px #3498db; }
         .dot-11 { border: 2px solid #2ecc71; box-shadow: 0 0 15px #2ecc71, inset 0 0 5px #2ecc71; }
         .dot-12 { border: 2px solid #e74c3c; box-shadow: 0 0 15px #e74c3c, inset 0 0 5px #e74c3c; }
         .dot-mystery { border: 2px solid #9b59b6; box-shadow: 0 0 15px #9b59b6, inset 0 0 5px #9b59b6; }
 
-        /* BOX ANIMATION */
+        /* Box Animation */
         @keyframes boxFadeIn {
             from { opacity: 0; transform: translateX(var(--start-x)) scale(0.9); }
             to { opacity: 1; transform: translateX(0) scale(1); }
         }
 
         .timeline-box { 
-            width: 200px; height: 110px;
+            width: 180px; height: 100px;
             display: flex; align-items: center; justify-content: center;
             position: relative; text-decoration: none;
             background-size: cover; background-position: center;
@@ -178,7 +180,6 @@
         .timeline-box-wrapper:nth-child(odd) { justify-content: flex-start; padding-left: 8%; --start-x: -30px; }
         .timeline-box-wrapper:nth-child(even) { justify-content: flex-end; padding-right: 8%; --start-x: 30px; }
 
-        /* Delay cho từng Box */
         .timeline-box-wrapper:nth-child(1) .timeline-box { animation-delay: 0.2s; }
         .timeline-box-wrapper:nth-child(2) .timeline-box { animation-delay: 0.4s; }
         .timeline-box-wrapper:nth-child(3) .timeline-box { animation-delay: 0.6s; }
@@ -195,7 +196,7 @@
         .box-12 { background-image: url(https://i.ibb.co/Zpzd7nSY/image-2026-01-13-040507521.png); border: 2px solid #e74c3c; }
         .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; }
 
-        .timeline-box span { font-family: 'Bangers'; font-size: 22px; z-index: 2; color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .timeline-box span { font-family: 'Bangers'; font-size: 20px; z-index: 2; color: #fff; }
 
         .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; }
         .return:hover { opacity: 1; color: #9dffb3; }
@@ -208,6 +209,29 @@
             transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
         body.shifted .content { margin-left: 50vw; width: 50vw; }
+
+        .section { margin-bottom: 100px; }
+        .section h1 { font-family: 'Merriweather'; font-size: 32px; border-left: 5px solid #9dffb3; padding-left: 20px; margin-bottom: 30px; }
+
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+        .gallery-item { height: 250px; border-radius: 12px; overflow: hidden; background: #1a1a1a; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        .add-photo-box {
+            height: 250px; border: 2px dashed rgba(157, 255, 179, 0.3); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; color: #9dffb3; transition: 0.3s; background: rgba(157, 255, 179, 0.02);
+            text-decoration: none; gap: 8px;
+        }
+        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
+
+        .view-more-box {
+            height: 250px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-decoration: none; color: #888; transition: 0.3s; gap: 8px;
+        }
+        .view-more-box:hover { color: #fff; border-color: #9dffb3; background: rgba(157,255,255,0.05); }
     </style>
 </head>
 
@@ -231,17 +255,14 @@
             <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
             <div class="timeline-dot dot-10"></div>
         </div>
-
         <div class="timeline-box-wrapper">
             <div class="timeline-dot dot-11"></div>
             <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
         </div>
-
         <div class="timeline-box-wrapper">
             <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
             <div class="timeline-dot dot-12"></div>
         </div>
-
         <div class="timeline-box-wrapper">
             <div class="timeline-dot dot-mystery"></div>
             <div class="timeline-box box-mystery"><span>???</span></div>
@@ -254,7 +275,30 @@
 <main class="content">
     <section class="section" id="grade10">
         <h1>NĂM LỚP 10</h1>
-        </section>
+        <div class="photo-grid">
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
+            <a href="album-10.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+        </div>
+    </section>
+
+    <section class="section" id="grade11">
+        <h1>NĂM LỚP 11</h1>
+        <div class="photo-grid">
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
+            <a href="album-11.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+        </div>
+    </section>
+
+    <section class="section" id="grade12">
+        <h1>NĂM LỚP 12</h1>
+        <div class="photo-grid">
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
+            <a href="album-12.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+        </div>
+    </section>
 </main>
 
 <script>
@@ -265,7 +309,6 @@ function toggleSidebar() {
     document.body.classList.toggle('shifted');
     sidebar.classList.toggle('extended');
 
-    // Reset animation mỗi khi đóng/mở để hiệu ứng luôn mới
     if (!isExtended) {
         const elements = document.querySelectorAll('.timeline-box, .timeline-dot');
         elements.forEach(el => {

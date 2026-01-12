@@ -1,252 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Alphabest – Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabest – Journey Album</title>
 
-<style>
-* {
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-body {
-    margin: 0;
-    height: 100vh;
-    background: url("class.jpg") center / cover no-repeat;
-    overflow: hidden;
-    color: white;
-}
+    <style>
+        /* ================= 1. CORE & SMOOTH SCROLL ================= */
+        html { scroll-behavior: smooth; }
+        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
 
-/* Dark overlay */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 0;
-}
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: url("class.jpg") center / cover no-repeat fixed;
+            color: #eaeaea;
+            display: flex;
+        }
 
-/* ================= APP WRAPPER ================= */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 0;
+        }
 
-#app {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    text-align: center;
-    padding-top: 18px;
+        /* Hiệu ứng mờ dần khi chuyển trang */
+        #fade-out {
+            position: fixed;
+            inset: 0;
+            background: black;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.2s ease;
+            z-index: 9999;
+        }
+        #fade-out.active { opacity: 1; pointer-events: all; }
 
-    transition: opacity 1.2s ease, transform 1.2s ease;
-}
+        /* ================= 2. SIDEBAR & RETURN (FIXED TO HOME) ================= */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            padding: 40px 30px;
+            background: rgba(10,10,10,0.75);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            animation: sidebarIn 1.6s ease forwards;
+        }
 
-#app.fade-out {
-    opacity: 0;
-    transform: translateY(-10px);
-}
+        .sidebar h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 30px; color: #9dffb3; }
 
-/* ================= LOGO ================= */
+        .sidebar a.nav-link {
+            display: block;
+            color: #ddd;
+            text-decoration: none;
+            margin-bottom: 22px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
 
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
+        .return {
+            margin-top: auto; /* Căn xuống đáy */
+            margin-bottom: 30px;
+            align-self: center; /* Giữa ngang */
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .return:hover { color: #9dffb3; transform: translateX(-3px); }
 
-    opacity: 0;
-    transform: translateY(-15px);
-    animation: logoFade 2s ease forwards;
-    animation-delay: 0.8s;
-}
+        /* ================= 3. CONTENT & PHOTO GRID ================= */
+        .content {
+            position: relative;
+            z-index: 1;
+            margin-left: 260px;
+            padding: 80px 80px;
+            width: 100%;
+        }
 
-.logo img {
-    width: 70px;
-    opacity: 0.95;
-}
+        .section { margin-bottom: 120px; }
+        .section h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 1px; }
 
-/* ================= SEARCH ================= */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-.search-bar {
-    margin: 18px auto 10px;
-    width: 520px;
-    max-width: 90%;
-    position: relative;
+        .gallery-item {
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #1a1a1a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
 
-    opacity: 0;
-    transform: translateY(10px);
-    animation: searchFade 2s ease forwards;
-    animation-delay: 1.3s;
-}
+        /* Box Thêm ảnh - Kích hoạt quyền truy cập bộ nhớ */
+        .add-photo-box {
+            height: 250px;
+            border: 2px dashed rgba(157, 255, 179, 0.3);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #9dffb3;
+            transition: 0.3s;
+            background: rgba(157, 255, 179, 0.02);
+        }
+        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
 
-.search-bar input {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    font-size: 15px;
-}
+        /* Box Xem thêm - Lối tắt album chi tiết */
+        .view-more-box {
+            height: 250px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #888;
+            transition: 0.3s;
+        }
+        .view-more-box:hover { color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
 
-/* ================= MENU ================= */
-
-.menu {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 12px;
-
-    opacity: 0;
-    animation: menuFade 1.8s ease forwards;
-    animation-delay: 1.9s;
-}
-
-.menu a {
-    color: white;
-    text-decoration: none;
-    font-size: 15px;
-    letter-spacing: 1px;
-    opacity: 0.85;
-    transition: 0.2s;
-}
-
-.menu a:hover {
-    opacity: 1;
-    text-shadow: 0 0 6px rgba(255,255,255,0.5);
-}
-
-/* ================= COUNTDOWN ================= */
-
-.countdown-hud {
-    position: fixed;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 5;
-    pointer-events: none;
-
-    opacity: 1;
-    transition: opacity 1.2s ease;
-}
-
-.countdown-hud.fade-out {
-    opacity: 0;
-}
-
-.cd-title {
-    font-size: 14px;
-    letter-spacing: 3px;
-    color: rgba(180,255,200,0.7);
-    margin-bottom: 10px;
-}
-
-.cd-time {
-    font-size: 58px;
-    font-weight: bold;
-    letter-spacing: 4px;
-    color: #9dffb3;
-    text-shadow:
-        0 0 6px rgba(157,255,179,0.6),
-        0 0 18px rgba(157,255,179,0.35);
-}
-
-.cd-sub {
-    margin-top: 8px;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: rgba(180,255,200,0.5);
-}
-
-/* ================= ANIMATIONS ================= */
-
-@keyframes logoFade {
-    from { opacity: 0; transform: translateY(-15px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes searchFade {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes menuFade {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-</style>
+        @keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
+    </style>
 </head>
-
 <body>
 
-<div id="app">
+    <div id="fade-out"></div>
 
-    <!-- LOGO -->
-    <div class="logo">
-        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
-        <img src="Alphabest Logo.png">
-    </div>
+    <nav class="sidebar">
+        <h2>ALPHABEST</h2>
+        <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
+        <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
+        <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
 
-    <!-- SEARCH -->
-    <div class="search-bar">
-        <input type="text" placeholder="Search memories...">
-    </div>
+        <a href="home.html" class="return" id="returnBtn">
+            <span>←</span> Quay lại
+        </a>
+    </nav>
 
-    <!-- MENU -->
-    <div class="menu">
-        <a href="about.html" onclick="navigate(event, 'about.html')">ABOUT US</a>
-        <a href="album.html" onclick="navigate(event, 'album.html')">ALBUM</a>
-        <a href="thought.html" onclick="navigate(event, 'thought.html')">OUR THOUGHT</a>
-        <a href="chat.html" onclick="navigate(event, 'chat.html')">CHAT</a>
-    </div>
+    <main class="content">
+        <section class="section" id="grade10">
+            <h1>NĂM LỚP 10</h1>
+            <div class="photo-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/9dffb3?text=Memory+1"></div>
+                
+                <input type="file" id="file10" style="display: none;" accept="image/*" multiple>
+                <div class="add-photo-box" onclick="document.getElementById('file10').click()">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Thêm ảnh lớp 10</span>
+                </div>
 
-</div>
-<!-- COUNTDOWN -->
-<div class="countdown-hud">
-   <div class="cd-title">FINAL EXAM COUNTDOWN</div>
-   <div class="cd-time" id="cd-time">00:00:00:00</div>
-   <div class="cd-sub">TARGET DATE — 11 JUNE 2026</div>
-</div>
-<script>
-/* ================= COUNTDOWN ================= */
+                <a href="album-10.html" class="view-more-box">Nhấn để xem thêm</a>
+            </div>
+        </section>
 
-const targetDate = new Date("2026-06-11T00:00:00").getTime();
+        <section class="section" id="grade11">
+            <h1>NĂM LỚP 11</h1>
+            <div class="photo-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/333/9dffb3?text=Memory+2"></div>
+                
+                <input type="file" id="file11" style="display: none;" accept="image/*" multiple>
+                <div class="add-photo-box" onclick="document.getElementById('file11').click()">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Thêm ảnh lớp 11</span>
+                </div>
 
-function updateCountdown() {
-    const now = new Date().getTime();
-    const diff = targetDate - now;
+                <a href="album-11.html" class="view-more-box">Nhấn để xem thêm</a>
+            </div>
+        </section>
 
-    if (diff <= 0) {
-        document.getElementById("cd-time").innerText = "00:00:00:00";
-        return;
-    }
+        <section class="section" id="grade12">
+            <h1>NĂM LỚP 12</h1>
+            <div class="photo-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/444/9dffb3?text=Memory+3"></div>
+                
+                <input type="file" id="file12" style="display: none;" accept="image/*" multiple>
+                <div class="add-photo-box" onclick="document.getElementById('file12').click()">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Thêm ảnh lớp 12</span>
+                </div>
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+                <a href="album-12.html" class="view-more-box">Nhấn để xem thêm</a>
+            </div>
+        </section>
+    </main>
 
-    document.getElementById("cd-time").innerText =
-        `${String(days).padStart(2,"0")}:${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
-}
+    <script>
+        // Xử lý chuyển trang về home.html mượt mà
+        document.getElementById("returnBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            document.getElementById("fade-out").classList.add("active");
+            setTimeout(() => {
+                window.location.href = "home.html";
+            }, 1200);
+        });
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-/* ================= PAGE TRANSITION ================= */
-
-function navigate(e, url) {
-    e.preventDefault();
-
-    document.getElementById("app").classList.add("fade-out");
-    document.querySelector(".countdown-hud").classList.add("fade-out");
-
-    setTimeout(() => {
-        window.location.href = url;
-    }, 1200);
-}
-
-</script>
-
+        // Xử lý quyền truy cập bộ nhớ khi chọn ảnh
+        ['file10', 'file11', 'file12'].forEach(id => {
+            document.getElementById(id).addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    alert(`Đã nhận ${this.files.length} ảnh. Bạn cần Backend để lưu trữ thực tế.`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>

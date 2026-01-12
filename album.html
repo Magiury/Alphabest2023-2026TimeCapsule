@@ -9,242 +9,290 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        :root {
-            --gap: 50px; /* Khoảng cách giữa box và line chính - Chỉnh về 0 để line nhánh biến mất */
-        }
-
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background: url("class.jpg") center / cover no-repeat fixed;
+            background: #000;
             color: #eaeaea;
             display: flex;
-            /* Cho phép body scroll tự nhiên */
-            overflow-y: auto; 
             overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body::before {
             content: "";
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
+            position: fixed; inset: 0;
+            background: url("class.jpg") center / cover no-repeat fixed;
+            opacity: 0.4;
             z-index: 0;
         }
 
-        /* ================= SIDEBAR (SCROLLABLE) ================= */
+        /* ================= SIDEBAR ================= */
         .sidebar {
             position: fixed;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             width: 260px;
             height: 100vh;
-            padding: 40px 20px;
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 30px;
+            background: rgba(10,10,10,0.65);
+            backdrop-filter: blur(6px);
+            border-right: 1px solid rgba(255,255,255,0.08);
             z-index: 100;
             display: flex;
             flex-direction: column;
-            transition: width 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            
-            /* Sidebar tự scroll độc lập */
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
             overflow-y: auto;
-            overflow-x: hidden;
+            scrollbar-width: none;
+        }
+        .sidebar::-webkit-scrollbar { display: none; }
+        .sidebar.extended { 
+            width: 50vw; 
+            background: rgba(10,10,10,0.98); 
+            backdrop-filter: blur(20px);
         }
 
-        .sidebar.extended { width: 50vw; }
+        .sidebar h2 { 
+            font-size: 14px; 
+            letter-spacing: 2px; 
+            margin-bottom: 40px; 
+            color: #9dffb3; 
+            white-space: nowrap;
+            display: inline-block;
+            align-self: flex-start;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            transform-origin: center;
+        }
+        .sidebar.extended h2 {
+            transform: scale(1.5);
+            align-self: center;
+            margin-bottom: 80px;
+            background: #9dffb3;
+            color: #000;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(157, 255, 179, 0.5);
+        }
 
-        /* Tùy chỉnh scrollbar cho sidebar */
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-thumb { background: #9dffb3; border-radius: 10px; }
+        .nav-links-wrapper { transition: opacity 0.5s; }
+        .sidebar.extended .nav-links-wrapper { opacity: 0; visibility: hidden; height: 0; overflow: hidden; }
 
-        .extend-btn {
-            margin: 20px 0;
-            padding: 12px;
-            background: rgba(157, 255, 179, 0.1);
-            border: 1px solid #9dffb3;
-            color: #9dffb3;
+        .sidebar a.nav-link { display: block; color: #ddd; text-decoration: none; margin-bottom: 22px; transition: 0.3s; white-space: nowrap; }
+        .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
+
+        /* ================= NÚT TAM GIÁC ================= */
+        .toggle-container {
+            position: fixed;
+            left: 253px; 
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            transition: left 0.8s cubic-bezier(0.77, 0, 0.175, 1);
             cursor: pointer;
-            text-align: center;
-            border-radius: 5px;
-            font-weight: bold;
-            flex-shrink: 0;
+            padding: 15px;
         }
+        body.shifted .toggle-container { left: calc(50vw - 7px); }
 
-        /* ================= TIMELINE SYSTEM ================= */
+        .triangle-btn {
+            width: 0; height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 18px solid #9dffb3; 
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 8px rgba(157, 255, 179, 0.8));
+        }
+        body.shifted .triangle-btn { transform: rotate(180deg); }
+
+        /* ================= TIMELINE DÒNG SÔNG ================= */
         .timeline-container {
             display: none;
             flex-direction: column;
             align-items: center;
-            padding: 100px 0;
+            padding: 60px 0;
             position: relative;
             width: 100%;
         }
         .sidebar.extended .timeline-container { display: flex; }
 
-        /* Line chính giữa màu trắng */
+        /* Trục chính (Dòng sông chính) */
         .timeline-container::before {
             content: "";
             position: absolute;
-            width: 3px;
-            background: #ffffff;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 6px;
+            background: linear-gradient(to bottom, #9dffb3, #fff, #9dffb3);
+            top: 0; bottom: 0;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            z-index: 1;
+            border-radius: 10px;
         }
 
-        .timeline-box {
-            width: 240px;
-            height: 160px;
-            margin: 40px 0;
-            position: relative;
-            z-index: 2;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.4s;
-            cursor: pointer;
+        .timeline-box { 
+            width: 160px; 
+            height: 80px; 
+            margin: 40px 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            cursor: pointer; 
+            transition: 0.4s; 
+            text-decoration: none;
+            z-index: 5;
         }
+        .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* Logic Căn 2 bên */
-        .timeline-box:nth-child(odd) { align-self: flex-start; margin-left: calc(50% - 240px - var(--gap)); }
-        .timeline-box:nth-child(even) { align-self: flex-end; margin-right: calc(50% - 240px - var(--gap)); }
-        .timeline-box.box-mystery { align-self: center; margin-left: 0; margin-right: 0; }
+        /* Phân bố trái phải */
+        .timeline-box:nth-child(odd) { align-self: flex-start; margin-left: 15%; }
+        .timeline-box:nth-child(even) { align-self: flex-end; margin-right: 15%; }
 
-        /* Line nhánh "Flow" cong nhẹ */
+        /* NHÁNH PHỤ (Dòng chảy từ trục chính vào box) */
         .timeline-box::after {
             content: "";
             position: absolute;
             top: 50%;
-            width: var(--gap);
-            height: 40px;
-            border-top: 3px solid #fff;
+            height: 80px; /* Độ dốc của dòng chảy */
+            width: calc(25vw - 150px); /* Tính toán để chạm vào trục giữa */
+            border: 4px solid transparent;
             z-index: -1;
-            /* Nếu gap = 0 thì ẩn line nhánh */
-            display: var(--gap) == 0 ? none : block;
         }
 
-        /* Nhánh bên trái (nối sang phải vào line giữa) */
+        /* Dòng chảy cho box bên TRÁI */
         .timeline-box:nth-child(odd)::after {
             left: 100%;
-            border-right: 3px solid #fff;
-            border-top-right-radius: 20px;
-            /* Chuyển màu trắng sang màu box */
-            border-image: linear-gradient(to left, #ffffff, var(--box-color)) 1;
+            border-top: 4px solid currentColor;
+            border-right: 4px solid currentColor;
+            border-top-right-radius: 40px; /* Tạo độ cong "chảy" */
+            margin-top: -40px; /* Điều chỉnh để nối từ giữa box */
+            /* Tạo hiệu ứng mờ dần về phía trục chính */
+            mask-image: linear-gradient(to right, black 20%, rgba(0,0,0,0.3) 100%);
         }
 
-        /* Nhánh bên phải (nối sang trái vào line giữa) */
+        /* Dòng chảy cho box bên PHẢI */
         .timeline-box:nth-child(even)::after {
             right: 100%;
-            border-left: 3px solid #fff;
-            border-top-left-radius: 20px;
-            border-image: linear-gradient(to right, #ffffff, var(--box-color)) 1;
+            border-top: 4px solid currentColor;
+            border-left: 4px solid currentColor;
+            border-top-left-radius: 40px;
+            margin-top: -40px;
+            mask-image: linear-gradient(to left, black 20%, rgba(0,0,0,0.3) 100%);
         }
 
-        .timeline-box.box-mystery::after { display: none; }
-
-        /* Định nghĩa màu và ảnh cho từng Box */
-        .box-10 { --box-color: #007bff; border: 4px solid var(--box-color); background-color: #00008b; }
-        .box-11 { --box-color: #b22222; border: 4px solid var(--box-color); background-color: #8b0000; }
-        .box-12 { --box-color: #808080; border: 4px solid var(--box-color); background-color: #333333; }
-        .box-mystery { --box-color: #ff00ff; border: 4px solid #ff69b4; background: #4b0082; }
-
-        .timeline-box img { width: 100%; height: 100%; object-fit: cover; }
-        .timeline-box span {
-            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7);
-            color: #fff; text-align: center; padding: 5px; font-family: 'Bangers'; font-size: 18px;
+        /* Màu sắc & Hình khối Box */
+        .box-10 { background: #1a3a5f; border: 2px solid #3498db; color: #3498db; border-radius: 8px; }
+        .box-11 { background: #1b4d3e; border: 2px solid #2ecc71; color: #2ecc71; border-radius: 40px; }
+        .box-12 { 
+            background: #5e1a1a; 
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            clip-path: polygon(10% 0, 100% 0%, 90% 100%, 0% 100%); 
         }
+        .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; color: #9b59b6; border-radius: 15px; overflow: hidden; }
 
-        .fog-effect {
-            position: absolute; inset: 0;
-            background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
-            animation: fogMove 3s infinite alternate;
-        }
-        @keyframes fogMove { from { opacity: 0.4; } to { opacity: 0.8; } }
+        /* Gán màu dòng chảy theo màu box */
+        .timeline-box span { font-family: 'Bangers'; font-size: 20px; z-index: 10; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        
+        .fog-effect { position: absolute; inset: 0; background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%); animation: fogMove 4s infinite linear; }
+        @keyframes fogMove { 0% {transform: translate(-5%, -5%);} 50% {transform: translate(5%, 5%);} 100% {transform: translate(-5%, -5%);} }
+        
+        .coming-soon { color: #9b59b6; font-size: 11px; font-weight: bold; margin-top: -20px; letter-spacing: 2px; z-index: 10; opacity: 0.8; }
 
-        /* ================= CONTENT (SCROLLABLE) ================= */
+        .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; }
+        .return:hover { opacity: 1; color: #9dffb3; }
+
+        /* ================= CONTENT ================= */
         .content {
+            position: relative;
+            z-index: 1;
             margin-left: 260px;
             padding: 80px;
-            width: 100%;
-            z-index: 1;
-            transition: margin-left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            width: calc(100% - 260px);
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
-        body.shifted .content { margin-left: calc(50vw + 20px); }
+        body.shifted .content { margin-left: 50vw; width: 50vw; }
+
+        .section { margin-bottom: 100px; }
+        .section h1 { font-family: 'Merriweather'; font-size: 32px; border-left: 5px solid #9dffb3; padding-left: 20px; margin-bottom: 30px; }
 
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
-        .gallery-item { height: 250px; background: #1a1a1a; border-radius: 10px; overflow: hidden; }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-item { height: 250px; border-radius: 12px; overflow: hidden; background: #1a1a1a; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        .add-photo-box {
+            height: 250px; border: 2px dashed rgba(157, 255, 179, 0.3); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; color: #9dffb3; transition: 0.3s; background: rgba(157, 255, 179, 0.02);
+            text-decoration: none; gap: 8px;
+        }
+        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
+
+        .view-more-box {
+            height: 250px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-decoration: none; color: #888; transition: 0.3s; gap: 8px;
+        }
+        .view-more-box:hover { color: #fff; border-color: #9dffb3; background: rgba(157,255,255,0.05); }
     </style>
 </head>
 
 <body>
 
-<div id="fade-out"></div>
+<div class="toggle-container" onclick="toggleSidebar()">
+    <div class="triangle-btn"></div>
+</div>
 
 <nav class="sidebar" id="mainSidebar">
     <h2>ALPHABEST</h2>
-    <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
-    <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
-    <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
-
-    <div class="extend-btn" onclick="toggleSidebar()">
-        <i class="fas fa-project-diagram"></i> <span id="btnText">OPEN TIMELINE</span>
+    
+    <div class="nav-links-wrapper">
+        <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
+        <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
+        <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
     </div>
 
     <div class="timeline-container">
-        <div class="timeline-box box-10" onclick="location.href='#grade10'">
-            <img src="" alt="DÁN LINK ẢNH LỚP 10 VÀO ĐÂY">
-            <span>LỚP 10</span>
-        </div>
-
-        <div class="timeline-box box-11" onclick="location.href='#grade11'">
-            <img src="" alt="DÁN LINK ẢNH LỚP 11 VÀO ĐÂY">
-            <span>LỚP 11</span>
-        </div>
-
-        <div class="timeline-box box-12" onclick="location.href='#grade12'">
-            <img src="" alt="DÁN LINK ẢNH LỚP 12 VÀO ĐÂY">
-            <span>LỚP 12</span>
-        </div>
-
+        <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
+        <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
+        <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
         <div class="timeline-box box-mystery">
             <div class="fog-effect"></div>
-            <img src="" alt="DÁN LINK ẢNH BÍ ẨN VÀO ĐÂY">
-            <span style="color: #ff69b4;">??? - Coming Soon</span>
+            <span>???</span>
         </div>
+        <div class="coming-soon">COMING SOON</div>
     </div>
 
-    <a href="home.html" class="return" id="returnBtn" style="margin-top: 50px; display: block; text-align: center; color: #fff; text-decoration: none;">
-        <span>←</span> Return
-    </a>
+    <a href="home.html" class="return">← Return</a>
 </nav>
 
 <main class="content">
-    <section class="section" id="grade10" style="margin-bottom: 100px;">
+    <section class="section" id="grade10">
         <h1>NĂM LỚP 10</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/9dffb3?text=Lớp+10"></div>
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/9dffb3?text=Kỷ+Niệm"></div>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
+            <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="#" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
 
-    <section class="section" id="grade11" style="margin-bottom: 100px;">
+    <section class="section" id="grade11">
         <h1>NĂM LỚP 11</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/333/9dffb3?text=Lớp+11"></div>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
+            <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="#" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
 
-    <section class="section" id="grade12" style="margin-bottom: 100px;">
+    <section class="section" id="grade12">
         <h1>NĂM LỚP 12</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/444/9dffb3?text=Lớp+12"></div>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
+            <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="#" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
 </main>
@@ -252,13 +300,8 @@
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById('mainSidebar');
-    const body = document.body;
-    const btnText = document.getElementById('btnText');
-    
+    document.body.classList.toggle('shifted');
     sidebar.classList.toggle('extended');
-    body.classList.toggle('shifted');
-    
-    btnText.innerText = sidebar.classList.contains('extended') ? "CLOSE TIMELINE" : "OPEN TIMELINE";
 }
 </script>
 

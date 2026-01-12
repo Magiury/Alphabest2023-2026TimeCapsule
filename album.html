@@ -22,24 +22,26 @@
             overflow-y: auto;
         }
 
+        /* Ảnh nền cố định phía sau */
         body::before {
             content: "";
             position: fixed; inset: 0;
             background: url("class.jpg") center / cover no-repeat fixed;
-            opacity: 0.4;
+            opacity: 0.5; /* Tăng nhẹ độ hiển thị ảnh nền */
             z-index: 0;
         }
 
-        /* ================= SIDEBAR ================= */
+        /* ================= SIDEBAR (CẬP NHẬT ĐỘ TRONG SUỐT) ================= */
         .sidebar {
             position: fixed;
             left: 0; top: 0;
             width: 260px;
             height: 100vh;
             padding: 40px 30px;
-            background: rgba(10,10,10,0.65);
-            backdrop-filter: blur(6px);
-            border-right: 1px solid rgba(255,255,255,0.08);
+            /* Độ trong suốt khi thu gọn */
+            background: rgba(15, 15, 15, 0.6); 
+            backdrop-filter: blur(8px);
+            border-right: 1px solid rgba(255,255,255,0.1);
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -48,10 +50,14 @@
             scrollbar-width: none;
         }
         .sidebar::-webkit-scrollbar { display: none; }
+
+        /* Khi Sidebar mở rộng */
         .sidebar.extended { 
             width: 50vw; 
-            background: rgba(10,10,10,0.98); 
-            backdrop-filter: blur(20px);
+            /* Đã cập nhật: Vẫn giữ độ trong suốt (0.75) và làm mờ sâu (25px) */
+            background: rgba(10, 10, 10, 0.75); 
+            backdrop-filter: blur(25px); 
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
         }
 
         .sidebar h2 { 
@@ -71,6 +77,7 @@
             color: #000;
             padding: 5px 10px;
             border-radius: 4px;
+            box-shadow: 0 0 15px rgba(157, 255, 179, 0.5);
         }
 
         .nav-links-wrapper { transition: opacity 0.5s; }
@@ -96,6 +103,7 @@
             border-bottom: 12px solid transparent;
             border-left: 18px solid #9dffb3; 
             transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 5px rgba(157, 255, 179, 0.5));
         }
         body.shifted .triangle-btn { transform: rotate(180deg); }
 
@@ -115,7 +123,7 @@
             left: 50%;
             top: 0; bottom: 0;
             width: 2px;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(to bottom, transparent, rgba(157, 255, 179, 0.4), transparent);
             transform: translateX(-50%);
             z-index: 1;
         }
@@ -128,7 +136,6 @@
             margin: 25px 0;
         }
 
-        /* Chấm Neon */
         @keyframes dotGrow {
             0% { transform: translateX(-50%) scale(0); opacity: 0; }
             100% { transform: translateX(-50%) scale(1); opacity: 1; }
@@ -151,12 +158,12 @@
             animation-delay: 1.5s; 
         }
 
+        /* Hiệu ứng mốc Neon song song với màu Box */
         .dot-10 { border: 2px solid #3498db; box-shadow: 0 0 15px #3498db, inset 0 0 5px #3498db; }
         .dot-11 { border: 2px solid #2ecc71; box-shadow: 0 0 15px #2ecc71, inset 0 0 5px #2ecc71; }
         .dot-12 { border: 2px solid #e74c3c; box-shadow: 0 0 15px #e74c3c, inset 0 0 5px #e74c3c; }
         .dot-mystery { border: 2px solid #9b59b6; box-shadow: 0 0 15px #9b59b6, inset 0 0 5px #9b59b6; }
 
-        /* Box Animation */
         @keyframes boxFadeIn {
             from { opacity: 0; transform: translateX(var(--start-x)) scale(0.9); }
             to { opacity: 1; transform: translateX(0) scale(1); }
@@ -309,6 +316,7 @@ function toggleSidebar() {
     document.body.classList.toggle('shifted');
     sidebar.classList.toggle('extended');
 
+    // Kích hoạt lại animation mỗi khi mở rộng
     if (!isExtended) {
         const elements = document.querySelectorAll('.timeline-box, .timeline-dot');
         elements.forEach(el => {

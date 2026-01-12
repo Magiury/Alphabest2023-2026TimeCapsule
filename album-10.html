@@ -12,7 +12,7 @@
 
 body {
     margin: 0;
-    min-height: 100vh;
+    height: 100vh;
     background: url("class.jpg") center / cover no-repeat fixed;
     font-family: "Segoe UI", Arial, sans-serif;
     overflow: hidden;
@@ -39,15 +39,6 @@ body::before {
 }
 #fade-out.active { opacity: 1; }
 
-/* fade in page */
-.fade-in {
-    animation: fadeInPage 1.6s ease forwards;
-}
-@keyframes fadeInPage {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 /* ================= RETURN ================= */
 .return {
     position: fixed;
@@ -68,26 +59,25 @@ body::before {
     z-index: 1;
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
 }
 
 .pages {
     display: flex;
     width: 200vw;
-    transition: transform 1.2s ease, opacity .6s ease;
+    transition: transform 1.2s ease;
 }
 
 .page {
     width: 100vw;
     height: 100vh;
     position: relative;
-    padding: 100px 80px;
+    padding: 80px;
 }
 
-/* ================= PAPER ================= */
+/* ================= PAPER BASE ================= */
 .paper {
     position: absolute;
-    background: rgba(255,252,235,0.95);
+    background: rgba(255,252,235,0.96);
     box-shadow: 0 25px 45px rgba(0,0,0,.5);
     cursor: pointer;
     transition: .4s;
@@ -98,7 +88,7 @@ body::before {
     z-index: 6;
 }
 
-/* torn tape */
+/* tape */
 .paper::before,
 .paper::after {
     content:"";
@@ -107,20 +97,10 @@ body::before {
     height: 18px;
     background: rgba(255,255,255,0.55);
     box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
-    filter: blur(.3px);
 }
 
-.paper::before {
-    top: -10px;
-    left: 20px;
-    transform: rotate(-10deg);
-}
-
-.paper::after {
-    top: -10px;
-    right: 18px;
-    transform: rotate(7deg);
-}
+.paper::before { top: -10px; left: 20px; transform: rotate(-10deg); }
+.paper::after  { top: -10px; right: 20px; transform: rotate(8deg); }
 
 .paper img {
     width: 100%;
@@ -128,24 +108,48 @@ body::before {
     object-fit: cover;
 }
 
-/* ================= POSITIONS PAGE 1 ================= */
-.page1 .p1 { width:300px; height:220px; top:120px; left:180px; transform:rotate(-4deg); }
-.page1 .p2 { width:260px; height:320px; top:160px; left:520px; transform:rotate(5deg); }
-.page1 .p3 { width:360px; height:260px; top:420px; left:260px; transform:rotate(2deg); }
-.page1 .p4 { width:240px; height:200px; top:460px; left:680px; transform:rotate(-6deg); }
+/* ================= STANDARD SIZES ================= */
+/* giấy ngang lớn */
+.paper-lg {
+    width: 340px;
+    height: 240px;
+}
 
-/* extra decor right */
-.page1 .p5 { width:160px; height:120px; top:140px; right:120px; transform:rotate(8deg); opacity:.85; }
-.page1 .p6 { width:140px; height:180px; top:320px; right:60px; transform:rotate(-5deg); opacity:.9; }
+/* giấy dọc */
+.paper-portrait {
+    width: 260px;
+    height: 360px;
+}
 
-/* ================= PAGE 2 ================= */
-.page2 .p1 { width:300px; height:220px; top:140px; left:200px; transform:rotate(3deg); }
-.page2 .p2 { width:260px; height:320px; top:180px; left:520px; transform:rotate(-4deg); }
-.page2 .p3 { width:360px; height:260px; top:430px; left:300px; transform:rotate(-2deg); }
-.page2 .p4 { width:240px; height:200px; top:470px; left:720px; transform:rotate(6deg); }
-.page2 .p5 { width:160px; height:120px; top:120px; right:140px; transform:rotate(-7deg); opacity:.85; }
+/* giấy trung */
+.paper-md {
+    width: 300px;
+    height: 220px;
+}
 
-/* ================= PAGE NAV ================= */
+/* giấy decor nhỏ */
+.paper-sm {
+    width: 180px;
+    height: 130px;
+    opacity: .88;
+}
+
+/* ================= PAGE 1 POSITIONS ================= */
+.page1 .p1 { top:120px; left:180px; transform:rotate(-4deg); }
+.page1 .p2 { top:140px; left:560px; transform:rotate(5deg); }
+.page1 .p3 { top:420px; left:260px; transform:rotate(2deg); }
+.page1 .p4 { top:440px; left:680px; transform:rotate(-6deg); }
+.page1 .p5 { top:130px; right:120px; transform:rotate(8deg); }
+.page1 .p6 { top:320px; right:60px; transform:rotate(-5deg); }
+
+/* ================= PAGE 2 POSITIONS ================= */
+.page2 .p1 { top:140px; left:200px; transform:rotate(3deg); }
+.page2 .p2 { top:160px; left:560px; transform:rotate(-4deg); }
+.page2 .p3 { top:430px; left:300px; transform:rotate(-2deg); }
+.page2 .p4 { top:450px; left:720px; transform:rotate(6deg); }
+.page2 .p5 { top:140px; right:140px; transform:rotate(-7deg); }
+
+/* ================= NAV ================= */
 .page-nav {
     position: fixed;
     right: 40px;
@@ -157,7 +161,6 @@ body::before {
 .page-nav span {
     cursor: pointer;
     padding: 6px 12px;
-    transition: .3s;
 }
 .page-nav span:hover { color:#9dffb3; }
 
@@ -174,16 +177,11 @@ body::before {
 #viewer img {
     max-width: 90%;
     max-height: 90%;
-    animation: zoomIn .6s ease;
-}
-@keyframes zoomIn {
-    from { transform: scale(.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
 }
 </style>
 </head>
 
-<body class="fade-in">
+<body>
 
 <div id="fade-out"></div>
 
@@ -192,74 +190,57 @@ body::before {
 </a>
 
 <div class="album">
-    <div class="pages" id="pages">
+<div class="pages" id="pages">
 
-        <!-- PAGE 1 -->
-        <div class="page page1">
-            <div class="paper p1"><img src="https://via.placeholder.com/600x400?text=Memory+1"></div>
-            <div class="paper p2"><img src="https://via.placeholder.com/400x600?text=Memory+2"></div>
-            <div class="paper p3"><img src="https://via.placeholder.com/700x500?text=Memory+3"></div>
-            <div class="paper p4"><img src="https://via.placeholder.com/500x350?text=Memory+4"></div>
-            <div class="paper p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
-            <div class="paper p6"><img src="https://via.placeholder.com/200x300?text=Decor"></div>
-        </div>
-
-        <!-- PAGE 2 -->
-        <div class="page page2">
-            <div class="paper p1"><img src="https://via.placeholder.com/600x400?text=Memory+5"></div>
-            <div class="paper p2"><img src="https://via.placeholder.com/400x600?text=Memory+6"></div>
-            <div class="paper p3"><img src="https://via.placeholder.com/700x500?text=Memory+7"></div>
-            <div class="paper p4"><img src="https://via.placeholder.com/500x350?text=Memory+8"></div>
-            <div class="paper p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
-        </div>
-
-    </div>
+<!-- PAGE 1 -->
+<div class="page page1">
+    <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=1"></div>
+    <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=2"></div>
+    <div class="paper paper-md p3"><img src="https://via.placeholder.com/700x500?text=3"></div>
+    <div class="paper paper-md p4"><img src="https://via.placeholder.com/700x500?text=4"></div>
+    <div class="paper paper-sm p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
+    <div class="paper paper-sm p6"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
 </div>
 
-<!-- page nav -->
+<!-- PAGE 2 -->
+<div class="page page2">
+    <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=5"></div>
+    <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=6"></div>
+    <div class="paper paper-md p3"><img src="https://via.placeholder.com/700x500?text=7"></div>
+    <div class="paper paper-md p4"><img src="https://via.placeholder.com/700x500?text=8"></div>
+    <div class="paper paper-sm p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
+</div>
+
+</div>
+</div>
+
 <div class="page-nav">
     <span onclick="goPage(0)">&lt; 1</span> —
     <span onclick="goPage(1)">2 &gt;</span>
 </div>
 
-<!-- viewer -->
-<div id="viewer" onclick="closeViewer()">
+<div id="viewer" onclick="this.style.display='none'">
     <img id="viewerImg">
 </div>
 
-<!-- sounds -->
-<audio id="flipSound" src="page-flip.mp3"></audio>
-<audio id="paperSound" src="paper-rip.mp3"></audio>
-
 <script>
-let currentPage = 0;
-
-/* page switch */
+let page = 0;
 function goPage(n){
-    if(n === currentPage) return;
-    document.getElementById("flipSound").play();
-    currentPage = n;
+    page = n;
     document.getElementById("pages").style.transform = `translateX(-${n*100}vw)`;
 }
 
-/* zoom */
 document.querySelectorAll(".paper img").forEach(img=>{
     img.onclick = e=>{
         e.stopPropagation();
-        document.getElementById("paperSound").play();
-        document.getElementById("viewerImg").src = img.src;
-        document.getElementById("viewer").style.display = "flex";
+        viewerImg.src = img.src;
+        viewer.style.display = "flex";
     };
 });
 
-function closeViewer(){
-    document.getElementById("viewer").style.display = "none";
-}
-
-/* return */
-document.getElementById("returnBtn").onclick = e=>{
+returnBtn.onclick = e=>{
     e.preventDefault();
-    document.getElementById("fade-out").classList.add("active");
+    fade-out.classList.add("active");
     setTimeout(()=>location.href="home.html",1200);
 };
 </script>

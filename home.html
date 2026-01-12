@@ -27,36 +27,7 @@ body::before {
     z-index: 0;
 }
 
-/* ================= HIDDEN SECRET LINK ================= */
-<a href="https://l1nk.dev/dzD0c" class="secret-link" target="_blank">Secret Entry</a>
 
-<style>
-/* ================= HIDDEN SECRET LINK (SELECTABLE) ================= */
-.secret-link {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 15px; /* Tạo vùng bấm rộng hơn một chút ở góc */
-    z-index: 9999;
-    text-decoration: none;
-    
-    /* Làm chữ tàng hình nhưng vẫn tồn tại để bôi đen */
-    color: rgba(0,0,0,0); 
-    font-size: 10px;
-    
-    /* Cho phép bôi đen */
-    user-select: text; 
-    -webkit-user-select: text;
-    
-    /* Thay đổi con trỏ để không ai nghi ngờ */
-    cursor: default;
-}
-
-/* Khi bạn bôi đen (Ctrl+A hoặc quét chuột), phần này sẽ hiện lên màu xanh highlight */
-.secret-link::selection {
-    background: #2e9dff;
-    color: white;
-}
 /* ================= APP WRAPPER ================= */
 #app {
     position: relative;

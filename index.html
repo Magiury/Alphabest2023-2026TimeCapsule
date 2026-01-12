@@ -5,7 +5,6 @@
 <title>Alphabest Time Capsule</title>
 
 <style>
-/* ... (Giữ nguyên toàn bộ phần CSS cũ của bạn) ... */
 * {
     box-sizing: border-box;
     font-family: "Segoe UI", Arial, sans-serif;
@@ -22,6 +21,7 @@ body {
     overflow: hidden;
 }
 
+/* BACKGROUND LAYERS */
 .bg {
     position: fixed;
     inset: 0;
@@ -35,10 +35,11 @@ body {
     opacity: 1;
 }
 .bg-new {
-    background-image: url("class.jpg"); 
+    background-image: url("class.jpg"); /* ảnh lớp */
     opacity: 0;
 }
 
+/* overlay mờ */
 body::before {
     content: "";
     position: fixed;
@@ -49,34 +50,130 @@ body::before {
     z-index: -2;
 }
 
+/* khi login xong */
 .bg-fade .bg-old { opacity: 0; }
 .bg-fade .bg-new { opacity: 1; }
-.bg-fade::before { opacity: 0; transition: opacity 2.5s ease; }
+.bg-fade::before {
+    opacity: 0;
+    transition: opacity 2.5s ease;   /* nền mờ chậm hơn */
+}
 
-.login-wrapper { position: relative; z-index: 2; text-align: center; }
-.logo { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 30px; }
-.logo img { width: 70px; opacity: 0.95; }
+.login-wrapper {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
 
-.input-group { display: flex; width: 520px; border-radius: 4px; overflow: hidden; margin: 0 auto; }
-.input-box { position: relative; width: 50%; }
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.logo img {
+    width: 70px;
+    opacity: 0.95;
+}
+
+/* INPUT GROUP */
+.input-group {
+    display: flex;
+    width: 520px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.input-box {
+    position: relative;
+    width: 50%;
+}
 .input-box.username { background: rgba(0,0,0,0.45); }
 .input-box.password { background: rgba(0,0,0,0.55); }
-.input-box input { width: 100%; padding: 16px 16px 16px 46px; background: transparent; border: none; outline: none; color: white; font-size: 16px; }
-.input-box .icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
 
-.options { width: 520px; margin: 14px auto 30px; text-align: left; }
+.input-box input {
+    width: 100%;
+    padding: 16px 16px 16px 46px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 16px;
+}
+
+.input-box .icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* CHECKBOX */
+.options {
+    width: 520px;
+    margin: 14px auto 30px;
+    text-align: left;
+}
+
 .checkbox { display:flex; align-items:center; cursor:pointer; }
 .checkbox input { display:none; }
-.custom-check { width: 18px; height: 18px; border-radius: 6px; background: white; margin-right: 10px; }
-.checkbox input:checked + .custom-check { background: #2e9dff; }
 
-.login-btn { width: 240px; padding: 14px; background: #111; border: none; color: white; border-radius: 4px; cursor: pointer; }
-.spinner { display: inline-block; width: 16px; height: 16px; margin-left: 8px; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.custom-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: white;
+    margin-right: 10px;
+}
 
-.fade-out { opacity: 0; transition: opacity 2.2s ease; pointer-events: none; }
-.bg-new::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 1; }
-.error { margin-top: 15px; font-size: 14px; }
+.checkbox input:checked + .custom-check {
+    background: #2e9dff;
+}
+
+/* BUTTON */
+.login-btn {
+    width: 240px;
+    padding: 14px;
+    background: #111;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* spinner */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* FADE */
+.fade-out {
+    opacity: 0;
+    transition: opacity 2.2s ease;
+    pointer-events: none;
+}
+/* Darken lớp ảnh lớp */
+.bg-new::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);   /* chỉnh độ tối ở đây */
+    z-index: 1;
+}
+
 </style>
 </head>
 
@@ -86,75 +183,70 @@ body::before {
 <div class="bg bg-new"></div>
 
 <div class="login-wrapper">
-    <div class="logo">
-        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
-        <img src="Alphabest Logo.png">
-    </div>
 
-    <div class="input-group">
-        <div class="input-box username">
-            <span class="icon">👤</span>
-            <input id="username" placeholder="Username">
-        </div>
-        <div class="input-box password">
-            <span class="icon">🔒</span>
-            <input type="password" id="password" placeholder="Password">
-        </div>
-    </div>
+<div class="logo">
+    <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
+    <img src="Alphabest Logo.png">
+</div>
 
-    <div class="options">
-        <label class="checkbox">
-            <input type="checkbox" checked>
-            <span class="custom-check"></span>
-            Erase data after log out?
-        </label>
+<div class="input-group">
+    <div class="input-box username">
+        <span class="icon">👤</span>
+        <input id="username" placeholder="Username">
     </div>
+    <div class="input-box password">
+        <span class="icon">🔒</span>
+        <input type="password" id="password" placeholder="Password">
+    </div>
+</div>
 
-    <button class="login-btn" onclick="login()">Sign In</button>
-    <div class="error" id="error"></div>
+<div class="options">
+<label class="checkbox">
+<input type="checkbox" checked>
+<span class="custom-check"></span>
+Erase data after log out?
+</label>
+</div>
+
+<button class="login-btn" onclick="login()">Sign In</button>
+<div class="error" id="error"></div>
+
 </div>
 
 <script>
-/* ================= TÀI KHOẢN HỆ THỐNG ================= */
-const USERNAME = "admin";
-const PASSWORD = "alphabest";
-
-// Thêm tài khoản Guest theo yêu cầu
-const USERNAME = "Guest";
-const PASSWORD = "1";
+const USERNAME="admin";
+const PASSWORD="alphabest";
 
 function login(){
-    const u = username.value;
-    const p = password.value;
-    const error = document.getElementById("error");
+    const u=username.value;
+    const p=password.value;
+    const error=document.getElementById("error");
 
-    /* Kiểm tra nếu là Admin HOẶC là Guest */
-    if((u === USERNAME && p === PASSWORD)){
-        error.style.color = "#9dffb3";
-        error.innerHTML = `Valid credentials... <span class="spinner"></span>`;
+    if(u===USERNAME && p===PASSWORD){
+        error.style.color="#9dffb3";
+        error.innerHTML=`Valid credentials... <span class="spinner"></span>`;
 
-        // Bắt đầu hiệu ứng Fade Out cho các phần tử UI
-        document.querySelectorAll(".logo, .input-group, .options, .login-btn, #error")
-        .forEach(el => {
-            setTimeout(() => el.classList.add("fade-out"), 700);
+        document.querySelectorAll(".logo,.input-group,.options,.login-btn,#error")
+        .forEach(el=>{
+            setTimeout(()=>el.classList.add("fade-out"),700);
         });
 
-        // Bắt đầu hiệu ứng chuyển nền
-        setTimeout(() => {
+        setTimeout(()=>{
             document.body.classList.add("bg-fade");
-        }, 700);
+        },700);
 
-        // Chuyển trang sau khi hoàn tất hiệu ứng
         setTimeout(() => {
             window.location.href = "home.html";
         }, 3000);
 
+
     } else {
-        error.style.color = "#ffb3b3";
-        error.innerText = "Invalid credentials";
+        error.style.color="#ffb3b3";
+        error.innerText="Invalid credentials";
     }
 }
 </script>
 
 </body>
 </html>
+

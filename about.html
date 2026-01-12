@@ -28,7 +28,8 @@ body::before {
     z-index: 0;
 }
 
-/* fade out overlay */
+/* ================= FADE OUT ================= */
+
 #fade-out {
     position: fixed;
     inset: 0;
@@ -79,11 +80,9 @@ body::before {
     transform: translateX(-6px);
     animation: fadeLeft 1.2s ease forwards;
 }
-
 .sidebar a:nth-child(2){animation-delay:1s;}
 .sidebar a:nth-child(3){animation-delay:1.2s;}
 .sidebar a:nth-child(4){animation-delay:1.4s;}
-
 .sidebar a:hover { color:#9dffb3; }
 
 /* ================= RETURN ================= */
@@ -93,7 +92,7 @@ body::before {
     left: 26px;
     bottom: 24px;
     z-index: 3;
-    font-size: 18px;
+    font-size: 22px;
     letter-spacing: 1.5px;
     color: rgba(255,255,255,0.85);
     text-decoration: none;
@@ -105,12 +104,12 @@ body::before {
 }
 
 .return span {
-    font-size: 22px;
-    margin-right: 6px;
+    font-size: 26px;
+    margin-right: 8px;
     transition: transform 0.2s ease;
 }
 .return:hover { color:#9dffb3; }
-.return:hover span { transform: translateX(-4px); }
+.return:hover span { transform: translateX(-6px); }
 
 /* ================= CONTENT ================= */
 
@@ -119,11 +118,11 @@ body::before {
     z-index: 1;
     margin-left: 260px;
     padding: 80px 80px 140px;
-    max-width: 1000px;
+    max-width: 1100px;
 }
 
 .section {
-    margin-bottom: 140px;
+    margin-bottom: 160px;
 }
 
 .section h1 {
@@ -140,9 +139,43 @@ body::before {
     font-family: "Merriweather", serif;
     font-size: 17px;
     line-height: 1.9;
+
     opacity: 0;
     transform: translateY(10px);
     animation: fadeUp 1.4s ease forwards;
+}
+
+/* ================= DECOR IMAGES ================= */
+
+.decor-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.decor {
+    position: absolute;
+    width: 220px;
+    border-radius: 10px;
+    opacity: 0.18;
+    filter: grayscale(30%);
+    animation: fadeUp 2s ease forwards;
+}
+
+.decor.one {
+    top: 120px;
+    right: -80px;
+}
+.decor.two {
+    top: 420px;
+    left: 80px;
+    width: 180px;
+}
+.decor.three {
+    bottom: 120px;
+    right: 120px;
+    width: 200px;
 }
 
 /* ================= LEADER BLOCK ================= */
@@ -153,14 +186,17 @@ body::before {
     margin-bottom: 60px;
     align-items: center;
 
+    position: relative;
+    z-index: 1;
+
     opacity: 0;
     transform: translateY(20px);
     animation: fadeUp 1.4s ease forwards;
 }
 
-.leader:nth-child(2){animation-delay:1.4s;}
-.leader:nth-child(3){animation-delay:1.8s;}
-.leader:nth-child(4){animation-delay:2.2s;}
+.leader:nth-child(3){animation-delay:1.4s;}
+.leader:nth-child(4){animation-delay:1.8s;}
+.leader:nth-child(5){animation-delay:2.2s;}
 
 .leader img {
     width: 180px;
@@ -174,10 +210,8 @@ body::before {
     font-family: "Merriweather", serif;
     font-size: 16px;
     line-height: 1.8;
-    color: #e0e0e0;
 }
 
-/* teacher name style */
 .teacher {
     display: inline-block;
     font-weight: 700;
@@ -226,9 +260,16 @@ body::before {
         <p>Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường. Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế. Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.</p>
     </div>
 
-    <!-- ===== LEADERS ===== -->
-    <div class="section" id="lead">
+    <!-- ===== LEAD THE WAY ===== -->
+    <div class="section" id="lead" style="position:relative;">
         <h1>LEAD THE WAY</h1>
+
+        <!-- decor images -->
+        <div class="decor-layer">
+            <img src="decor1.jpg" class="decor one">
+            <img src="decor2.jpg" class="decor two">
+            <img src="decor3.jpg" class="decor three">
+        </div>
 
         <div class="leader">
             <img src="thanhtung.jpg">
@@ -257,7 +298,7 @@ body::before {
 
     <div class="section" id="done">
         <h1>OUR ACHIEVEMENT</h1>
-        <p>Lorem ipsum placeholder content for achievements.</p>
+        <p>Placeholder content for achievements.</p>
     </div>
 
 </div>
@@ -272,3 +313,5 @@ document.getElementById("returnBtn").addEventListener("click", e => {
 
 </body>
 </html>
+
+

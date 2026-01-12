@@ -117,7 +117,6 @@
         }
         .sidebar.extended .timeline-container { display: flex; }
 
-        /* Trục chính (Dòng sông chính) */
         .timeline-container::before {
             content: "";
             position: absolute;
@@ -145,33 +144,28 @@
         }
         .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* Phân bố trái phải */
         .timeline-box:nth-child(odd) { align-self: flex-start; margin-left: 15%; }
         .timeline-box:nth-child(even) { align-self: flex-end; margin-right: 15%; }
 
-        /* NHÁNH PHỤ (Dòng chảy từ trục chính vào box) */
         .timeline-box::after {
             content: "";
             position: absolute;
             top: 50%;
-            height: 80px; /* Độ dốc của dòng chảy */
-            width: calc(25vw - 150px); /* Tính toán để chạm vào trục giữa */
+            height: 80px;
+            width: calc(25vw - 150px);
             border: 4px solid transparent;
             z-index: -1;
         }
 
-        /* Dòng chảy cho box bên TRÁI */
         .timeline-box:nth-child(odd)::after {
             left: 100%;
             border-top: 4px solid currentColor;
             border-right: 4px solid currentColor;
-            border-top-right-radius: 40px; /* Tạo độ cong "chảy" */
-            margin-top: -40px; /* Điều chỉnh để nối từ giữa box */
-            /* Tạo hiệu ứng mờ dần về phía trục chính */
+            border-top-right-radius: 40px;
+            margin-top: -40px;
             mask-image: linear-gradient(to right, black 20%, rgba(0,0,0,0.3) 100%);
         }
 
-        /* Dòng chảy cho box bên PHẢI */
         .timeline-box:nth-child(even)::after {
             right: 100%;
             border-top: 4px solid currentColor;
@@ -181,7 +175,6 @@
             mask-image: linear-gradient(to left, black 20%, rgba(0,0,0,0.3) 100%);
         }
 
-        /* Màu sắc & Hình khối Box */
         .box-10 { background: #1a3a5f; border: 2px solid #3498db; color: #3498db; border-radius: 8px; }
         .box-11 { background: #1b4d3e; border: 2px solid #2ecc71; color: #2ecc71; border-radius: 40px; }
         .box-12 { 
@@ -192,7 +185,6 @@
         }
         .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; color: #9b59b6; border-radius: 15px; overflow: hidden; }
 
-        /* Gán màu dòng chảy theo màu box */
         .timeline-box span { font-family: 'Bangers'; font-size: 20px; z-index: 10; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         
         .fog-effect { position: absolute; inset: 0; background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%); animation: fogMove 4s infinite linear; }
@@ -274,7 +266,7 @@
         <div class="photo-grid">
             <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
             <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="#" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
 
@@ -283,7 +275,7 @@
         <div class="photo-grid">
             <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
             <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="#" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
 
@@ -292,7 +284,7 @@
         <div class="photo-grid">
             <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
             <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="#" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
 </main>

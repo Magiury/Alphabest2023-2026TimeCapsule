@@ -1,228 +1,213 @@
+
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alphabest – Journey Album</title>
+<meta charset="UTF-8">
+<title>Alphabest – About Us</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- Merriweather -->
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <style>
-        /* ================= 1. CORE & SMOOTH SCROLL ================= */
-        html { scroll-behavior: smooth; }
-        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: url("class.jpg") center / cover no-repeat fixed;
-            color: #eaeaea;
-            display: flex;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: url("class.jpg") center / cover no-repeat fixed;
+    color: #eaeaea;
+    display: flex;
+}
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 0;
-        }
+/* Dark overlay – giống home */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
+}
 
-        /* Hiệu ứng mờ dần khi chuyển trang */
-        #fade-out {
-            position: fixed;
-            inset: 0;
-            background: black;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1.2s ease;
-            z-index: 9999;
-        }
-        #fade-out.active { opacity: 1; pointer-events: all; }
+/* ================= SIDEBAR ================= */
 
-        /* ================= 2. SIDEBAR & RETURN (FIXED TO HOME) ================= */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 260px;
-            height: 100vh;
-            padding: 40px 30px;
-            background: rgba(10,10,10,0.75);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255,255,255,0.1);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            animation: sidebarIn 1.6s ease forwards;
-        }
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    padding: 40px 30px;
+    background: rgba(10,10,10,0.65);
+    backdrop-filter: blur(6px);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    z-index: 2;
 
-        .sidebar h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 30px; color: #9dffb3; }
+    /* FADE IN */
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: sidebarIn 1.6s ease forwards;
+}
 
-        .sidebar a.nav-link {
-            display: block;
-            color: #ddd;
-            text-decoration: none;
-            margin-bottom: 22px;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-        .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
+/* SIDEBAR TITLE */
+.sidebar h2 {
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards;
+    animation-delay: 0.8s;
+}
 
-        .return {
-            margin-top: auto; /* Căn xuống đáy */
-            margin-bottom: 30px;
-            align-self: center; /* Giữa ngang */
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .return:hover { color: #9dffb3; transform: translateX(-3px); }
+/* SIDEBAR LINKS */
+.sidebar a {
+    display: block;
+    color: #ddd;
+    text-decoration: none;
+    margin-bottom: 18px;
+    font-size: 15px;
 
-        /* ================= 3. CONTENT & PHOTO GRID ================= */
-        .content {
-            position: relative;
-            z-index: 1;
-            margin-left: 260px;
-            padding: 80px 80px;
-            width: 100%;
-        }
+    opacity: 0;
+    transform: translateX(-6px);
+    animation: fadeLeft 1.2s ease forwards;
+}
 
-        .section { margin-bottom: 120px; }
-        .section h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 1px; }
+.sidebar a:nth-child(2) { animation-delay: 1s; }
+.sidebar a:nth-child(3) { animation-delay: 1.2s; }
+.sidebar a:nth-child(4) { animation-delay: 1.4s; }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
+.sidebar a:hover {
+    color: #9dffb3;
+}
 
-        .gallery-item {
-            height: 250px;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #1a1a1a;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .gallery-item:hover img { transform: scale(1.1); }
+/* ================= CONTENT ================= */
 
-        /* Box Thêm ảnh - Kích hoạt quyền truy cập bộ nhớ */
-        .add-photo-box {
-            height: 250px;
-            border: 2px dashed rgba(157, 255, 179, 0.3);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #9dffb3;
-            transition: 0.3s;
-            background: rgba(157, 255, 179, 0.02);
-        }
-        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
+.content {
+    position: relative;
+    z-index: 1;
+    margin-left: 260px;
+    padding: 80px 80px 140px;
+    max-width: 900px;
+}
 
-        /* Box Xem thêm - Lối tắt album chi tiết */
-        .view-more-box {
-            height: 250px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #888;
-            transition: 0.3s;
-        }
-        .view-more-box:hover { color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+.section {
+    margin-bottom: 140px;
+}
 
-        @keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
-    </style>
+/* SUBJECT */
+.section h1 {
+    font-size: 36px;
+    margin-bottom: 26px;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 1.4s ease forwards;
+}
+
+.section:nth-of-type(1) h1 { animation-delay: 1s; }
+.section:nth-of-type(2) h1 { animation-delay: 1.4s; }
+.section:nth-of-type(3) h1 { animation-delay: 1.8s; }
+
+/* TEXT */
+.section p {
+    font-family: "Merriweather", serif;
+    font-size: 17px;
+    line-height: 1.9;
+    color: #e0e0e0;
+
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 1.4s ease forwards;
+}
+
+.section:nth-of-type(1) p { animation-delay: 1.3s; }
+.section:nth-of-type(2) p { animation-delay: 1.7s; }
+.section:nth-of-type(3) p { animation-delay: 2.1s; }
+
+/* smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes sidebarIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 50px 30px 100px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div id="fade-out"></div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>ABOUT</h2>
+    <a href="#one">We are the one</a>
+    <a href="#lead">The one who lead the way</a>
+    <a href="#done">What we have done</a>
+</div>
 
-    <nav class="sidebar">
-        <h2>ALPHABEST</h2>
-        <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
-        <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
-        <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
+<!-- CONTENT -->
+<div class="content">
 
-        <a href="home.html" class="return" id="returnBtn">
-            <span>←</span> Quay lại
-        </a>
-    </nav>
+    <div class="section" id="one">
+        <h1>We are the one</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+    </div>
 
-    <main class="content">
-        <section class="section" id="grade10">
-            <h1>NĂM LỚP 10</h1>
-            <div class="photo-grid">
-                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/9dffb3?text=Memory+1"></div>
-                
-                <input type="file" id="file10" style="display: none;" accept="image/*" multiple>
-                <div class="add-photo-box" onclick="document.getElementById('file10').click()">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Thêm ảnh lớp 10</span>
-                </div>
+    <div class="section" id="lead">
+        <h1>The one who lead the way</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
+        </p>
+    </div>
 
-                <a href="album-10.html" class="view-more-box">Nhấn để xem thêm</a>
-            </div>
-        </section>
+    <div class="section" id="done">
+        <h1>What we have done</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.
+        </p>
+    </div>
 
-        <section class="section" id="grade11">
-            <h1>NĂM LỚP 11</h1>
-            <div class="photo-grid">
-                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/333/9dffb3?text=Memory+2"></div>
-                
-                <input type="file" id="file11" style="display: none;" accept="image/*" multiple>
-                <div class="add-photo-box" onclick="document.getElementById('file11').click()">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Thêm ảnh lớp 11</span>
-                </div>
+</div>
 
-                <a href="album-11.html" class="view-more-box">Nhấn để xem thêm</a>
-            </div>
-        </section>
-
-        <section class="section" id="grade12">
-            <h1>NĂM LỚP 12</h1>
-            <div class="photo-grid">
-                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/444/9dffb3?text=Memory+3"></div>
-                
-                <input type="file" id="file12" style="display: none;" accept="image/*" multiple>
-                <div class="add-photo-box" onclick="document.getElementById('file12').click()">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Thêm ảnh lớp 12</span>
-                </div>
-
-                <a href="album-12.html" class="view-more-box">Nhấn để xem thêm</a>
-            </div>
-        </section>
-    </main>
-
-    <script>
-        // Xử lý chuyển trang về home.html mượt mà
-        document.getElementById("returnBtn").addEventListener("click", function(e) {
-            e.preventDefault();
-            document.getElementById("fade-out").classList.add("active");
-            setTimeout(() => {
-                window.location.href = "home.html";
-            }, 1200);
-        });
-
-        // Xử lý quyền truy cập bộ nhớ khi chọn ảnh
-        ['file10', 'file11', 'file12'].forEach(id => {
-            document.getElementById(id).addEventListener('change', function() {
-                if (this.files.length > 0) {
-                    alert(`Đã nhận ${this.files.length} ảnh. Bạn cần Backend để lưu trữ thực tế.`);
-                }
-            });
-        });
-    </script>
 </body>
 </html>

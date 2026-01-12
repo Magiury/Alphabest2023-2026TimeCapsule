@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-/* GẮN THÊM SMOOTH SCROLL */
+/* TRẢI NGHIỆM CUỘN MƯỢT MÀ */
 html { scroll-behavior: smooth; }
 
 * {
@@ -43,7 +43,7 @@ body::before {
 }
 #fade-out.active { opacity: 1; }
 
-/* ================= SIDEBAR ================= */
+/* ================= SIDEBAR (CẤU TRÚC MỚI) ================= */
 
 .sidebar {
     position: fixed;
@@ -57,7 +57,7 @@ body::before {
     border-right: 1px solid rgba(255,255,255,0.08);
     z-index: 2;
 
-    /* Cập nhật Flexbox để đẩy nút Return xuống dưới */
+    /* Dùng Flexbox để đẩy nút Return xuống đáy */
     display: flex;
     flex-direction: column;
 
@@ -75,6 +75,7 @@ body::before {
     animation-delay: 0.8s;
 }
 
+/* CLASS ĐIỀU HƯỚNG MỚI */
 .sidebar a.nav-link {
     display: block;
     color: #ddd;
@@ -93,12 +94,12 @@ body::before {
 
 .sidebar a.nav-link:hover { color:#9dffb3; }
 
-/* ================= RETURN (ĐÃ CẬP NHẬT) ================= */
+/* ================= VỊ TRÍ NÚT RETURN MỚI ================= */
 
 .return {
     margin-top: auto; /* Đẩy xuống đáy Sidebar */
     margin-bottom: 30px;
-    align-self: center; /* Căn giữa theo chiều ngang của Sidebar */
+    align-self: center; /* Căn giữa ngang Sidebar */
     color: #fff;
     text-decoration: none;
     font-size: 19px;
@@ -120,7 +121,7 @@ body::before {
 .return:hover { color:#9dffb3; transform: translateX(-3px); }
 .return:hover span { transform: translateX(-4px); }
 
-/* ================= CONTENT ================= */
+/* ================= CONTENT (GIỮ NGUYÊN NỘI DUNG) ================= */
 
 .content {
     position: relative;
@@ -138,7 +139,6 @@ body::before {
     font-size: 36px;
     margin-bottom: 26px;
     letter-spacing: 1px;
-
     opacity: 0;
     transform: translateY(15px);
     animation: fadeUp 1.4s ease forwards;
@@ -153,205 +153,72 @@ body::before {
     animation: fadeUp 1.4s ease forwards;
 }
 
-/* ================= LEADER BLOCK ================= */
-
+/* LEADER BLOCK */
 .leader {
     display: flex;
     gap: 30px;
     margin-bottom: 60px;
     align-items: center;
-
     opacity: 0;
     transform: translateY(20px);
     animation: fadeUp 1.4s ease forwards;
 }
-
 .leader:nth-child(2){animation-delay:1.4s;}
 .leader:nth-child(3){animation-delay:1.8s;}
 .leader:nth-child(4){animation-delay:2.2s;}
 
 .leader img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 10px;
-    background: #222;
+    width: 200px; height: 200px;
+    object-fit: cover; object-position: center;
+    border-radius: 10px; background: #222;
     box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
 
-.leader-text {
-    font-family: "Merriweather", serif;
-    font-size: 16px;
-    line-height: 1.8;
-    color: #e0e0e0;
-}
+.leader-text { font-family: "Merriweather", serif; font-size: 16px; line-height: 1.8; color: #e0e0e0; }
+.teacher { display: inline-block; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 1.5px; color: #9dffb3; }
 
-.teacher {
-    display: inline-block;
-    font-weight: 700;
-    font-style: italic;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #9dffb3;
-}
+/* ANIMATIONS */
+@keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
+@keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
+@keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
 
-/* ================= ANIMATIONS ================= */
-
-@keyframes sidebarIn {
-    from {opacity:0; transform:translateX(-20px);}
-    to {opacity:1; transform:translateX(0);}
-}
-@keyframes fadeUp {
-    from {opacity:0; transform:translateY(15px);}
-    to {opacity:1; transform:translateY(0);}
-}
-@keyframes fadeLeft {
-    from {opacity:0; transform:translateX(-10px);}
-    to {opacity:1; transform:translateX(0);}
-}
-
-/* ================= OLD LETTER STYLE ================= */
-
+/* LETTER STYLE */
 .letter {
-    position: relative;
-    margin-top: 30px;
-    padding: 44px 48px 80px;
-    background: rgba(255, 252, 235, 0.88);
-    backdrop-filter: blur(2px);
-    border-radius: 6px;
+    position: relative; margin-top: 30px; padding: 44px 48px 80px;
+    background: rgba(255, 252, 235, 0.88); backdrop-filter: blur(2px); border-radius: 6px;
     box-shadow: 0 18px 40px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(120,100,60,0.25);
-    font-family: "Merriweather", serif;
-    color: #2b2b2b;
-    transform: rotate(-1.4deg);
-    transform-origin: center;
-    opacity: 0;
-    animation: letterFadeIn 1.8s ease forwards;
-    animation-delay: 0.6s;
+    font-family: "Merriweather", serif; color: #2b2b2b;
+    transform: rotate(-1.4deg); transform-origin: center;
+    opacity: 0; animation: letterFadeIn 1.8s ease forwards; animation-delay: 0.6s;
 }
-
 .letter::before {
-    content: "";
-    position: absolute;
-    inset: 0;
+    content: ""; position: absolute; inset: 0;
     background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
-    background-size: 100% 28px, 3px 3px;
-    opacity: 0.25;
-    pointer-events: none;
-    border-radius: 6px;
+    background-size: 100% 28px, 3px 3px; opacity: 0.25; pointer-events: none; border-radius: 6px;
 }
-
-.letter::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 6px;
-    box-shadow: inset -6px -6px 18px rgba(0,0,0,0.08);
-    pointer-events: none;
-}
-
 .letter p { margin: 0; font-size: 17px; line-height: 1.9; }
-
-.signatures {
-    position: absolute;
-    bottom: 26px;
-    right: 40px;
-    display: flex;
-    gap: 26px;
-    opacity: 0.65;
-}
-
-.signature {
-    font-family: "Brush Script MT", "Segoe Script", cursive;
-    font-size: 26px;
-    color: rgba(60,60,60,0.8);
-    transform: rotate(-4deg);
-}
-
+.signatures { position: absolute; bottom: 26px; right: 40px; display: flex; gap: 26px; opacity: 0.65; }
+.signature { font-family: "Brush Script MT", cursive; font-size: 26px; color: rgba(60,60,60,0.8); transform: rotate(-4deg); }
 @keyframes letterFadeIn { to { opacity: 1; } }
 
-/* ================= ACHIEVEMENT TREE ================= */
-
-.achievement-tree {
-    position: relative;
-    margin-top: 60px;
-    padding: 40px 0;
-}
-
-.tree-line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255,255,255,0.25);
-    transform: translateX(-50%);
-}
-
-.branch {
-    position: relative;
-    display: flex;
-    width: 50%;
-    padding: 30px 40px;
-    gap: 22px;
-    align-items: center;
-}
-
+/* ACHIEVEMENT TREE */
+.achievement-tree { position: relative; margin-top: 60px; padding: 40px 0; }
+.tree-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.25); transform: translateX(-50%); }
+.branch { position: relative; display: flex; width: 50%; padding: 30px 40px; gap: 22px; align-items: center; opacity: 0; transform: translateY(20px); animation: fadeUp 1.4s ease forwards; }
 .branch.left { left: 0; justify-content: flex-end; text-align: right; }
 .branch.right { left: 50%; }
-
-.branch::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 40px;
-    height: 2px;
-    background: rgba(255,255,255,0.25);
-}
-
+.branch::before { content: ""; position: absolute; top: 50%; width: 40px; height: 2px; background: rgba(255,255,255,0.25); }
 .branch.left::before { right: -40px; }
 .branch.right::before { left: -40px; }
-
-.branch::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 10px;
-    height: 10px;
-    background: #9dffb3;
-    border-radius: 50%;
-    transform: translateY(-50%);
-}
-
+.branch::after { content: ""; position: absolute; top: 50%; width: 10px; height: 10px; background: #9dffb3; border-radius: 50%; transform: translateY(-50%); }
 .branch.left::after { right: -45px; }
 .branch.right::after { left: -45px; }
-
-.branch img {
-    width: 160px;
-    height: 110px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-.branch-text {
-    font-family: "Merriweather", serif;
-    font-size: 15px;
-    line-height: 1.7;
-    color: #e5e5e5;
-    max-width: 260px;
-}
-
-.branch {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUp 1.4s ease forwards;
-}
-
+.branch img { width: 160px; height: 110px; object-fit: cover; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+.branch-text { font-family: "Merriweather", serif; font-size: 15px; line-height: 1.7; color: #e5e5e5; max-width: 260px; }
 .branch:nth-child(2){animation-delay:.4s;}
 .branch:nth-child(3){animation-delay:.8s;}
 .branch:nth-child(4){animation-delay:1.2s;}
-    
+
 </style>
 </head>
 
@@ -371,11 +238,16 @@ body::before {
 </div>
 
 <div class="content">
+
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
         <div class="letter">
            <p>
-               Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò...
+               Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
+               <br><br>
+               Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
+               <br><br>
+               Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
            </p>
            <div class="signatures">
                <div class="signature">— Alphabest</div>
@@ -386,14 +258,64 @@ body::before {
 
     <div class="section" id="lead">
         <h1>LEAD THE WAY</h1>
+
+        <div class="leader">
+            <img src="thanhtung.png">
+            <div class="leader-text">
+                <span class="teacher">PHẠM TRƯƠNG THANH TÙNG</span><br>
+                "Hình ảnh thầy Thanh Tùng thương mến với tâm hồn ấm áp ẩn sau gương mặt lạnh như tiền có lẽ đã hằn sâu vào trong trái tim của chúng em. Với vai trò là giáo viên chủ nhiệm lớp 10A khoá 2023-2024, thầy đã dẫn dắt chúng em nên người và sống vì tập thể. Với vai trò là một giáo viên tiếng Anh, thầy đã bồi đắp nền tảng cho chúng em vươn xa hơn nữa. Thầy có thể không phải là một người nổi bật, nhưng đối với tập thể học sinh chuyên Anh, thầy sẽ mãi là người anh hùng thầm lặng che chở cho thanh xuân rực rỡ của chúng em!"
+            </div>
         </div>
+
+        <div class="leader">
+            <img src="doraemon.jpg">
+            <div class="leader-text">
+                <span class="teacher">NGUYỄN ĐÌNH TÙNG</span><br>
+                "Trải qua nhiều năm gắn bó với trường học và gặp gỡ nhiều thầy cô khác nhau, chúng em vẫn vô cùng ngạc nhiên khi gặp được thầy Đình Tùng. Thầy có lẽ là một trong số những giáo viên có niềm đam mê cháy bỏng nhất với nghề giáo, và thầy cũng không ngần ngại đem cái "lửa" ấy truyền xuống cho chúng em. Trong suốt quãng thời gian dìu dắt tập thể 11A khoá 2024-2025, thầy luôn quan tâm đến chúng em theo những cách đặc biệt nhất ở mọi nơi và mọi thời điểm. Chúng em xin chân thành cảm ơn thầy!"
+            </div>
+        </div>
+
+        <div class="leader">
+            <img src="chunhiem12a.jpg">
+            <div class="leader-text">
+                <span class="teacher">TRẦN NGỌC BÍCH</span><br>
+                "Ở chặng cuối của con đường cấp ba, tập thể lớp chúng em thật may mắn khi được đồng hành cùng cô Bích. Chính phong thái hiền dịu, kiên nhẫn đến mức đáng kinh ngạc của cô là thứ đã làm cô nổi bật hơn cả trong mắt chúng em. Không chỉ vậy, cô còn là một giáo viên ngữ văn tận tụy, luôn luôn quan tâm đến việc học của tất cả chúng em. Lớp chúng em xin cảm ơn cô vì đã góp phần vào thanh xuân rực rỡ của chúng em tại ngôi trường này!"
+            </div>
+        </div>
+    </div>
 
     <div class="section" id="done">
         <h1>OUR ACHIEVEMENT</h1>
+
+        <div class="achievement-tree">
+            <div class="tree-line"></div>
+
+            <div class="branch left">
+                <div class="branch-text">A memory worth keeping forever.</div>
+                <img src="mdmx1.jpg">
+            </div>
+
+            <div class="branch right">
+                <img src="mdmx2.jpg">
+                <div class="branch-text">Growth, effort, and unity.</div>
+            </div>
+
+            <div class="branch left">
+                <div class="branch-text">A moment that shaped who we are.</div>
+                <img src="culturenight1.jpg">
+            </div>
+
+            <div class="branch right">
+                <img src="cooking1.jpg">
+                <div class="branch-text">The peak before a new journey.</div>
+            </div>
         </div>
+    </div>
+
 </div>
 
 <script>
+// Xử lý hiệu ứng chuyển trang cho nút Return
 document.getElementById("returnBtn").addEventListener("click", e => {
     e.preventDefault();
     document.getElementById("fade-out").classList.add("active");

@@ -27,15 +27,26 @@ body::before {
     z-index: 0;
 }
 
-/* ================= APP WRAPPER ================= */
+/* ================= HIDDEN SECRET LINK ================= */
+.secret-link {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    text-decoration: none;
+    color: transparent; /* Hoàn toàn trong suốt */
+    font-size: 12px;
+    cursor: default; /* Giấu hình bàn tay khi rê chuột vào để tăng độ bí mật */
+    user-select: none;
+}
 
+/* ================= APP WRAPPER ================= */
 #app {
     position: relative;
     z-index: 2;
     width: 100%;
     text-align: center;
     padding-top: 18px;
-
     transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
@@ -45,13 +56,11 @@ body::before {
 }
 
 /* ================= LOGO ================= */
-
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 18px;
-
     opacity: 0;
     transform: translateY(-15px);
     animation: logoFade 2s ease forwards;
@@ -64,13 +73,11 @@ body::before {
 }
 
 /* ================= SEARCH ================= */
-
 .search-bar {
     margin: 18px auto 10px;
     width: 520px;
     max-width: 90%;
     position: relative;
-
     opacity: 0;
     transform: translateY(10px);
     animation: searchFade 2s ease forwards;
@@ -89,13 +96,11 @@ body::before {
 }
 
 /* ================= MENU ================= */
-
 .menu {
     display: flex;
     justify-content: center;
     gap: 40px;
     margin-top: 12px;
-
     opacity: 0;
     animation: menuFade 1.8s ease forwards;
     animation-delay: 1.9s;
@@ -116,7 +121,6 @@ body::before {
 }
 
 /* ================= COUNTDOWN ================= */
-
 .countdown-hud {
     position: fixed;
     top: 42%;
@@ -125,7 +129,6 @@ body::before {
     text-align: center;
     z-index: 5;
     pointer-events: none;
-
     opacity: 1;
     transition: opacity 1.2s ease;
 }
@@ -159,7 +162,6 @@ body::before {
 }
 
 /* ================= ANIMATIONS ================= */
-
 @keyframes logoFade {
     from { opacity: 0; transform: translateY(-15px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -179,20 +181,19 @@ body::before {
 
 <body>
 
+<a href="https://l1nk.dev/dzD0c" class="secret-link" target="_blank">Secret Entry</a>
+
 <div id="app">
 
-    <!-- LOGO -->
     <div class="logo">
         <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
         <img src="Alphabest Logo.png">
     </div>
 
-    <!-- SEARCH -->
     <div class="search-bar">
         <input type="text" placeholder="Search memories...">
     </div>
 
-    <!-- MENU -->
     <div class="menu">
         <a href="about.html" onclick="navigate(event, 'about.html')">ABOUT US</a>
         <a href="album.html" onclick="navigate(event, 'album.html')">ALBUM</a>
@@ -201,15 +202,15 @@ body::before {
     </div>
 
 </div>
-<!-- COUNTDOWN -->
+
 <div class="countdown-hud">
    <div class="cd-title">NATIONAL HIGHSCHOOL EXAM</div>
    <div class="cd-time" id="cd-time">00:00:00:00</div>
    <div class="cd-sub">TARGET DATE — 11, 12 JUNE 2026</div>
 </div>
+
 <script>
 /* ================= COUNTDOWN ================= */
-
 const targetDate = new Date("2026-06-11T00:00:00").getTime();
 
 function updateCountdown() {
@@ -234,7 +235,6 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 /* ================= PAGE TRANSITION ================= */
-
 function navigate(e, url) {
     e.preventDefault();
 
@@ -245,7 +245,6 @@ function navigate(e, url) {
         window.location.href = url;
     }, 1200);
 }
-
 </script>
 
 </body>

@@ -10,7 +10,7 @@
 <style>
 /* ================= STYLE CỐT LÕI ================= */
 html {
-    scroll-behavior: smooth; /* Hiệu ứng cuộn mượt khi nhấn Sidebar */
+    scroll-behavior: smooth; /* Cuộn mượt khi nhấn Sidebar */
 }
 
 * {
@@ -78,24 +78,8 @@ body::before {
     font-size: 15px;
     transition: 0.3s;
 }
-
 .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
 
-/* NÚT THÊM ẢNH (Giao diện) */
-.add-photo-btn {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px dashed #9dffb3;
-    color: #9dffb3;
-    text-align: center;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: 0.3s;
-}
-.add-photo-btn:hover { background: rgba(157, 255, 179, 0.1); }
-
-/* NÚT RETURN CĂN GIỮA DƯỚI CÙNG */
 .return {
     margin-top: auto;
     margin-bottom: 30px;
@@ -120,7 +104,7 @@ body::before {
 
 .section h1 {
     font-size: 28px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     color: #fff;
     opacity: 0;
     animation: fadeUp 1s ease forwards;
@@ -139,6 +123,7 @@ body::before {
     border-radius: 10px;
     overflow: hidden;
     background: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .gallery-item img {
@@ -148,31 +133,46 @@ body::before {
     transition: 0.5s;
 }
 
-.gallery-item:hover img { transform: scale(1.1); }
+/* BOX THÊM ẢNH (Dạng Box trống) */
+.add-photo-box {
+    height: 250px;
+    border: 2px dashed rgba(157, 255, 179, 0.3);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #9dffb3;
+    transition: 0.3s;
+    background: rgba(157, 255, 179, 0.02);
+}
 
-/* BOX XEM THÊM (Lối tắt) */
+.add-photo-box i { font-size: 32px; margin-bottom: 12px; opacity: 0.7; }
+.add-photo-box span { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+.add-photo-box:hover {
+    border-color: #9dffb3;
+    background: rgba(157, 255, 179, 0.08);
+    transform: translateY(-5px);
+}
+
+/* LỐI TẮT XEM THÊM */
 .view-more-box {
     height: 250px;
-    border: 2px dashed rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.1);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #999;
+    color: #888;
     transition: 0.3s;
     background: rgba(255,255,255,0.03);
 }
-
-.view-more-box i { font-size: 30px; margin-bottom: 10px; }
-.view-more-box span { font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-
-.view-more-box:hover {
-    border-color: #9dffb3;
-    color: #9dffb3;
-    background: rgba(157, 255, 179, 0.05);
-}
+.view-more-box i { font-size: 24px; margin-bottom: 8px; }
+.view-more-box:hover { color: #fff; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
 
 /* ANIMATIONS */
 @keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
@@ -190,11 +190,6 @@ body::before {
     <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
     <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
     <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
-    
-    <input type="file" id="fileInput" style="display: none;" accept="image/*" multiple>
-    <div class="add-photo-btn" onclick="document.getElementById('fileInput').click()">
-        <i class="fas fa-plus"></i> Thêm ảnh mới
-    </div>
 
     <a href="#" class="return" id="returnBtn">
         <span>←</span> Quay lại
@@ -206,11 +201,17 @@ body::before {
     <div class="section" id="grade10">
         <h1>NĂM LỚP 10 – NGÀY ĐẦU GẶP NHAU</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/fff?text=Lớp+10"></div>
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/333/fff?text=Lớp+10"></div>
-            <a href="album-lop-10.html" class="view-more-box">
-                <i class="fas fa-arrow-right"></i>
-                <span>Nhấn để xem thêm</span>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/9dffb3?text=Memory+1"></div>
+            
+            <input type="file" id="upload10" style="display: none;" accept="image/*" multiple>
+            <div class="add-photo-box" onclick="document.getElementById('upload10').click()">
+                <i class="fas fa-plus-circle"></i>
+                <span>Thêm ảnh lớp 10</span>
+            </div>
+
+            <a href="album-details.html" class="view-more-box">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Xem tất cả</span>
             </a>
         </div>
     </div>
@@ -218,11 +219,17 @@ body::before {
     <div class="section" id="grade11">
         <h1>NĂM LỚP 11 – TRƯỞNG THÀNH HƠN</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/444/fff?text=Lớp+11"></div>
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/555/fff?text=Lớp+11"></div>
-            <a href="album-lop-11.html" class="view-more-box">
-                <i class="fas fa-arrow-right"></i>
-                <span>Nhấn để xem thêm</span>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/333/9dffb3?text=Memory+2"></div>
+            
+            <input type="file" id="upload11" style="display: none;" accept="image/*" multiple>
+            <div class="add-photo-box" onclick="document.getElementById('upload11').click()">
+                <i class="fas fa-plus-circle"></i>
+                <span>Thêm ảnh lớp 11</span>
+            </div>
+
+            <a href="album-details.html" class="view-more-box">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Xem tất cả</span>
             </a>
         </div>
     </div>
@@ -230,11 +237,17 @@ body::before {
     <div class="section" id="grade12">
         <h1>NĂM LỚP 12 – THANH XUÂN RỰC RỠ</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/111/fff?text=Lớp+12"></div>
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/fff?text=Lớp+12"></div>
-            <a href="album-lop-12.html" class="view-more-box">
-                <i class="fas fa-arrow-right"></i>
-                <span>Nhấn để xem thêm</span>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/444/9dffb3?text=Memory+3"></div>
+            
+            <input type="file" id="upload12" style="display: none;" accept="image/*" multiple>
+            <div class="add-photo-box" onclick="document.getElementById('upload12').click()">
+                <i class="fas fa-plus-circle"></i>
+                <span>Thêm ảnh lớp 12</span>
+            </div>
+
+            <a href="album-details.html" class="view-more-box">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Xem tất cả</span>
             </a>
         </div>
     </div>
@@ -242,21 +255,25 @@ body::before {
 </div>
 
 <script>
-    // 1. Chuyển trang (Fade out)
+    // Fade out khi quay lại
     document.getElementById("returnBtn").addEventListener("click", e => {
         e.preventDefault();
         document.getElementById("fade-out").classList.add("active");
         setTimeout(() => location.href = "index.html", 1000);
     });
 
-    // 2. Xử lý khi chọn ảnh từ bộ nhớ
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const files = e.target.files;
-        if (files.length > 0) {
-            alert("Bạn đã chọn " + files.length + " ảnh. (Phần này cần Backend để lưu thực tế)");
-            // Ở đây bạn có thể viết thêm code để hiển thị ảnh preview lên màn hình nếu muốn
-        }
-    });
+    // Hàm thông báo khi chọn ảnh (Có thể mở rộng để preview ảnh)
+    function handleUpload(inputId) {
+        document.getElementById(inputId).addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                alert(`Đã chọn ${this.files.length} ảnh cho ${inputId}. (Cần server để lưu trữ vĩnh viễn)`);
+            }
+        });
+    }
+
+    handleUpload('upload10');
+    handleUpload('upload11');
+    handleUpload('upload12');
 </script>
 
 </body>

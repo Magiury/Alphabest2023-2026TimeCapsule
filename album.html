@@ -129,9 +129,15 @@
             border-radius: 10px;
         }
 
+        /* ANIMATION CHO CÁC BOX KHI XUẤT HIỆN */
+        @keyframes boxSlideIn {
+            from { opacity: 0; transform: translateY(50px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .timeline-box { 
-            width: 160px; 
-            height: 80px; 
+            width: 180px; 
+            height: 100px; 
             margin: 40px 0; 
             display: flex; 
             align-items: center; 
@@ -141,8 +147,30 @@
             transition: 0.4s; 
             text-decoration: none;
             z-index: 5;
+            background-size: cover;
+            background-position: center;
+            /* Animation mặc định khi sidebar mở */
+            animation: boxSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
-        .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); }
+        
+        /* Delay cho từng box tạo hiệu ứng lướt */
+        .sidebar.extended .timeline-box:nth-child(1) { animation-delay: 0.2s; }
+        .sidebar.extended .timeline-box:nth-child(2) { animation-delay: 0.4s; }
+        .sidebar.extended .timeline-box:nth-child(3) { animation-delay: 0.6s; }
+        .sidebar.extended .timeline-box:nth-child(4) { animation-delay: 0.8s; }
+
+        .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+
+        /* Khung chứa ảnh làm nền (Overlay để chữ rõ hơn) */
+        .timeline-box::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1;
+            transition: 0.3s;
+        }
+        .timeline-box:hover::before { background: rgba(0,0,0,0.2); }
 
         .timeline-box:nth-child(odd) { align-self: flex-start; margin-left: 15%; }
         .timeline-box:nth-child(even) { align-self: flex-end; margin-right: 15%; }
@@ -175,24 +203,25 @@
             mask-image: linear-gradient(to left, black 20%, rgba(0,0,0,0.3) 100%);
         }
 
-        .box-10 { background: #1a3a5f; border: 2px solid #3498db; color: #3498db; border-radius: 8px; }
-        .box-11 { background: #1b4d3e; border: 2px solid #2ecc71; color: #2ecc71; border-radius: 40px; }
+        /* Thay thế thành khung có ảnh nền (Sửa URL ảnh tại đây) */
+        .box-10 { background-image: url('grade10_thumb.jpg'); border: 2px solid #3498db; color: #3498db; border-radius: 8px; }
+        .box-11 { background-image: url('grade11_thumb.jpg'); border: 2px solid #2ecc71; color: #2ecc71; border-radius: 40px; }
         .box-12 { 
-            background: #5e1a1a; 
+            background-image: url('grade12_thumb.jpg'); 
             border: 2px solid #e74c3c;
             color: #e74c3c;
             clip-path: polygon(10% 0, 100% 0%, 90% 100%, 0% 100%); 
         }
         .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; color: #9b59b6; border-radius: 15px; overflow: hidden; }
 
-        .timeline-box span { font-family: 'Bangers'; font-size: 20px; z-index: 10; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .timeline-box span { font-family: 'Bangers'; font-size: 22px; z-index: 10; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
         
-        .fog-effect { position: absolute; inset: 0; background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%); animation: fogMove 4s infinite linear; }
+        .fog-effect { position: absolute; inset: 0; background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%); animation: fogMove 4s infinite linear; z-index: 2;}
         @keyframes fogMove { 0% {transform: translate(-5%, -5%);} 50% {transform: translate(5%, 5%);} 100% {transform: translate(-5%, -5%);} }
         
         .coming-soon { color: #9b59b6; font-size: 11px; font-weight: bold; margin-top: -20px; letter-spacing: 2px; z-index: 10; opacity: 0.8; }
 
-        .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; }
+        .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; z-index: 10; }
         .return:hover { opacity: 1; color: #9dffb3; }
 
         /* ================= CONTENT ================= */
@@ -292,8 +321,21 @@
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById('mainSidebar');
+    const isExtended = sidebar.classList.contains('extended');
+    
     document.body.classList.toggle('shifted');
     sidebar.classList.toggle('extended');
+
+    // Logic xử lý animation reset khi đóng/mở
+    const boxes = document.querySelectorAll('.timeline-box');
+    if (!isExtended) {
+        // Khi mở: Animation chạy nhờ CSS keyframes
+        boxes.forEach((box, index) => {
+            box.style.animation = 'none';
+            box.offsetHeight; // trigger reflow
+            box.style.animation = null; 
+        });
+    }
 }
 </script>
 

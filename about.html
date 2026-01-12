@@ -163,12 +163,17 @@ body::before {
 .leader:nth-child(4){animation-delay:2.2s;}
 
 .leader img {
-    width: 180px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
+    width: 200px;
+    height: 200px;          /* ép thành hình vuông */
+    object-fit: cover;     /* crop ảnh cho đều */
+    object-position: center;
+    border-radius: 10px;
     background: #222;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.35);
 }
+
 
 .leader-text {
     font-family: "Merriweather", serif;

@@ -3,247 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alphabest – Memory Album</title>
+<title>Alphabest – Memory Wall</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
 
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     background: url("class.jpg") center / cover no-repeat fixed;
-    font-family: "Segoe UI", Arial, sans-serif;
-    overflow: hidden;
+    color: #eaeaea;
 }
 
-/* overlay */
+/* dark overlay */
 body::before {
-    content:"";
+    content: "";
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.6);
     z-index: 0;
 }
 
-/* fade out */
-#fade-out {
-    position: fixed;
-    inset: 0;
-    background: black;
-    opacity: 0;
-    pointer-events: none;
-    transition: 1.2s ease;
-    z-index: 9999;
-}
-#fade-out.active { opacity: 1; }
+/* ================= MEMORY WALL ================= */
 
-/* ================= RETURN ================= */
-.return {
-    position: fixed;
-    left: 26px;
-    bottom: 26px;
-    z-index: 5;
-    color: #fff;
-    text-decoration: none;
-    font-size: 19px;
-    transition: .3s;
-}
-.return span { font-size: 22px; margin-right: 6px; }
-.return:hover { color:#9dffb3; transform: translateX(-4px); }
-
-/* ================= ALBUM ================= */
-.album {
+.wall {
     position: relative;
     z-index: 1;
-    width: 100vw;
-    height: 100vh;
+    padding: 80px 60px 120px;
+    min-height: 100vh;
 }
 
-.pages {
-    display: flex;
-    width: 200vw;
-    transition: transform 1.2s ease;
-}
+/* ================= PAPER PIECE ================= */
 
-.page {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    padding: 80px;
-}
-
-/* ================= PAPER BASE ================= */
 .paper {
     position: absolute;
-    background: rgba(255,252,235,0.96);
-    box-shadow: 0 25px 45px rgba(0,0,0,.5);
-    cursor: pointer;
-    transition: .4s;
+    background: rgba(255,252,235,0.95);
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.45),
+        inset 0 0 0 1px rgba(120,100,60,0.25);
+    overflow: hidden;
+    transition: 0.4s ease;
 }
 
-.paper:hover {
-    transform: scale(1.05) rotate(0deg) !important;
-    z-index: 6;
-}
-
-/* tape */
-.paper::before,
-.paper::after {
-    content:"";
+/* torn paper edges */
+.paper::before {
+    content: "";
     position: absolute;
-    width: 70px;
-    height: 18px;
-    background: rgba(255,255,255,0.55);
-    box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
+    inset: 0;
+    background:
+        radial-gradient(circle at 0 0, transparent 10px, rgba(0,0,0,0.15) 11px),
+        radial-gradient(circle at 100% 0, transparent 10px, rgba(0,0,0,0.15) 11px),
+        radial-gradient(circle at 0 100%, transparent 10px, rgba(0,0,0,0.15) 11px),
+        radial-gradient(circle at 100% 100%, transparent 10px, rgba(0,0,0,0.15) 11px);
+    opacity: .25;
+    pointer-events: none;
 }
 
-.paper::before { top: -10px; left: 20px; transform: rotate(-10deg); }
-.paper::after  { top: -10px; right: 20px; transform: rotate(8deg); }
-
+/* paper image */
 .paper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: sepia(10%) contrast(0.95);
 }
 
-/* ================= STANDARD SIZES ================= */
-/* giấy ngang lớn */
-.paper-lg {
-    width: 340px;
-    height: 240px;
+/* hover */
+.paper:hover {
+    transform: scale(1.05) rotate(0deg) !important;
+    z-index: 5;
 }
 
-/* giấy dọc */
-.paper-portrait {
-    width: 260px;
-    height: 360px;
-}
+/* ================= INDIVIDUAL POSITIONS ================= */
 
-/* giấy trung */
-.paper-md {
+.paper.p1 {
     width: 300px;
     height: 220px;
+    top: 60px;
+    left: 120px;
+    transform: rotate(-4deg);
 }
 
-/* giấy decor nhỏ */
-.paper-sm {
-    width: 180px;
-    height: 130px;
-    opacity: .88;
+.paper.p2 {
+    width: 240px;
+    height: 300px;
+    top: 100px;
+    right: 180px;
+    transform: rotate(6deg);
 }
 
-/* ================= PAGE 1 POSITIONS ================= */
-.page1 .p1 { top:120px; left:180px; transform:rotate(-4deg); }
-.page1 .p2 { top:140px; left:560px; transform:rotate(5deg); }
-.page1 .p3 { top:420px; left:260px; transform:rotate(2deg); }
-.page1 .p4 { top:440px; left:680px; transform:rotate(-6deg); }
-.page1 .p5 { top:130px; right:120px; transform:rotate(8deg); }
-.page1 .p6 { top:320px; right:60px; transform:rotate(-5deg); }
+.paper.p3 {
+    width: 360px;
+    height: 260px;
+    top: 380px;
+    left: 220px;
+    transform: rotate(2deg);
+}
 
-/* ================= PAGE 2 POSITIONS ================= */
-.page2 .p1 { top:140px; left:200px; transform:rotate(3deg); }
-.page2 .p2 { top:160px; left:560px; transform:rotate(-4deg); }
-.page2 .p3 { top:430px; left:300px; transform:rotate(-2deg); }
-.page2 .p4 { top:450px; left:720px; transform:rotate(6deg); }
-.page2 .p5 { top:140px; right:140px; transform:rotate(-7deg); }
+.paper.p4 {
+    width: 260px;
+    height: 200px;
+    top: 480px;
+    right: 240px;
+    transform: rotate(-7deg);
+}
 
-/* ================= NAV ================= */
-.page-nav {
+.paper.p5 {
+    width: 320px;
+    height: 240px;
+    top: 760px;
+    left: 50%;
+    transform: translateX(-50%) rotate(3deg);
+}
+
+/* ================= TITLE ================= */
+
+.wall-title {
     position: fixed;
-    right: 40px;
-    bottom: 30px;
-    z-index: 5;
-    font-size: 18px;
-    color: #fff;
-}
-.page-nav span {
-    cursor: pointer;
-    padding: 6px 12px;
-}
-.page-nav span:hover { color:#9dffb3; }
-
-/* ================= VIEWER ================= */
-#viewer {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-#viewer img {
-    max-width: 90%;
-    max-height: 90%;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Merriweather", serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.85);
+    z-index: 3;
 }
 </style>
 </head>
 
 <body>
 
-<div id="fade-out"></div>
+<div class="wall-title">OUR MEMORIES</div>
 
-<a href="home.html" class="return" id="returnBtn">
-    <span>←</span> Return
-</a>
+<div class="wall">
 
-<div class="album">
-<div class="pages" id="pages">
+    <div class="paper p1">
+        <img src="https://via.placeholder.com/600x400?text=Memory+01">
+    </div>
 
-<!-- PAGE 1 -->
-<div class="page page1">
-    <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=1"></div>
-    <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=2"></div>
-    <div class="paper paper-md p3"><img src="https://via.placeholder.com/700x500?text=3"></div>
-    <div class="paper paper-md p4"><img src="https://via.placeholder.com/700x500?text=4"></div>
-    <div class="paper paper-sm p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
-    <div class="paper paper-sm p6"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
-</div>
+    <div class="paper p2">
+        <img src="https://via.placeholder.com/400x600?text=Memory+02">
+    </div>
 
-<!-- PAGE 2 -->
-<div class="page page2">
-    <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=5"></div>
-    <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=6"></div>
-    <div class="paper paper-md p3"><img src="https://via.placeholder.com/700x500?text=7"></div>
-    <div class="paper paper-md p4"><img src="https://via.placeholder.com/700x500?text=8"></div>
-    <div class="paper paper-sm p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
-</div>
+    <div class="paper p3">
+        <img src="https://via.placeholder.com/700x500?text=Memory+03">
+    </div>
+
+    <div class="paper p4">
+        <img src="https://via.placeholder.com/500x350?text=Memory+04">
+    </div>
+
+    <div class="paper p5">
+        <img src="https://via.placeholder.com/600x450?text=Memory+05">
+    </div>
 
 </div>
-</div>
-
-<div class="page-nav">
-    <span onclick="goPage(0)">&lt; 1</span> —
-    <span onclick="goPage(1)">2 &gt;</span>
-</div>
-
-<div id="viewer" onclick="this.style.display='none'">
-    <img id="viewerImg">
-</div>
-
-<script>
-let page = 0;
-function goPage(n){
-    page = n;
-    document.getElementById("pages").style.transform = `translateX(-${n*100}vw)`;
-}
-
-document.querySelectorAll(".paper img").forEach(img=>{
-    img.onclick = e=>{
-        e.stopPropagation();
-        viewerImg.src = img.src;
-        viewer.style.display = "flex";
-    };
-});
-
-returnBtn.onclick = e=>{
-    e.preventDefault();
-    fade-out.classList.add("active");
-    setTimeout(()=>location.href="home.html",1200);
-};
-</script>
 
 </body>
 </html>

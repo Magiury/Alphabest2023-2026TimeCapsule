@@ -61,11 +61,7 @@
             color: #9dffb3; 
             white-space: nowrap;
             display: inline-block;
-            align-self: flex-start;
-            padding: 5px 10px;
-            border: 1px solid transparent;
             transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-            transform-origin: center;
         }
         .sidebar.extended h2 {
             transform: scale(1.5);
@@ -73,21 +69,19 @@
             margin-bottom: 80px;
             background: #9dffb3;
             color: #000;
+            padding: 5px 10px;
             border-radius: 4px;
-            box-shadow: 0 0 15px rgba(157, 255, 179, 0.5);
         }
 
         .nav-links-wrapper { transition: opacity 0.5s; }
         .sidebar.extended .nav-links-wrapper { opacity: 0; visibility: hidden; height: 0; overflow: hidden; }
-
-        .sidebar a.nav-link { display: block; color: #ddd; text-decoration: none; margin-bottom: 22px; transition: 0.3s; white-space: nowrap; }
+        .sidebar a.nav-link { display: block; color: #ddd; text-decoration: none; margin-bottom: 22px; transition: 0.3s; }
         .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
 
         /* ================= NÚT TAM GIÁC ================= */
         .toggle-container {
             position: fixed;
-            left: 200px; 
-            top: 50%;
+            left: 200px; top: 50%;
             transform: translateY(-50%);
             z-index: 1001;
             transition: left 0.8s cubic-bezier(0.77, 0, 0.175, 1);
@@ -95,97 +89,85 @@
             padding: 15px;
         }
         body.shifted .toggle-container { left: calc(50vw - 7px); }
-
         .triangle-btn {
             width: 0; height: 0;
             border-top: 12px solid transparent;
             border-bottom: 12px solid transparent;
             border-left: 18px solid #9dffb3; 
             transition: transform 0.4s ease;
-            filter: drop-shadow(0 0 8px rgba(157, 255, 179, 0.8));
         }
         body.shifted .triangle-btn { transform: rotate(180deg); }
 
-        /* ================= TIMELINE THẲNG HÀNG (MỐC TẬP TRUNG) ================= */
+        /* ================= TIMELINE DÒNG SÔNG VỚI CHẤM MỐC ================= */
         .timeline-container {
             display: none;
             flex-direction: column;
-            align-items: center;
-            padding: 60px 0;
-            position: relative;
             width: 100%;
+            padding: 40px 0;
+            position: relative;
         }
         .sidebar.extended .timeline-container { display: flex; }
 
-        /* Đường kẻ chính xuyên suốt các box */
+        /* Đường kẻ dọc giữa */
         .timeline-container::before {
             content: "";
             position: absolute;
-            width: 4px;
-            background: linear-gradient(to bottom, transparent, #9dffb3, #fff, #9dffb3, transparent);
+            left: 50%;
             top: 0; bottom: 0;
-            left: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(157, 255, 179, 0.3);
+            width: 2px;
+            background: rgba(157, 255, 179, 0.3);
+            transform: translateX(-50%);
             z-index: 1;
         }
 
-        @keyframes boxSlideIn {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+        .timeline-box-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        /* CHẤM NHỎ SONG SONG GIỮA TRỤC */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: #9dffb3;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 0 10px #9dffb3;
         }
 
         .timeline-box { 
-            width: 200px; 
-            height: 120px; 
-            margin: 30px 0; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            position: relative; 
-            cursor: pointer; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            text-decoration: none;
+            width: 180px; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; text-decoration: none;
+            background-size: cover; background-position: center;
+            border-radius: 10px; overflow: hidden;
+            transition: 0.4s;
             z-index: 5;
-            background-size: cover;
-            background-position: center;
-            animation: boxSlideIn 0.8s both;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            animation: boxFadeIn 0.8s both;
         }
         
-        .sidebar.extended .timeline-box:nth-child(1) { animation-delay: 0.2s; }
-        .sidebar.extended .timeline-box:nth-child(2) { animation-delay: 0.4s; }
-        .sidebar.extended .timeline-box:nth-child(3) { animation-delay: 0.6s; }
-        .sidebar.extended .timeline-box:nth-child(4) { animation-delay: 0.8s; }
-
-        .timeline-box:hover { transform: scale(1.1); filter: brightness(1.2); box-shadow: 0 0 30px rgba(157, 255, 179, 0.4); }
-
-        /* Overlay khung ảnh */
-        .timeline-box::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 1;
-            transition: 0.3s;
+        @keyframes boxFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .timeline-box:hover::before { background: rgba(0,0,0,0.1); }
 
-        /* ĐIỂM CHỐT TẠI MỖI BOX */
-        .timeline-box::after {
-            content: "";
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: #fff;
-            border: 3px solid #9dffb3;
-            border-radius: 50%;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: -22px; /* Điểm mốc nằm dưới mỗi box */
-            box-shadow: 0 0 10px #9dffb3;
-            z-index: 10;
+        /* TÁCH RA 2 BÊN */
+        .timeline-box-wrapper:nth-child(odd) { justify-content: flex-start; padding-left: 10%; }
+        .timeline-box-wrapper:nth-child(even) { justify-content: flex-end; padding-right: 10%; }
+
+        /* Hiệu ứng hover cho box */
+        .timeline-box:hover { transform: scale(1.08); filter: brightness(1.2); }
+        .timeline-box::before {
+            content: ""; position: absolute; inset: 0;
+            background: rgba(0,0,0,0.4); z-index: 1;
         }
 
         .box-10 { background-image: url(https://i.ibb.co/FLvm3RQj/Gemini-Generated-Image-sb1ntesb1ntesb1n-1.png); border: 2px solid #3498db; }
@@ -193,49 +175,29 @@
         .box-12 { background-image: url(https://i.ibb.co/Zpzd7nSY/image-2026-01-13-040507521.png); border: 2px solid #e74c3c; }
         .box-mystery { background: #2d1a4d; border: 2px solid #9b59b6; }
 
-        .timeline-box span { font-family: 'Bangers'; font-size: 24px; z-index: 10; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
-        
-        .fog-effect { position: absolute; inset: 0; background: radial-gradient(circle, rgba(155,89,182,0.4) 0%, transparent 70%); animation: fogMove 4s infinite linear; z-index: 2;}
-        @keyframes fogMove { 0% {transform: translate(-5%, -5%);} 50% {transform: translate(5%, 5%);} 100% {transform: translate(-5%, -5%);} }
-        
-        .coming-soon { color: #9b59b6; font-size: 12px; font-weight: bold; margin-top: 10px; letter-spacing: 3px; z-index: 10; opacity: 0.8; }
+        .timeline-box span { font-family: 'Bangers'; font-size: 20px; z-index: 2; color: #fff; }
 
-        .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; z-index: 10; }
+        .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; }
         .return:hover { opacity: 1; color: #9dffb3; }
 
         /* ================= CONTENT ================= */
         .content {
-            position: relative;
-            z-index: 1;
-            margin-left: 260px;
-            padding: 80px;
+            position: relative; z-index: 1;
+            margin-left: 260px; padding: 80px;
             width: calc(100% - 260px);
             transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
         body.shifted .content { margin-left: 50vw; width: 50vw; }
-
         .section { margin-bottom: 100px; }
         .section h1 { font-family: 'Merriweather'; font-size: 32px; border-left: 5px solid #9dffb3; padding-left: 20px; margin-bottom: 30px; }
-
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
-        .gallery-item { height: 250px; border-radius: 12px; overflow: hidden; background: #1a1a1a; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .gallery-item:hover img { transform: scale(1.1); }
-
-        .add-photo-box {
+        .gallery-item { height: 250px; border-radius: 12px; overflow: hidden; background: #1a1a1a; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .add-photo-box, .view-more-box {
             height: 250px; border: 2px dashed rgba(157, 255, 179, 0.3); border-radius: 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; color: #9dffb3; transition: 0.3s; background: rgba(157, 255, 179, 0.02);
-            text-decoration: none; gap: 8px;
+            text-decoration: none; color: #9dffb3; gap: 8px;
         }
-        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
-
-        .view-more-box {
-            height: 250px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            text-decoration: none; color: #888; transition: 0.3s; gap: 8px;
-        }
-        .view-more-box:hover { color: #fff; border-color: #9dffb3; background: rgba(157,255,255,0.05); }
     </style>
 </head>
 
@@ -255,14 +217,25 @@
     </div>
 
     <div class="timeline-container">
-        <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
-        <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
-        <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
-        <div class="timeline-box box-mystery">
-            <div class="fog-effect"></div>
-            <span>???</span>
+        <div class="timeline-box-wrapper">
+            <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
+            <div class="timeline-dot"></div>
         </div>
-        <div class="coming-soon">COMING SOON</div>
+
+        <div class="timeline-box-wrapper">
+            <div class="timeline-dot"></div>
+            <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
+        </div>
+
+        <div class="timeline-box-wrapper">
+            <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
+            <div class="timeline-dot"></div>
+        </div>
+
+        <div class="timeline-box-wrapper">
+            <div class="timeline-dot"></div>
+            <div class="timeline-box box-mystery"><span>???</span></div>
+        </div>
     </div>
 
     <a href="home.html" class="return">← Return</a>
@@ -272,47 +245,17 @@
     <section class="section" id="grade10">
         <h1>NĂM LỚP 10</h1>
         <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
-            <a href="album-10.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300"></div>
+            <a href="#" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
         </div>
     </section>
-
-    <section class="section" id="grade11">
-        <h1>NĂM LỚP 11</h1>
-        <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
-            <a href="album-11.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
-        </div>
-    </section>
-
-    <section class="section" id="grade12">
-        <h1>NĂM LỚP 12</h1>
-        <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
-            <a href="album-12.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="albumspaces.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
-        </div>
-    </section>
-</main>
+    </main>
 
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById('mainSidebar');
-    const isExtended = sidebar.classList.contains('extended');
-    
     document.body.classList.toggle('shifted');
     sidebar.classList.toggle('extended');
-
-    const boxes = document.querySelectorAll('.timeline-box');
-    if (!isExtended) {
-        boxes.forEach((box) => {
-            box.style.animation = 'none';
-            box.offsetHeight; 
-            box.style.animation = null; 
-        });
-    }
 }
 </script>
 

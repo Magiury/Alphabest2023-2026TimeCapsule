@@ -129,7 +129,7 @@ function login(){
     const error = document.getElementById("error");
 
     /* Kiểm tra nếu là Admin HOẶC là Guest */
-    if((u === USERNAME && p === PASSWORD) || (u === GUEST_USER && p === GUEST_PASS)){
+    if((u === USERNAME && p === PASSWORD)){
         error.style.color = "#9dffb3";
         error.innerHTML = `Valid credentials... <span class="spinner"></span>`;
 

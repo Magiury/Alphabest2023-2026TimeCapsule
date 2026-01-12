@@ -235,6 +235,51 @@ body::before {
     from {opacity:0; transform:translateX(-10px);}
     to {opacity:1; transform:translateX(0);}
 }
+/* ================= DECOR IN TOGETHER AS ONE ================= */
+
+.decor-wrap {
+    position: relative;
+    width: 100%;
+    margin: 30px 0 10px;
+}
+
+.decor-img {
+    width: 220px;
+    height: auto;
+    border-radius: 10px;
+    opacity: 0.85;
+    filter: saturate(0.9) contrast(1.05);
+}
+
+/* decor trái */
+.decor-left {
+    float: left;
+    margin: 10px 30px 20px 0;
+    shape-outside: inset(0);
+}
+
+/* decor phải */
+.decor-right {
+    float: right;
+    margin: 40px 0 20px 30px;
+    shape-outside: inset(0);
+}
+
+/* decor nhỏ ở giữa */
+.decor-center {
+    float: left;
+    width: 180px;
+    margin: 30px 25px 20px 0;
+    shape-outside: inset(0);
+}
+
+/* clear float sau đoạn Together */
+.section#one::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
 </style>
 </head>
 
@@ -257,8 +302,25 @@ body::before {
 
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
-        <p>Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường. Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế. Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.</p>
+
+        <!-- DECOR 1 -->
+        <img src="decor1.jpg" class="decor-img decor-left">
+
+        <!-- DECOR 2 -->
+        <img src="decor2.jpg" class="decor-img decor-right">
+
+        <!-- DECOR 3 -->
+        <img src="decor3.jpg" class="decor-img decor-center">
+
+        <p>
+            Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
+            <br><br>
+            Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
+            <br><br>
+            Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
+        </p>
     </div>
+
 
     <!-- ===== LEAD THE WAY ===== -->
     <div class="section" id="lead" style="position:relative;">

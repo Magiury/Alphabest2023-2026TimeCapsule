@@ -201,6 +201,52 @@ body::before {
     from {opacity:0; transform:translateX(-10px);}
     to {opacity:1; transform:translateX(0);}
 }
+/* ================= LETTER STYLE ================= */
+
+.letter {
+    margin-top: 20px;
+    padding: 36px 42px;
+    background: rgba(255, 255, 245, 0.82);
+    backdrop-filter: blur(3px);
+    border-radius: 6px;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.35),
+        inset 0 0 0 1px rgba(255,255,255,0.25);
+
+    font-family: "Merriweather", serif;
+    color: #2b2b2b;
+
+    opacity: 0;
+    transform: translateY(20px);
+    animation: letterFade 1.6s ease forwards;
+    animation-delay: 0.6s;
+}
+
+.letter p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.9;
+}
+
+/* paper subtle texture illusion */
+.letter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 100% 28px;
+    pointer-events: none;
+    opacity: 0.25;
+}
+
+/* animation */
+@keyframes letterFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 </style>
 </head>
 
@@ -223,7 +269,16 @@ body::before {
 
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
-        <p>Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường. Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế. Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.</p>
+        <div class="letter">
+           <p>
+               Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
+               <br><br>
+               Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
+               <br><br>
+               Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
+           </p>
+</div>
+
     </div>
 
     <!-- ===== LEADERS ===== -->

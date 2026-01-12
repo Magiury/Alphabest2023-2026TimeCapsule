@@ -201,25 +201,54 @@ body::before {
     from {opacity:0; transform:translateX(-10px);}
     to {opacity:1; transform:translateX(0);}
 }
-/* ================= LETTER STYLE ================= */
+/* ================= OLD LETTER STYLE ================= */
 
 .letter {
-    margin-top: 20px;
-    padding: 36px 42px;
-    background: rgba(255, 255, 245, 0.82);
-    backdrop-filter: blur(3px);
+    position: relative;
+    margin-top: 30px;
+    padding: 44px 48px 80px;
+    background: rgba(255, 252, 235, 0.88);
+    backdrop-filter: blur(2px);
     border-radius: 6px;
+
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.35),
-        inset 0 0 0 1px rgba(255,255,255,0.25);
+        0 18px 40px rgba(0,0,0,0.35),
+        inset 0 0 0 1px rgba(120,100,60,0.25);
 
     font-family: "Merriweather", serif;
     color: #2b2b2b;
 
+    transform: rotate(-1.4deg);
+    transform-origin: center;
+
     opacity: 0;
-    transform: translateY(20px);
-    animation: letterFade 1.6s ease forwards;
+    animation: letterFadeIn 1.8s ease forwards;
     animation-delay: 0.6s;
+}
+
+/* Paper texture */
+.letter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 100% 28px, 3px 3px;
+    opacity: 0.25;
+    pointer-events: none;
+    border-radius: 6px;
+}
+
+/* Slight paper edge shadow */
+.letter::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    box-shadow:
+        inset -6px -6px 18px rgba(0,0,0,0.08);
+    pointer-events: none;
 }
 
 .letter p {
@@ -228,25 +257,31 @@ body::before {
     line-height: 1.9;
 }
 
-/* paper subtle texture illusion */
-.letter::before {
-    content: "";
+/* ================= SIGNATURE ================= */
+
+.signatures {
     position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
-    background-size: 100% 28px;
-    pointer-events: none;
-    opacity: 0.25;
+    bottom: 26px;
+    right: 40px;
+    display: flex;
+    gap: 26px;
+    opacity: 0.65;
+}
+
+.signature {
+    font-family: "Brush Script MT", "Segoe Script", cursive;
+    font-size: 26px;
+    color: rgba(60,60,60,0.8);
+    transform: rotate(-4deg);
 }
 
 /* animation */
-@keyframes letterFade {
+@keyframes letterFadeIn {
     to {
         opacity: 1;
-        transform: translateY(0);
     }
 }
+
 </style>
 </head>
 
@@ -277,6 +312,10 @@ body::before {
                <br><br>
                Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
            </p>
+           <div class="signatures">
+               <div class="signature">— Alphabest</div>
+               <div class="signature">Class of 12A</div>
+           </div>
 </div>
 
     </div>

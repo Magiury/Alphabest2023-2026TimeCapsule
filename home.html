@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Alphabest – About Us</title>
-
-<!-- Merriweather -->
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<title>Alphabest – Home</title>
 
 <style>
 * {
@@ -15,13 +12,13 @@
 
 body {
     margin: 0;
-    min-height: 100vh;
-    background: url("class.jpg") center / cover no-repeat fixed;
-    color: #eaeaea;
-    display: flex;
+    height: 100vh;
+    background: url("class.jpg") center / cover no-repeat;
+    overflow: hidden;
+    color: white;
 }
 
-/* Dark overlay – giống home */
+/* Dark overlay */
 body::before {
     content: "";
     position: fixed;
@@ -30,183 +27,226 @@ body::before {
     z-index: 0;
 }
 
-/* ================= SIDEBAR ================= */
+/* ================= APP WRAPPER ================= */
 
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 260px;
-    height: 100vh;
-    padding: 40px 30px;
-    background: rgba(10,10,10,0.65);
-    backdrop-filter: blur(6px);
-    border-right: 1px solid rgba(255,255,255,0.08);
+#app {
+    position: relative;
     z-index: 2;
+    width: 100%;
+    text-align: center;
+    padding-top: 18px;
 
-    /* FADE IN */
-    opacity: 0;
-    transform: translateX(-20px);
-    animation: sidebarIn 1.6s ease forwards;
+    transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
-/* SIDEBAR TITLE */
-.sidebar h2 {
-    font-size: 14px;
-    letter-spacing: 2px;
-    font-weight: 600;
-    margin-bottom: 30px;
+#app.fade-out {
     opacity: 0;
-    animation: fadeUp 1.2s ease forwards;
+    transform: translateY(-10px);
+}
+
+/* ================= LOGO ================= */
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+
+    opacity: 0;
+    transform: translateY(-15px);
+    animation: logoFade 2s ease forwards;
     animation-delay: 0.8s;
 }
 
-/* SIDEBAR LINKS */
-.sidebar a {
-    display: block;
-    color: #ddd;
-    text-decoration: none;
-    margin-bottom: 18px;
-    font-size: 15px;
-
-    opacity: 0;
-    transform: translateX(-6px);
-    animation: fadeLeft 1.2s ease forwards;
+.logo img {
+    width: 70px;
+    opacity: 0.95;
 }
 
-.sidebar a:nth-child(2) { animation-delay: 1s; }
-.sidebar a:nth-child(3) { animation-delay: 1.2s; }
-.sidebar a:nth-child(4) { animation-delay: 1.4s; }
+/* ================= SEARCH ================= */
 
-.sidebar a:hover {
-    color: #9dffb3;
-}
-
-/* ================= CONTENT ================= */
-
-.content {
+.search-bar {
+    margin: 18px auto 10px;
+    width: 520px;
+    max-width: 90%;
     position: relative;
-    z-index: 1;
-    margin-left: 260px;
-    padding: 80px 80px 140px;
-    max-width: 900px;
-}
-
-.section {
-    margin-bottom: 140px;
-}
-
-/* SUBJECT */
-.section h1 {
-    font-size: 36px;
-    margin-bottom: 26px;
-    font-weight: 600;
-    letter-spacing: 1px;
-
-    opacity: 0;
-    transform: translateY(15px);
-    animation: fadeUp 1.4s ease forwards;
-}
-
-.section:nth-of-type(1) h1 { animation-delay: 1s; }
-.section:nth-of-type(2) h1 { animation-delay: 1.4s; }
-.section:nth-of-type(3) h1 { animation-delay: 1.8s; }
-
-/* TEXT */
-.section p {
-    font-family: "Merriweather", serif;
-    font-size: 17px;
-    line-height: 1.9;
-    color: #e0e0e0;
 
     opacity: 0;
     transform: translateY(10px);
-    animation: fadeUp 1.4s ease forwards;
+    animation: searchFade 2s ease forwards;
+    animation-delay: 1.3s;
 }
 
-.section:nth-of-type(1) p { animation-delay: 1.3s; }
-.section:nth-of-type(2) p { animation-delay: 1.7s; }
-.section:nth-of-type(3) p { animation-delay: 2.1s; }
+.search-bar input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 15px;
+}
 
-/* smooth scroll */
-html {
-    scroll-behavior: smooth;
+/* ================= MENU ================= */
+
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 12px;
+
+    opacity: 0;
+    animation: menuFade 1.8s ease forwards;
+    animation-delay: 1.9s;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+    opacity: 0.85;
+    transition: 0.2s;
+}
+
+.menu a:hover {
+    opacity: 1;
+    text-shadow: 0 0 6px rgba(255,255,255,0.5);
+}
+
+/* ================= COUNTDOWN ================= */
+
+.countdown-hud {
+    position: fixed;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 5;
+    pointer-events: none;
+
+    opacity: 1;
+    transition: opacity 1.2s ease;
+}
+
+.countdown-hud.fade-out {
+    opacity: 0;
+}
+
+.cd-title {
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgba(180,255,200,0.7);
+    margin-bottom: 10px;
+}
+
+.cd-time {
+    font-size: 58px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #9dffb3;
+    text-shadow:
+        0 0 6px rgba(157,255,179,0.6),
+        0 0 18px rgba(157,255,179,0.35);
+}
+
+.cd-sub {
+    margin-top: 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(180,255,200,0.5);
 }
 
 /* ================= ANIMATIONS ================= */
 
-@keyframes sidebarIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(15px); }
+@keyframes logoFade {
+    from { opacity: 0; transform: translateY(-15px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeLeft {
-    from { opacity: 0; transform: translateX(-8px); }
-    to   { opacity: 1; transform: translateX(0); }
+@keyframes searchFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 900px) {
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .content {
-        margin-left: 0;
-        padding: 50px 30px 100px;
-    }
+@keyframes menuFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h2>ABOUT</h2>
-    <a href="#one">We are the one</a>
-    <a href="#lead">The one who lead the way</a>
-    <a href="#done">What we have done</a>
-</div>
+<div id="app">
 
-<!-- CONTENT -->
-<div class="content">
-
-    <div class="section" id="one">
-        <h1>We are the one</h1>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+    <!-- LOGO -->
+    <div class="logo">
+        <img src="THPT Chuyên Bạc Liêu-Picsart-AiImageEnhancer.png">
+        <img src="Alphabest Logo.png">
     </div>
 
-    <div class="section" id="lead">
-        <h1>The one who lead the way</h1>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
-        </p>
+    <!-- SEARCH -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search memories...">
     </div>
 
-    <div class="section" id="done">
-        <h1>What we have done</h1>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.
-        </p>
+    <!-- MENU -->
+    <div class="menu">
+        <a href="about.html" onclick="navigate(event, 'about.html')">ABOUT US</a>
+        <a href="album.html" onclick="navigate(event, 'album.html')">ALBUM</a>
+        <a href="thought.html" onclick="navigate(event, 'thought.html')">OUR THOUGHT</a>
+        <a href="chat.html" onclick="navigate(event, 'chat.html')">CHAT</a>
     </div>
 
 </div>
+<!-- COUNTDOWN -->
+<div class="countdown-hud">
+   <div class="cd-title">FINAL EXAM COUNTDOWN</div>
+   <div class="cd-time" id="cd-time">00:00:00:00</div>
+   <div class="cd-sub">TARGET DATE — 11 JUNE 2026</div>
+</div>
+<script>
+/* ================= COUNTDOWN ================= */
+
+const targetDate = new Date("2026-06-11T00:00:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+        document.getElementById("cd-time").innerText = "00:00:00:00";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("cd-time").innerText =
+        `${String(days).padStart(2,"0")}:${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+/* ================= PAGE TRANSITION ================= */
+
+function navigate(e, url) {
+    e.preventDefault();
+
+    document.getElementById("app").classList.add("fade-out");
+    document.querySelector(".countdown-hud").classList.add("fade-out");
+
+    setTimeout(() => {
+        window.location.href = url;
+    }, 1200);
+}
+
+</script>
 
 </body>
 </html>

@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     background: url("class.jpg") center / cover no-repeat fixed;
     font-family: "Segoe UI", Arial, sans-serif;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* overlay */
@@ -39,6 +39,15 @@ body::before {
 }
 #fade-out.active { opacity: 1; }
 
+/* fade in page */
+.fade-in {
+    animation: fadeInPage 1.6s ease forwards;
+}
+@keyframes fadeInPage {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 /* ================= RETURN ================= */
 .return {
     position: fixed;
@@ -53,32 +62,33 @@ body::before {
 .return span { font-size: 22px; margin-right: 6px; }
 .return:hover { color:#9dffb3; transform: translateX(-4px); }
 
-/* ================= PAGE ================= */
+/* ================= ALBUM ================= */
 .album {
     position: relative;
     z-index: 1;
     width: 100vw;
     height: 100vh;
-    display: flex;
-}
-
-.page {
-    min-width: 100vw;
-    padding: 100px 80px;
-    position: relative;
-    transition: transform 1s ease, opacity 1s ease;
+    overflow: hidden;
 }
 
 .pages {
     display: flex;
-    transition: transform 1.2s ease;
+    width: 200vw;
+    transition: transform 1.2s ease, opacity .6s ease;
+}
+
+.page {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    padding: 100px 80px;
 }
 
 /* ================= PAPER ================= */
 .paper {
     position: absolute;
     background: rgba(255,252,235,0.95);
-    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+    box-shadow: 0 25px 45px rgba(0,0,0,.5);
     cursor: pointer;
     transition: .4s;
 }
@@ -88,27 +98,28 @@ body::before {
     z-index: 6;
 }
 
-/* tape */
+/* torn tape */
 .paper::before,
 .paper::after {
     content:"";
     position: absolute;
-    width: 60px;
+    width: 70px;
     height: 18px;
-    background: rgba(255,255,255,0.45);
-    box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.55);
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
+    filter: blur(.3px);
 }
 
 .paper::before {
-    top: -8px;
+    top: -10px;
     left: 20px;
-    transform: rotate(-8deg);
+    transform: rotate(-10deg);
 }
 
 .paper::after {
-    top: -8px;
-    right: 20px;
-    transform: rotate(6deg);
+    top: -10px;
+    right: 18px;
+    transform: rotate(7deg);
 }
 
 .paper img {
@@ -117,11 +128,22 @@ body::before {
     object-fit: cover;
 }
 
-/* ================= POSITIONS ================= */
-.p1 { width:300px; height:220px; top:120px; left:180px; transform:rotate(-4deg); }
-.p2 { width:260px; height:320px; top:160px; left:520px; transform:rotate(5deg); }
-.p3 { width:360px; height:260px; top:420px; left:260px; transform:rotate(2deg); }
-.p4 { width:240px; height:200px; top:460px; left:680px; transform:rotate(-6deg); }
+/* ================= POSITIONS PAGE 1 ================= */
+.page1 .p1 { width:300px; height:220px; top:120px; left:180px; transform:rotate(-4deg); }
+.page1 .p2 { width:260px; height:320px; top:160px; left:520px; transform:rotate(5deg); }
+.page1 .p3 { width:360px; height:260px; top:420px; left:260px; transform:rotate(2deg); }
+.page1 .p4 { width:240px; height:200px; top:460px; left:680px; transform:rotate(-6deg); }
+
+/* extra decor right */
+.page1 .p5 { width:160px; height:120px; top:140px; right:120px; transform:rotate(8deg); opacity:.85; }
+.page1 .p6 { width:140px; height:180px; top:320px; right:60px; transform:rotate(-5deg); opacity:.9; }
+
+/* ================= PAGE 2 ================= */
+.page2 .p1 { width:300px; height:220px; top:140px; left:200px; transform:rotate(3deg); }
+.page2 .p2 { width:260px; height:320px; top:180px; left:520px; transform:rotate(-4deg); }
+.page2 .p3 { width:360px; height:260px; top:430px; left:300px; transform:rotate(-2deg); }
+.page2 .p4 { width:240px; height:200px; top:470px; left:720px; transform:rotate(6deg); }
+.page2 .p5 { width:160px; height:120px; top:120px; right:140px; transform:rotate(-7deg); opacity:.85; }
 
 /* ================= PAGE NAV ================= */
 .page-nav {
@@ -132,16 +154,14 @@ body::before {
     font-size: 18px;
     color: #fff;
 }
-
 .page-nav span {
     cursor: pointer;
     padding: 6px 12px;
     transition: .3s;
 }
-
 .page-nav span:hover { color:#9dffb3; }
 
-/* ================= FULLSCREEN ================= */
+/* ================= VIEWER ================= */
 #viewer {
     position: fixed;
     inset: 0;
@@ -151,13 +171,11 @@ body::before {
     justify-content: center;
     z-index: 999;
 }
-
 #viewer img {
     max-width: 90%;
     max-height: 90%;
     animation: zoomIn .6s ease;
 }
-
 @keyframes zoomIn {
     from { transform: scale(.7); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
@@ -165,7 +183,7 @@ body::before {
 </style>
 </head>
 
-<body>
+<body class="fade-in">
 
 <div id="fade-out"></div>
 
@@ -177,19 +195,22 @@ body::before {
     <div class="pages" id="pages">
 
         <!-- PAGE 1 -->
-        <div class="page">
+        <div class="page page1">
             <div class="paper p1"><img src="https://via.placeholder.com/600x400?text=Memory+1"></div>
             <div class="paper p2"><img src="https://via.placeholder.com/400x600?text=Memory+2"></div>
             <div class="paper p3"><img src="https://via.placeholder.com/700x500?text=Memory+3"></div>
             <div class="paper p4"><img src="https://via.placeholder.com/500x350?text=Memory+4"></div>
+            <div class="paper p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
+            <div class="paper p6"><img src="https://via.placeholder.com/200x300?text=Decor"></div>
         </div>
 
         <!-- PAGE 2 -->
-        <div class="page">
+        <div class="page page2">
             <div class="paper p1"><img src="https://via.placeholder.com/600x400?text=Memory+5"></div>
             <div class="paper p2"><img src="https://via.placeholder.com/400x600?text=Memory+6"></div>
             <div class="paper p3"><img src="https://via.placeholder.com/700x500?text=Memory+7"></div>
             <div class="paper p4"><img src="https://via.placeholder.com/500x350?text=Memory+8"></div>
+            <div class="paper p5"><img src="https://via.placeholder.com/300x200?text=Decor"></div>
         </div>
 
     </div>
@@ -206,9 +227,18 @@ body::before {
     <img id="viewerImg">
 </div>
 
+<!-- sounds -->
+<audio id="flipSound" src="page-flip.mp3"></audio>
+<audio id="paperSound" src="paper-rip.mp3"></audio>
+
 <script>
+let currentPage = 0;
+
 /* page switch */
 function goPage(n){
+    if(n === currentPage) return;
+    document.getElementById("flipSound").play();
+    currentPage = n;
     document.getElementById("pages").style.transform = `translateX(-${n*100}vw)`;
 }
 
@@ -216,6 +246,7 @@ function goPage(n){
 document.querySelectorAll(".paper img").forEach(img=>{
     img.onclick = e=>{
         e.stopPropagation();
+        document.getElementById("paperSound").play();
         document.getElementById("viewerImg").src = img.src;
         document.getElementById("viewer").style.display = "flex";
     };

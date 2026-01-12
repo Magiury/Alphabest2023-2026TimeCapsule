@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphabest – Memory Wall Lớp 11</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: url("class.jpg") center / cover no-repeat fixed;
+    color: #eaeaea;
+}
+
+/* dark overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 0;
+}
+
+/* ================= MEMORY WALL ================= */
+
+.wall {
+    position: relative;
+    z-index: 1;
+    padding: 80px 60px 120px;
+    min-height: 100vh;
+}
+
+/* ================= PAPER PIECE ================= */
+
+.paper {
+    position: absolute;
+    background: rgba(255,252,235,0.95);
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.45),
+        inset 0 0 0 1px rgba(120,100,60,0.25);
+    overflow: hidden;
+    transition: 0.4s ease;
+    /* Màu nền tạm thời để dễ nhận biết khi chưa có ảnh */
+    background-color: #3d3d3d; 
+}
+
+/* torn paper edges */
+.paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 0 0, transparent 10px, rgba(0,0,0,0.15) 11px),
+        radial-gradient(circle at 100% 0, transparent 10px, rgba(0,0,0,0.15) 11px),
+        radial-gradient(circle at 0 100%, transparent 10px, rgba(0,0,0,0.15) 11px),
+        radial-gradient(circle at 100% 100%, transparent 10px, rgba(0,0,0,0.15) 11px);
+    opacity: .25;
+    pointer-events: none;
+}
+
+/* paper image */
+.paper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(10%) contrast(0.95);
+    /* Tô màu vàng chanh cho ảnh để bạn dễ tìm chỗ dán link */
+    background-color: #e1ff00; 
+}
+
+/* hover */
+.paper:hover {
+    transform: scale(1.05) rotate(0deg) !important;
+    z-index: 5;
+}
+
+/* ================= INDIVIDUAL POSITIONS ================= */
+
+.paper.p1 {
+    width: 300px;
+    height: 220px;
+    top: 60px;
+    left: 120px;
+    transform: rotate(-4deg);
+}
+
+.paper.p2 {
+    width: 240px;
+    height: 300px;
+    top: 100px;
+    right: 180px;
+    transform: rotate(6deg);
+}
+
+.paper.p3 {
+    width: 360px;
+    height: 260px;
+    top: 380px;
+    left: 220px;
+    transform: rotate(2deg);
+}
+
+.paper.p4 {
+    width: 260px;
+    height: 200px;
+    top: 480px;
+    right: 240px;
+    transform: rotate(-7deg);
+}
+
+.paper.p5 {
+    width: 320px;
+    height: 240px;
+    top: 760px;
+    left: 50%;
+    transform: translateX(-50%) rotate(3deg);
+}
+
+/* ================= TITLE ================= */
+
+.wall-title {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Merriweather", serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.85);
+    z-index: 3;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wall-title">KỶ NIỆM LỚP 11</div>
+
+<div class="wall">
+
+    <div class="paper p1">
+        <img src="" alt="Dán link ảnh lớp 11 vào đây">
+    </div>
+
+    <div class="paper p2">
+        <img src="" alt="Dán link ảnh lớp 11 vào đây">
+    </div>
+
+    <div class="paper p3">
+        <img src="" alt="Dán link ảnh lớp 11 vào đây">
+    </div>
+
+    <div class="paper p4">
+        <img src="" alt="Dán link ảnh lớp 11 vào đây">
+    </div>
+
+    <div class="paper p5">
+        <img src="" alt="Dán link ảnh lớp 11 vào đây">
+    </div>
+
+</div>
+
+</body>
+</html>

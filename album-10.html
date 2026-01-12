@@ -29,16 +29,66 @@ body::before {
     z-index: 0;
 }
 
-/* ================= MEMORY WALL ================= */
+/* fade out */
+#fade-out {
+    position: fixed;
+    inset: 0;
+    background: black;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+    z-index: 9999;
+}
+#fade-out.active { opacity: 1; pointer-events: all; }
+
+/* ================= RETURN ================= */
+
+.return {
+    position: fixed;
+    left: 26px;
+    bottom: 26px;
+    z-index: 5;
+    color: #fff;
+    text-decoration: none;
+    font-size: 19px;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    transition: 0.3s;
+}
+
+.return span {
+    font-size: 22px;
+    margin-right: 6px;
+}
+
+.return:hover {
+    color: #9dffb3;
+    transform: translateX(-4px);
+}
+
+/* ================= WALL ================= */
 
 .wall {
     position: relative;
     z-index: 1;
-    padding: 80px 60px 120px;
-    min-height: 100vh;
+    padding: 100px 80px 160px;
+    min-height: 120vh;
 }
 
-/* ================= PAPER PIECE ================= */
+/* title */
+.wall-title {
+    position: fixed;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Merriweather", serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.85);
+    z-index: 3;
+}
+
+/* ================= PAPER ================= */
 
 .paper {
     position: absolute;
@@ -50,7 +100,7 @@ body::before {
     transition: 0.4s ease;
 }
 
-/* torn paper edges */
+/* torn edge illusion */
 .paper::before {
     content: "";
     position: absolute;
@@ -64,7 +114,6 @@ body::before {
     pointer-events: none;
 }
 
-/* paper image */
 .paper img {
     width: 100%;
     height: 100%;
@@ -72,71 +121,76 @@ body::before {
     filter: sepia(10%) contrast(0.95);
 }
 
-/* hover */
+/* hover effect */
 .paper:hover {
-    transform: scale(1.05) rotate(0deg) !important;
-    z-index: 5;
+    transform: scale(1.06) rotate(0deg) !important;
+    z-index: 6;
 }
 
-/* ================= INDIVIDUAL POSITIONS ================= */
+/* ================= POSITIONS (GẦN NHAU – CÓ KHOẢNG TRỐNG) ================= */
 
 .paper.p1 {
     width: 300px;
     height: 220px;
-    top: 60px;
-    left: 120px;
+    top: 120px;
+    left: 180px;
     transform: rotate(-4deg);
 }
 
 .paper.p2 {
-    width: 240px;
-    height: 300px;
-    top: 100px;
-    right: 180px;
-    transform: rotate(6deg);
+    width: 260px;
+    height: 320px;
+    top: 160px;
+    left: 520px;
+    transform: rotate(5deg);
 }
 
 .paper.p3 {
     width: 360px;
     height: 260px;
-    top: 380px;
-    left: 220px;
+    top: 420px;
+    left: 260px;
     transform: rotate(2deg);
 }
 
 .paper.p4 {
-    width: 260px;
+    width: 240px;
     height: 200px;
-    top: 480px;
-    right: 240px;
-    transform: rotate(-7deg);
+    top: 460px;
+    left: 680px;
+    transform: rotate(-6deg);
 }
 
+/* chừa trống phía dưới để add thêm */
 .paper.p5 {
     width: 320px;
     height: 240px;
     top: 760px;
-    left: 50%;
-    transform: translateX(-50%) rotate(3deg);
+    left: 420px;
+    transform: rotate(3deg);
 }
 
-/* ================= TITLE ================= */
+/* ================= RESPONSIVE ================= */
 
-.wall-title {
-    position: fixed;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: "Merriweather", serif;
-    font-size: 26px;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,0.85);
-    z-index: 3;
+@media (max-width: 900px) {
+    .paper {
+        position: relative;
+        margin: 40px auto;
+        left: auto !important;
+        top: auto !important;
+        transform: rotate(0deg) !important;
+    }
 }
 </style>
 </head>
 
 <body>
+
+<div id="fade-out"></div>
+
+<a href="home.html" class="return" id="returnBtn">
+    <span>←</span> Return
+</a>
 
 <div class="wall-title">OUR MEMORIES</div>
 
@@ -164,6 +218,15 @@ body::before {
 
 </div>
 
+<script>
+document.getElementById("returnBtn").addEventListener("click", function(e){
+    e.preventDefault();
+    document.getElementById("fade-out").classList.add("active");
+    setTimeout(() => {
+        window.location.href = "home.html";
+    }, 1200);
+});
+</script>
+
 </body>
 </html>
-

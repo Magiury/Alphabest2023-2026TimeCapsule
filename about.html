@@ -286,7 +286,110 @@ body::before {
         opacity: 1;
     }
 }
+/* ================= ACHIEVEMENT TREE ================= */
 
+.achievement-tree {
+    position: relative;
+    margin-top: 60px;
+    padding: 40px 0;
+}
+
+/* main vertical line */
+.tree-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255,255,255,0.25);
+    transform: translateX(-50%);
+}
+
+/* branch item */
+.branch {
+    position: relative;
+    display: flex;
+    width: 50%;
+    padding: 30px 40px;
+    gap: 22px;
+    align-items: center;
+}
+
+/* left & right */
+.branch.left {
+    left: 0;
+    justify-content: flex-end;
+    text-align: right;
+}
+.branch.right {
+    left: 50%;
+}
+
+/* connector line */
+.branch::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 2px;
+    background: rgba(255,255,255,0.25);
+}
+
+.branch.left::before {
+    right: -40px;
+}
+.branch.right::before {
+    left: -40px;
+}
+
+/* dot */
+.branch::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    background: #9dffb3;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.branch.left::after {
+    right: -45px;
+}
+.branch.right::after {
+    left: -45px;
+}
+
+/* image */
+.branch img {
+    width: 160px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* text */
+.branch-text {
+    font-family: "Merriweather", serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #e5e5e5;
+    max-width: 260px;
+}
+
+/* fade in animation */
+.branch {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1.4s ease forwards;
+}
+
+.branch:nth-child(2){animation-delay:.4s;}
+.branch:nth-child(3){animation-delay:.8s;}
+.branch:nth-child(4){animation-delay:1.2s;}
+    
 </style>
 </head>
 
@@ -346,7 +449,7 @@ body::before {
         </div>
 
         <div class="leader">
-            <img src="bich.jpg">
+            <img src="chunhiem12a.jpg">
             <div class="leader-text">
                 <span class="teacher">TRẦN NGỌC BÍCH</span><br>
                 "Ở chặng cuối của con đường cấp ba, tập thể lớp chúng em thật may mắn khi được đồng hành cùng cô Bích. Chính phong thái hiền dịu, kiên nhẫn đến mức đáng kinh ngạc của cô là thứ đã làm cô nổi bật hơn cả trong mắt chúng em. Không chỉ vậy, cô còn là một giáo viên ngữ văn tận tụy, luôn luôn quan tâm đến việc học của tất cả chúng em. Lớp chúng em xin cảm ơn cô vì đã góp phần vào thanh xuân rực rỡ của chúng em tại ngôi trường này!"
@@ -356,8 +459,44 @@ body::before {
 
     <div class="section" id="done">
         <h1>OUR ACHIEVEMENT</h1>
-        <p>Lorem ipsum placeholder content for achievements.</p>
+
+        <div class="achievement-tree">
+            <div class="tree-line"></div>
+
+            <div class="branch left">
+                <div class="branch-text">
+                    Placeholder achievement description goes here.  
+                    A memory worth keeping forever.
+                </div>
+                <img src="achieve1.jpg">
+            </div>
+
+            <div class="branch right">
+                <img src="achieve2.jpg">
+                <div class="branch-text">
+                    Placeholder for an important milestone.  
+                    Growth, effort, and unity.
+                </div>
+            </div>
+
+            <div class="branch left">
+                <div class="branch-text">
+                    Another placeholder memory.  
+                    A moment that shaped who we are.
+                </div>
+                <img src="achieve3.jpg">
+            </div>
+
+            <div class="branch right">
+                <img src="achieve4.jpg">
+                <div class="branch-text">
+                    Final placeholder achievement.  
+                    The peak before a new journey.
+                </div>
+            </div>
+        </div>
     </div>
+
 
 </div>
 

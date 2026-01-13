@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anonymous Chat</title>
+<title>Minecraft Anonymous Chat</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -14,12 +14,12 @@
 body{
     margin:0;
     height:100vh;
-    font-family:Arial;
     background:url("class.jpg") center/cover no-repeat fixed;
+    font-family:Arial, sans-serif;
     overflow:hidden;
 }
 
-/* overlay tối */
+/* overlay nền giống Minecraft */
 body::before{
     content:"";
     position:fixed;
@@ -28,52 +28,53 @@ body::before{
     z-index:0;
 }
 
-/* CHAT BOX – GÓC DƯỚI TRÁI */
+/* CHAT – KHÔNG NỀN */
 .chat{
     position:fixed;
     left:20px;
     bottom:20px;
-    width:360px;
-    background:#000;
-    border:2px solid #222;
-    padding:12px;
-    z-index:1;
-    box-shadow:0 0 12px rgba(0,0,0,.8);
+    width:420px;
+    z-index:2;
+    pointer-events:auto;
 }
 
-.chat h3{
-    margin:0 0 6px;
-    font-size:14px;
-    color:#9dffb3;
-}
-
-/* MESSAGES */
+/* MESSAGE AREA */
 #messages{
-    height:220px;
+    max-height:240px;
     overflow-y:auto;
-    background:#050505;
-    border:1px solid #222;
-    padding:6px;
-    margin-bottom:6px;
-    font-size:13px;
+    padding:4px 6px;
 }
 
-.msg{margin-bottom:4px}
+/* TEXT GIỐNG MINECRAFT */
+.msg{
+    font-size:14px;
+    line-height:1.35;
+    color:#fff;
+    text-shadow:
+        2px 2px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000;
+    margin-bottom:2px;
+}
 
 /* INPUT */
-input{
+#input{
     width:100%;
-    padding:8px;
-    background:#111;
+    padding:6px 8px;
+    margin-top:6px;
+    background:rgba(0,0,0,.35);
     border:none;
     outline:none;
     color:#fff;
-    font-size:13px;
+    font-size:14px;
+    text-shadow:1px 1px 0 #000;
 }
 
-small{
-    font-size:11px;
-    opacity:.6;
+/* placeholder */
+#input::placeholder{
+    color:#ddd;
+    opacity:.7;
 }
 </style>
 </head>
@@ -81,10 +82,8 @@ small{
 <body>
 
 <div class="chat">
-    <h3>Anonymous Chat</h3>
     <div id="messages"></div>
-    <input id="input" placeholder="Enter để gửi...">
-    <small>Tin nhắn tự xoá sau 30 giây</small>
+    <input id="input" placeholder="Nhấn Enter để chat...">
 </div>
 
 <script>
@@ -103,10 +102,10 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const ref = db.ref("messages");
 
-/* ===== ANON NAME (MỖI MÁY 1 TÊN) ===== */
+/* ===== ANON NAME ===== */
 let anonName = localStorage.getItem("anonName");
 if(!anonName){
-    anonName = "Anon " + Math.floor(Math.random()*900 + 100);
+    anonName = "Anon" + Math.floor(Math.random()*900);
     localStorage.setItem("anonName", anonName);
 }
 
@@ -126,19 +125,18 @@ input.addEventListener("keydown", e=>{
 });
 
 /* ===== RECEIVE ===== */
-ref.limitToLast(50).on("child_added", snap=>{
+ref.limitToLast(40).on("child_added", snap=>{
     const data = snap.val();
 
     const div = document.createElement("div");
     div.className="msg";
-    div.textContent = `${data.user}: ${data.text}`;
+    div.textContent = `<${data.user}> ${data.text}`;
+
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
 
-    /* xoá UI */
+    /* auto clear */
     setTimeout(()=>div.remove(),30000);
-
-    /* xoá database */
     setTimeout(()=>snap.ref.remove(),30000);
 });
 </script>

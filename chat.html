@@ -19,7 +19,7 @@ body{
     overflow:hidden;
 }
 
-/* overlay nền giống Minecraft */
+/* overlay nền */
 body::before{
     content:"";
     position:fixed;
@@ -28,50 +28,53 @@ body::before{
     z-index:0;
 }
 
-/* CHAT – KHÔNG NỀN */
+/* ===== CHAT ===== */
 .chat{
     position:fixed;
-    left:20px;
-    bottom:20px;
-    width:420px;
+    left:40px;
+    bottom:40px;
+    width:60vw;              /* ⬅️ RỘNG HƠN */
+    max-width:900px;
     z-index:2;
-    pointer-events:auto;
 }
 
 /* MESSAGE AREA */
 #messages{
-    max-height:240px;
-    overflow-y:auto;
-    padding:4px 6px;
+    max-height:40vh;         /* ⬅️ CAO HƠN */
+    padding:6px 8px;
+    overflow:hidden;         /* ❌ KHÔNG SCROLLBAR */
 }
 
-/* TEXT GIỐNG MINECRAFT */
+/* MESSAGE TEXT – TỰ XUỐNG DÒNG */
 .msg{
-    font-size:14px;
-    line-height:1.35;
+    font-size:15px;
+    line-height:1.4;
     color:#fff;
     text-shadow:
         2px 2px 0 #000,
         -1px -1px 0 #000,
         1px -1px 0 #000,
         -1px 1px 0 #000;
-    margin-bottom:2px;
+    margin-bottom:3px;
+
+    white-space:normal;      /* ⬅️ xuống dòng */
+    word-wrap:break-word;
+    overflow-wrap:break-word;
 }
 
 /* INPUT */
 #input{
     width:100%;
-    padding:6px 8px;
-    margin-top:6px;
+    padding:8px 10px;
+    margin-top:8px;
     background:rgba(0,0,0,.35);
     border:none;
     outline:none;
     color:#fff;
-    font-size:14px;
+    font-size:15px;
     text-shadow:1px 1px 0 #000;
 }
 
-/* placeholder */
 #input::placeholder{
     color:#ddd;
     opacity:.7;
@@ -125,7 +128,7 @@ input.addEventListener("keydown", e=>{
 });
 
 /* ===== RECEIVE ===== */
-ref.limitToLast(40).on("child_added", snap=>{
+ref.limitToLast(60).on("child_added", snap=>{
     const data = snap.val();
 
     const div = document.createElement("div");
@@ -133,7 +136,6 @@ ref.limitToLast(40).on("child_added", snap=>{
     div.textContent = `<${data.user}> ${data.text}`;
 
     messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
 
     /* auto clear */
     setTimeout(()=>div.remove(),30000);

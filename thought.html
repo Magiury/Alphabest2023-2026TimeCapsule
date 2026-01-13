@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabest – Our Thoughts Bubbles</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+
+        body {
+            margin: 0; min-height: 100vh; background: #000; color: #eaeaea;
+            display: flex; overflow: hidden; opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        body.page-loaded { opacity: 1; }
+
+        body::before {
+            content: ""; position: fixed; inset: 0;
+            background: url("class.jpg") center / cover no-repeat fixed;
+            opacity: 0.3; z-index: 0;
+        }
+
+        /* ================= SIDEBAR (GIỮ NGUYÊN TỪ MẪU) ================= */
+        .sidebar {
+            position: fixed; left: 0; top: 0; width: 260px; height: 100vh;
+            padding: 40px 30px; background: rgba(15, 15, 15, 0.7); 
+            backdrop-filter: blur(10px); border-right: 1px solid rgba(255,255,255,0.1);
+            z-index: 100; display: flex; flex-direction: column;
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .sidebar.extended { width: 50vw; background: rgba(10, 10, 10, 0.9); }
+        .sidebar h2 { font-size: 14px; letter-spacing: 2px; color: #9dffb3; margin-bottom: 40px; }
+        
+        .toggle-container {
+            position: fixed; left: 200px; top: 50%; transform: translateY(-50%);
+            z-index: 1001; transition: left 0.8s cubic-bezier(0.77, 0, 0.175, 1); cursor: pointer;
+        }
+        body.shifted .toggle-container { left: calc(50vw - 7px); }
+        .triangle-btn {
+            width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent;
+            border-left: 18px solid #9dffb3; transition: 0.4s;
+        }
+        body.shifted .triangle-btn { transform: rotate(180deg); }
+
+        /* ================= BUBBLE WORLD ================= */
+        #bubble-container {
+            position: absolute; inset: 0; 
+            margin-left: 260px; /* Tránh Sidebar */
+            z-index: 1; overflow: hidden;
+            pointer-events: none;
+        }
+        body.shifted #bubble-container { margin-left: 50vw; }
+
+        .bubble {
+            position: absolute;
+            bottom: -150px; /* Xuất phát dưới đáy */
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 2px solid rgba(157, 255, 179, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; pointer-events: auto;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            box-shadow: 0 0 15px rgba(157, 255, 179, 0.2);
+            overflow: hidden;
+        }
+        .bubble img { width: 100%; height: 100%; object-fit: cover; }
+        .bubble:hover { transform: scale(1.2); border-color: #9dffb3; z-index: 10; }
+
+        .bubble-label {
+            position: absolute; bottom: -20px; font-size: 10px; color: #9dffb3;
+        }
+
+        /* ERROR SCREEN */
+        #error-overlay {
+            position: fixed; inset: 0; background: #8b0000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; color: white; font-family: 'Bangers', cursive;
+        }
+        #error-overlay h1 { font-size: 100px; margin: 0; }
+    </style>
+</head>
+
+<body>
+
+<div id="error-overlay">
+    <h1>Lỗi vật lí - ERROR</h1>
+    <p>Bong bóng hết hạn trước khi chạm nóc màn hình.</p>
+    <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">REBOOT SYSTEM</button>
+</div>
+
+<div class="toggle-container" onclick="toggleSidebar()">
+    <div class="triangle-btn"></div>
+</div>
+
+<nav class="sidebar" id="mainSidebar">
+    <h2>OUR THOUGHTS</h2>
+    <div class="nav-links-wrapper">
+        <p style="font-size: 12px; color: #888; line-height: 1.6;">
+            Chào mừng đến với không gian ký ức. 35 bong bóng đang bay lơ lửng đại diện cho những suy nghĩ của chúng ta. Hãy chạm vào chúng.
+        </p>
+    </div>
+    <a href="home.html" style="margin-top: auto; color: #9dffb3; text-decoration: none;">← Quay lại</a>
+</nav>
+
+<div id="bubble-container"></div>
+
+<script>
+    const container = document.getElementById('bubble-container');
+    const errorOverlay = document.getElementById('error-overlay');
+    
+    let activeBubbles = new Set();
+    const TOTAL_MEMORIES = 35;
+    const MAX_ON_SCREEN = 8;
+    let isPhysicsError = false;
+
+    // Khởi tạo danh sách ID từ 1 đến 35
+    let memoryPool = Array.from({length: TOTAL_MEMORIES}, (_, i) => i + 1);
+
+    function spawnBubble() {
+        if (isPhysicsError || activeBubbles.size >= MAX_ON_SCREEN) return;
+
+        // Lấy một ID chưa xuất hiện trên màn hình
+        const availableIds = memoryPool.filter(id => !Array.from(activeBubbles).some(b => b.id === id));
+        if (availableIds.length === 0) return;
+
+        const id = availableIds[Math.floor(Math.random() * availableIds.length)];
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        
+        // Random vị trí ngang (tránh Sidebar 260px)
+        const startX = Math.random() * (window.innerWidth - 400); 
+        bubble.style.left = `${startX}px`;
+        
+        // Nội dung bong bóng (Ảnh placeholder cho mỗi ID)
+        bubble.innerHTML = `
+            <img src="https://picsum.photos/id/${id + 10}/200/200" alt="Memory">
+            <div class="bubble-label">THOUGHT #${id}</div>
+        `;
+
+        container.appendChild(bubble);
+
+        // THÔNG SỐ VẬT LÝ
+        const duration = 8000 + Math.random() * 7000; // 8s - 15s để bay hết màn hình
+        let startTime = Date.now();
+        let startPos = window.innerHeight + 100;
+        let bubbleData = { id, element: bubble, expired: false };
+        activeBubbles.add(bubbleData);
+
+        function animate() {
+            if (isPhysicsError) return;
+
+            let elapsed = Date.now() - startTime;
+            let progress = elapsed / duration;
+
+            // Tính toán vị trí Y (bay từ dưới lên)
+            let currentY = startPos - (startPos + 150) * progress;
+            bubble.style.transform = `translateY(${currentY - startPos}px)`;
+
+            // KIỂM TRA LỖI VẬT LÝ (Yêu cầu của bạn)
+            if (elapsed >= duration && currentY > 0) {
+                triggerPhysicsError();
+                return;
+            }
+
+            // Nếu chạm nóc thành công
+            if (currentY <= -150) {
+                activeBubbles.delete(bubbleData);
+                bubble.remove();
+                return;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        bubble.onclick = () => {
+            bubble.style.opacity = '0';
+            bubble.style.transform += ' scale(2)';
+            setTimeout(() => {
+                activeBubbles.delete(bubbleData);
+                bubble.remove();
+            }, 500);
+        };
+
+        requestAnimationFrame(animate);
+    }
+
+    function triggerPhysicsError() {
+        isPhysicsError = true;
+        errorOverlay.style.display = 'flex';
+        container.innerHTML = '';
+        console.error("VẬT LÝ LỖI: Bong bóng không kịp chạm đích trong thời gian quy định!");
+    }
+
+    // Vòng lặp kiểm tra để luôn spawn bóng nếu thiếu
+    setInterval(() => {
+        if (!isPhysicsError && activeBubbles.size < MAX_ON_SCREEN) {
+            spawnBubble();
+        }
+    }, 1000);
+
+    // Sidebar Logic
+    function toggleSidebar() {
+        document.body.classList.toggle('shifted');
+        document.getElementById('mainSidebar').classList.toggle('extended');
+    }
+
+    window.addEventListener('load', () => { 
+        document.body.classList.add('page-loaded'); 
+        // Khởi tạo đợt bóng đầu tiên
+        for(let i=0; i<MAX_ON_SCREEN; i++) setTimeout(spawnBubble, i * 800);
+    });
+</script>
+
+</body>
+</html>

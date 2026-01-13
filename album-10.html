@@ -25,7 +25,7 @@ body::before{
     z-index:0;
 }
 
-/* fade out */
+/* ================= FADE OUT ================= */
 #fade-out{
     position:fixed;
     inset:0;
@@ -37,7 +37,7 @@ body::before{
 }
 #fade-out.active{opacity:1}
 
-/* RETURN */
+/* ================= RETURN ================= */
 .return{
     position:fixed;
     left:26px;
@@ -51,12 +51,22 @@ body::before{
 .return span{font-size:22px;margin-right:6px}
 .return:hover{color:#9dffb3;transform:translateX(-4px)}
 
-/* ALBUM */
+/* ================= ALBUM ================= */
 .album{position:relative;z-index:1;width:100vw;height:100vh}
-.pages{display:flex;width:200vw;transition:transform 1.2s ease}
-.page{width:100vw;height:100vh;position:relative;padding:80px}
+.pages{
+    display:flex;
+    width:200vw;
+    height:100%;
+    transition:transform 1.2s ease;
+}
+.page{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    padding:80px;
+}
 
-/* PAPER */
+/* ================= PAPER ================= */
 .paper{
     position:absolute;
     background:rgba(255,252,235,.96);
@@ -84,30 +94,32 @@ body::before{
 
 .paper img{width:100%;height:100%;object-fit:cover}
 
-/* STANDARD SIZE */
-.paper-lg{width:340px;height:240px}
-.paper-portrait{width:260px;height:360px}
-.paper-md{width:300px;height:220px}
+/* ================= SIZE CHUẨN ================= */
+.paper-lg{width:340px;height:240px}       /* ngang lớn */
+.paper-portrait{width:260px;height:360px}/* dọc */
+.paper-md{width:300px;height:220px}       /* ngang vừa */
 
-/* ===== PAGE 1 – GIÃN RA ===== */
-.page1 .p1 { top:190px; left:120px; transform:rotate(-4deg); }
-.page1 .p2 { top:160px; left:600px; transform:rotate(4deg); }
-.page1 .p3 { top:550px; left:180px; transform:rotate(1deg); }
-.page1 .p4 { top:570px; left:570px; transform:rotate(3deg); }
-.page1 .p5 { top:210px; left:980px; transform:rotate(6deg); }
-.page1 .p6 { top:540px; left:980px; transform:rotate(-3deg); }
+/* ================= LAYOUT CHUẨN ================= */
+/* p1: trên trái | p2: trên giữa | p3: dưới trái
+   p4: dưới giữa | p5: trên phải | p6: dưới phải */
 
+/* -------- PAGE 1 -------- */
+.page1 .p1 { top:140px; left:120px; transform:rotate(-4deg); }
+.page1 .p2 { top:110px; left:600px; transform:rotate(4deg); }
+.page1 .p3 { top:500px; left:180px; transform:rotate(1deg); }
+.page1 .p4 { top:520px; left:520px; transform:rotate(3deg); }
+.page1 .p5 { top:160px; left:980px; transform:rotate(6deg); }
+.page1 .p6 { top:490px; left:980px; transform:rotate(-3deg); }
 
-/* ===== PAGE 2 – GIÃN RA ===== */
-.page2 .p1 { top:190px; left:120px; transform:rotate(-4deg); }
-.page2 .p2 { top:160px; left:600px; transform:rotate(4deg); }
-.page2 .p3 { top:550px; left:180px; transform:rotate(1deg); }
-.page2 .p4 { top:570px; left:570px; transform:rotate(3deg); }
-.page2 .p5 { top:210px; left:980px; transform:rotate(6deg); }
-.page2 .p6 { top:540px; left:980px; transform:rotate(-3deg); }
+/* -------- PAGE 2 (GIỐNG PAGE 1) -------- */
+.page2 .p1 { top:140px; left:120px; transform:rotate(-4deg); }
+.page2 .p2 { top:110px; left:600px; transform:rotate(4deg); }
+.page2 .p3 { top:500px; left:180px; transform:rotate(1deg); }
+.page2 .p4 { top:520px; left:520px; transform:rotate(3deg); }
+.page2 .p5 { top:160px; left:980px; transform:rotate(6deg); }
+.page2 .p6 { top:490px; left:980px; transform:rotate(-3deg); }
 
-
-/* NAV */
+/* ================= NAV ================= */
 .page-nav{
     position:fixed;
     right:40px;
@@ -119,7 +131,7 @@ body::before{
 .page-nav span{cursor:pointer;padding:6px 12px}
 .page-nav span:hover{color:#9dffb3}
 
-/* VIEWER */
+/* ================= VIEWER ================= */
 #viewer{
     position:fixed;
     inset:0;
@@ -144,7 +156,7 @@ body::before{
 <div class="album">
 <div class="pages" id="pages">
 
-<!-- PAGE 1 -->
+<!-- ================= PAGE 1 ================= -->
 <div class="page page1">
     <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=1"></div>
     <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=2"></div>
@@ -154,7 +166,7 @@ body::before{
     <div class="paper paper-md p6"><img src="https://via.placeholder.com/700x500?text=6"></div>
 </div>
 
-<!-- PAGE 2 -->
+<!-- ================= PAGE 2 ================= -->
 <div class="page page2">
     <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=7"></div>
     <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=8"></div>
@@ -177,14 +189,16 @@ body::before{
 </div>
 
 <script>
+const pages = document.getElementById("pages")
+
 function goPage(n){
-    pages.style.transform=`translateX(-${n*100}vw)`
+    pages.style.transform = `translateX(-${n*100}vw)`
 }
 
 document.querySelectorAll(".paper img").forEach(img=>{
     img.onclick=e=>{
         e.stopPropagation()
-        viewerImg.src=img.src
+        viewerImg.src = img.src
         viewer.style.display="flex"
     }
 })

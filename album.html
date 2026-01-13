@@ -12,7 +12,6 @@
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
 
-        /* Hiệu ứng Fade In toàn trang khi load */
         body {
             margin: 0;
             min-height: 100vh;
@@ -21,19 +20,35 @@
             display: flex;
             overflow-x: hidden;
             overflow-y: auto;
-            opacity: 0; /* Mặc định ẩn để fade in */
-            transition: opacity 1s ease-in-out;
         }
-        body.page-loaded { opacity: 0; }
-        body.fade-out { opacity: 0; }
 
-        /* Ảnh nền cố định */
+        /* Ảnh nền cố định - HIỆN NGAY LẬP TỨC */
         body::before {
             content: "";
             position: fixed; inset: 0;
             background: url("class.jpg") center / cover no-repeat fixed;
             opacity: 0.5;
             z-index: 0;
+            /* Không có transition opacity ở đây */
+        }
+
+        /* Lớp bao phủ toàn bộ nội dung để làm hiệu ứng Fade In */
+        #page-wrapper {
+            width: 100%;
+            display: flex;
+            opacity: 0; /* Ẩn lúc đầu */
+            transition: opacity 1s ease-in-out;
+            z-index: 1;
+        }
+        
+        /* Khi load xong thì mới hiện nội dung */
+        body.page-loaded #page-wrapper {
+            opacity: 1;
+        }
+
+        /* Hiệu ứng Fade Out khi thoát trang */
+        body.fade-out #page-wrapper {
+            opacity: 0;
         }
 
         /* ================= SIDEBAR ================= */
@@ -271,76 +286,78 @@
 
 <body>
 
-<div class="toggle-container" onclick="toggleSidebar()">
-    <div class="triangle-btn"></div>
-</div>
-
-<nav class="sidebar" id="mainSidebar">
-    <h2>ALPHABEST</h2>
-    
-    <div class="nav-links-wrapper">
-        <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
-        <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
-        <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
+<div id="page-wrapper">
+    <div class="toggle-container" onclick="toggleSidebar()">
+        <div class="triangle-btn"></div>
     </div>
 
-    <div class="timeline-container">
-        <div class="timeline-box-wrapper">
-            <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
-            <div class="timeline-dot dot-10"></div>
+    <nav class="sidebar" id="mainSidebar">
+        <h2>ALPHABEST</h2>
+        
+        <div class="nav-links-wrapper">
+            <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
+            <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
+            <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
         </div>
-        <div class="timeline-box-wrapper">
-            <div class="timeline-dot dot-11"></div>
-            <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
-        </div>
-        <div class="timeline-box-wrapper">
-            <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
-            <div class="timeline-dot dot-12"></div>
-        </div>
-        <div class="timeline-box-wrapper">
-            <div class="timeline-dot dot-mystery"></div>
-            <div class="timeline-box box-mystery">
-                <span>???</span>
-                <div class="cloud-inner-container">
-                    <i class="fas fa-cloud cloud-icon c1"></i>
-                    <i class="fas fa-cloud cloud-icon c2"></i>
-                    <i class="fas fa-cloud cloud-icon c3"></i>
+
+        <div class="timeline-container">
+            <div class="timeline-box-wrapper">
+                <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
+                <div class="timeline-dot dot-10"></div>
+            </div>
+            <div class="timeline-box-wrapper">
+                <div class="timeline-dot dot-11"></div>
+                <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
+            </div>
+            <div class="timeline-box-wrapper">
+                <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
+                <div class="timeline-dot dot-12"></div>
+            </div>
+            <div class="timeline-box-wrapper">
+                <div class="timeline-dot dot-mystery"></div>
+                <div class="timeline-box box-mystery">
+                    <span>???</span>
+                    <div class="cloud-inner-container">
+                        <i class="fas fa-cloud cloud-icon c1"></i>
+                        <i class="fas fa-cloud cloud-icon c2"></i>
+                        <i class="fas fa-cloud cloud-icon c3"></i>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <a onclick="fadeExit('home.html')" class="return">← Return</a>
-</nav>
+        <a onclick="fadeExit('home.html')" class="return">← Return</a>
+    </nav>
 
-<main class="content">
-    <section class="section" id="grade10">
-        <h1>NĂM LỚP 10</h1>
-        <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
-            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="album-10.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
-        </div>
-    </section>
+    <main class="content">
+        <section class="section" id="grade10">
+            <h1>NĂM LỚP 10</h1>
+            <div class="photo-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
+                <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+                <a href="album-10.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            </div>
+        </section>
 
-    <section class="section" id="grade11">
-        <h1>NĂM LỚP 11</h1>
-        <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
-            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="album-11.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
-        </div>
-    </section>
+        <section class="section" id="grade11">
+            <h1>NĂM LỚP 11</h1>
+            <div class="photo-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
+                <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+                <a href="album-11.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            </div>
+        </section>
 
-    <section class="section" id="grade12">
-        <h1>NĂM LỚP 12</h1>
-        <div class="photo-grid">
-            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
-            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
-            <a href="album-12.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
-        </div>
-    </section>
-</main>
+        <section class="section" id="grade12">
+            <h1>NĂM LỚP 12</h1>
+            <div class="photo-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
+                <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+                <a href="album-12.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+            </div>
+        </section>
+    </main>
+</div>
 
 <script>
 // Hiệu ứng Fade In khi vào trang

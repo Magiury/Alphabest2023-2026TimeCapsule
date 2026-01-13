@@ -63,7 +63,7 @@ body::before{
     width:100vw;
     height:100vh;
     position:relative;
-    padding:80px;
+    padding:0;          /* ❌ bỏ padding */
 }
 
 /* ================= PAPER ================= */
@@ -149,6 +149,14 @@ body::before{
     z-index:999;
 }
 #viewer img{max-width:90%;max-height:90%}
+
+.page-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    padding:80px;   /* padding giờ nằm ở đây */
+}
+
 </style>
 </head>
 
@@ -175,12 +183,14 @@ body::before{
 
 <!-- ================= PAGE 2 ================= -->
 <div class="page page2">
+  <div class="page-inner">
     <div class="paper paper-lg p1"><img src="https://via.placeholder.com/800x600?text=7"></div>
     <div class="paper paper-portrait p2"><img src="https://via.placeholder.com/600x900?text=8"></div>
     <div class="paper paper-md p3"><img src="https://via.placeholder.com/700x500?text=9"></div>
     <div class="paper paper-md p4"><img src="https://via.placeholder.com/700x500?text=10"></div>
     <div class="paper paper-md p5"><img src="https://via.placeholder.com/700x500?text=11"></div>
     <div class="paper paper-md p6"><img src="https://via.placeholder.com/700x500?text=12"></div>
+  </div>
 </div>
 
 </div>

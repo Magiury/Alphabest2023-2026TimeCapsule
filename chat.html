@@ -9,33 +9,71 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
+*{box-sizing:border-box}
+
 body{
     margin:0;
-    background:#111;
-    color:#eee;
+    height:100vh;
     font-family:Arial;
+    background:url("class.jpg") center/cover no-repeat fixed;
+    overflow:hidden;
 }
+
+/* overlay tối */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:0;
+}
+
+/* CHAT BOX – GÓC DƯỚI TRÁI */
 .chat{
-    max-width:600px;
-    margin:40px auto;
-    padding:20px;
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    width:360px;
     background:#000;
-    border:1px solid #222;
+    border:2px solid #222;
+    padding:12px;
+    z-index:1;
+    box-shadow:0 0 12px rgba(0,0,0,.8);
 }
+
+.chat h3{
+    margin:0 0 6px;
+    font-size:14px;
+    color:#9dffb3;
+}
+
+/* MESSAGES */
 #messages{
-    height:350px;
+    height:220px;
     overflow-y:auto;
+    background:#050505;
     border:1px solid #222;
-    padding:10px;
-    margin-bottom:10px;
+    padding:6px;
+    margin-bottom:6px;
+    font-size:13px;
 }
-.msg{margin-bottom:6px}
+
+.msg{margin-bottom:4px}
+
+/* INPUT */
 input{
     width:100%;
-    padding:12px;
+    padding:8px;
     background:#111;
     border:none;
+    outline:none;
     color:#fff;
+    font-size:13px;
+}
+
+small{
+    font-size:11px;
+    opacity:.6;
 }
 </style>
 </head>
@@ -50,7 +88,7 @@ input{
 </div>
 
 <script>
-/* 🔥 FIREBASE CONFIG – DÁN CỦA BẠN */
+/* ===== FIREBASE ===== */
 const firebaseConfig = {
   apiKey: "AIzaSyAhPOkBYBi3vPsnPVOl9b2tVR7tqgDvAWo",
   authDomain: "alphabesttimecapsule.firebaseapp.com",
@@ -58,21 +96,28 @@ const firebaseConfig = {
   projectId: "alphabesttimecapsule",
   storageBucket: "alphabesttimecapsule.firebasestorage.app",
   messagingSenderId: "452118090125",
-  appId: "1:452118090125:web:98e85bce7950413763adc4",
-  measurementId: "G-WE0W77BXDT"
+  appId: "1:452118090125:web:98e85bce7950413763adc4"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const ref = db.ref("messages");
 
+/* ===== ANON NAME (MỖI MÁY 1 TÊN) ===== */
+let anonName = localStorage.getItem("anonName");
+if(!anonName){
+    anonName = "Anon " + Math.floor(Math.random()*900 + 100);
+    localStorage.setItem("anonName", anonName);
+}
+
 const input = document.getElementById("input");
 const messages = document.getElementById("messages");
 
-/* GỬI */
+/* ===== SEND ===== */
 input.addEventListener("keydown", e=>{
     if(e.key==="Enter" && input.value.trim()){
         ref.push({
+            user: anonName,
             text: input.value,
             time: Date.now()
         });
@@ -80,19 +125,20 @@ input.addEventListener("keydown", e=>{
     }
 });
 
-/* NHẬN */
+/* ===== RECEIVE ===== */
 ref.limitToLast(50).on("child_added", snap=>{
     const data = snap.val();
+
     const div = document.createElement("div");
     div.className="msg";
-    div.textContent = "Anon: " + data.text;
+    div.textContent = `${data.user}: ${data.text}`;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
 
-    /* xoá UI sau 30s */
+    /* xoá UI */
     setTimeout(()=>div.remove(),30000);
 
-    /* xoá database sau 30s */
+    /* xoá database */
     setTimeout(()=>snap.ref.remove(),30000);
 });
 </script>

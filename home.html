@@ -13,11 +13,13 @@
 body {
     margin: 0;
     height: 100vh;
-    /* Dịch chuyển ảnh nền sang trái 2px bằng cách sử dụng calc() cho background-position */
+    /* Thiết lập background cơ bản */
     background: url("class.jpg") center / cover no-repeat;
-    background-position: calc(50% - 10.0px) center; 
+    background-position: calc(50% - 10px) center; 
     overflow: hidden;
     color: white;
+    background-attachment: fixed;
+    transition: background-size 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 /* Dark overlay */
@@ -27,6 +29,12 @@ body::before {
     inset: 0;
     background: rgba(0,0,0,0.45);
     z-index: 0;
+}
+
+/* Animation đặc biệt cho About Us: Background thu nhỏ về phía bên phải 8px */
+body.sink-in-right {
+    background-size: calc(100% - 8px) auto;
+    background-position: right center;
 }
 
 /* ================= APP WRAPPER ================= */
@@ -59,6 +67,7 @@ body::before {
 .logo img {
     width: 70px;
     opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));
 }
 
 /* ================= SEARCH ================= */
@@ -76,15 +85,20 @@ body::before {
 .search-bar input {
     width: 100%;
     padding: 14px 16px;
-    border-radius: 6px;
-    border: none;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
     outline: none;
     background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
     color: white;
     font-size: 15px;
+    transition: border 0.3s ease;
 }
 
-/* Suggestions Box */
+.search-bar input:focus {
+    border-color: rgba(157, 255, 179, 0.5);
+}
+
 .search-results {
     position: absolute;
     top: 105%;
@@ -118,8 +132,6 @@ body::before {
     color: #9dffb3;
 }
 
-.result-item i { font-size: 12px; opacity: 0.7; }
-
 /* ================= MENU ================= */
 .menu {
     display: flex;
@@ -135,14 +147,17 @@ body::before {
     color: white;
     text-decoration: none;
     font-size: 15px;
+    font-weight: 500;
     letter-spacing: 1px;
-    opacity: 0.85;
-    transition: 0.2s;
+    opacity: 0.8;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .menu a:hover {
     opacity: 1;
-    text-shadow: 0 0 6px rgba(255,255,255,0.5);
+    color: #9dffb3;
+    text-shadow: 0 0 10px rgba(157, 255, 179, 0.5);
+    transform: scale(1.1);
 }
 
 /* ================= COUNTDOWN ================= */
@@ -167,19 +182,20 @@ body::before {
     letter-spacing: 3px;
     color: rgba(180,255,200,0.7);
     margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
 .cd-time {
-    font-size: 58px;
-    font-weight: bold;
+    font-size: 64px;
+    font-weight: 700;
     letter-spacing: 4px;
     color: #9dffb3;
-    text-shadow: 0 0 6px rgba(157,255,179,0.6), 0 0 18px rgba(157,255,179,0.35);
+    text-shadow: 0 0 10px rgba(157,255,179,0.4), 0 0 25px rgba(157,255,179,0.2);
 }
 
 .cd-sub {
-    margin-top: 8px;
-    font-size: 12px;
+    margin-top: 12px;
+    font-size: 13px;
     letter-spacing: 2px;
     color: rgba(180,255,200,0.5);
 }
@@ -205,7 +221,7 @@ body::before {
     </div>
 
     <div class="menu">
-        <a href="about.html" onclick="navigate(event, 'about.html')">ABOUT US</a>
+        <a href="about.html" onclick="navigate(event, 'about.html', true)">ABOUT US</a>
         <a href="album.html" onclick="navigate(event, 'album.html')">ALBUM</a>
         <a href="thought.html" onclick="navigate(event, 'thought.html')">OUR THOUGHT</a>
         <a href="chat.html" onclick="navigate(event, 'chat.html')">CHAT</a>
@@ -288,12 +304,23 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-/* ================= PAGE TRANSITION ================= */
-function navigate(e, url) {
+/* ================= PAGE TRANSITION & SINK IN EFFECT ================= */
+function navigate(e, url, isAbout = false) {
     e.preventDefault();
+    
+    // Nếu là nhấn vào About Us, kích hoạt animation Sink In cho background
+    if(isAbout) {
+        document.body.classList.add("sink-in-right");
+    }
+
+    // Hiệu ứng mờ dần toàn bộ nội dung
     document.getElementById("app").classList.add("fade-out");
     document.querySelector(".countdown-hud").classList.add("fade-out");
-    setTimeout(() => { window.location.href = url; }, 1200);
+
+    // Chuyển trang sau khi kết thúc animation (1.2 giây)
+    setTimeout(() => { 
+        window.location.href = url; 
+    }, 1200);
 }
 </script>
 

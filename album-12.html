@@ -21,21 +21,10 @@ body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:url("class.jpg") center/cover no-repeat fixed;
-    opacity:.5;
+    background:rgba(0,0,0,.6);
     z-index:0;
 }
-/* ===== PAGE WRAPPER (CHỈ FADE UI) ===== */
-#page-wrapper{
-    position:relative;
-    z-index:1;
-    width:100%;
-    display:flex;
-    opacity:0;
-    transition:opacity 1s ease;
-}
-body.page-loaded #page-wrapper{opacity:1}
-body.fade-out #page-wrapper{opacity:0}
+
 /* ================= FADE OUT ================= */
 #fade-out{
     position:fixed;

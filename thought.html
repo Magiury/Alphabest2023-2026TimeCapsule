@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alphabest – Our Thoughts Bubbles</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Bangers&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         html { scroll-behavior: smooth; }
-        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; font-family: "Quicksand", "Segoe UI", sans-serif; }
 
         body {
             margin: 0; min-height: 100vh; background: #000; color: #eaeaea;
@@ -25,7 +25,7 @@
             opacity: 0.3; z-index: 0;
         }
 
-        /* ================= SIDEBAR (GIỮ NGUYÊN TỪ MẪU) ================= */
+        /* ================= SIDEBAR ================= */
         .sidebar {
             position: fixed; left: 0; top: 0; width: 260px; height: 100vh;
             padding: 40px 30px; background: rgba(15, 15, 15, 0.7); 
@@ -34,7 +34,7 @@
             transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
         .sidebar.extended { width: 50vw; background: rgba(10, 10, 10, 0.9); }
-        .sidebar h2 { font-size: 14px; letter-spacing: 2px; color: #9dffb3; margin-bottom: 40px; }
+        .sidebar h2 { font-size: 14px; letter-spacing: 2px; color: #9dffb3; margin-bottom: 40px; font-family: "Bangers"; }
         
         .toggle-container {
             position: fixed; left: 200px; top: 50%; transform: translateY(-50%);
@@ -50,32 +50,58 @@
         /* ================= BUBBLE WORLD ================= */
         #bubble-container {
             position: absolute; inset: 0; 
-            margin-left: 260px; /* Tránh Sidebar */
-            z-index: 1; overflow: hidden;
+            margin-left: 260px; z-index: 1; overflow: hidden;
             pointer-events: none;
         }
         body.shifted #bubble-container { margin-left: 50vw; }
 
         .bubble {
-            position: absolute;
-            bottom: -150px; /* Xuất phát dưới đáy */
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            border: 2px solid rgba(157, 255, 179, 0.5);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
+            position: absolute; bottom: -150px; width: 110px; height: 110px;
+            border-radius: 50%; border: 2px solid rgba(157, 255, 179, 0.6);
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px);
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; pointer-events: auto;
-            transition: transform 0.3s ease, opacity 0.5s ease;
-            box-shadow: 0 0 15px rgba(157, 255, 179, 0.2);
+            transition: transform 0.3s ease, border-color 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 0 15px rgba(255,255,255,0.2);
             overflow: hidden;
         }
-        .bubble img { width: 100%; height: 100%; object-fit: cover; }
-        .bubble:hover { transform: scale(1.2); border-color: #9dffb3; z-index: 10; }
+        .bubble:hover { transform: scale(1.15); border-color: #fff; z-index: 10; }
+        .bubble img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; filter: grayscale(30%); }
+        .bubble:hover img { opacity: 1; filter: grayscale(0%); }
 
-        .bubble-label {
-            position: absolute; bottom: -20px; font-size: 10px; color: #9dffb3;
+        .bubble-name {
+            position: absolute; bottom: 15px; width: 90%; background: rgba(0,0,0,0.6);
+            color: #9dffb3; font-size: 10px; text-align: center; padding: 2px 0;
+            border-radius: 10px; font-weight: bold;
         }
+
+        /* ================= POPUP CÁCH ĐIỆU ================= */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            display: none; align-items: center; justify-content: center;
+            z-index: 2000; backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(157, 255, 179, 0.05));
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 90%; max-width: 450px; padding: 40px; border-radius: 40px;
+            text-align: center; position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-content h3 { color: #9dffb3; font-size: 28px; margin: 0 0 5px; }
+        .modal-content .nickname { font-size: 14px; color: #fff; opacity: 0.7; font-style: italic; display: block; margin-bottom: 25px; }
+        
+        .info-section { margin-bottom: 20px; text-align: left; }
+        .info-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #9dffb3; display: block; margin-bottom: 5px; font-weight: 700; }
+        .info-text { font-size: 16px; color: #eee; line-height: 1.5; }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 25px; font-size: 24px;
+            color: #fff; cursor: pointer; opacity: 0.5; transition: 0.3s;
+        }
+        .close-btn:hover { opacity: 1; transform: rotate(90deg); }
 
         /* ERROR SCREEN */
         #error-overlay {
@@ -83,16 +109,36 @@
             display: none; flex-direction: column; align-items: center; justify-content: center;
             z-index: 9999; color: white; font-family: 'Bangers', cursive;
         }
-        #error-overlay h1 { font-size: 100px; margin: 0; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 
 <body>
 
+<div class="modal-overlay" id="thoughtModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3 id="m-name">Tên Thành Viên</h3>
+        <span class="nickname" id="m-nickname">Biệt danh</span>
+        
+        <div class="info-section">
+            <span class="info-label"><i class="fas fa-star"></i> Ước mơ</span>
+            <div class="info-text" id="m-dream">Nội dung ước mơ...</div>
+        </div>
+
+        <div class="info-section">
+            <span class="info-label"><i class="fas fa-comment-heart"></i> Lời nhắn gửi</span>
+            <div class="info-text" id="m-message">Nội dung lời nhắn...</div>
+        </div>
+    </div>
+</div>
+
 <div id="error-overlay">
     <h1>Lỗi vật lí - ERROR</h1>
     <p>Bong bóng hết hạn trước khi chạm nóc màn hình.</p>
-    <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">REBOOT SYSTEM</button>
+    <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer; border-radius: 20px; border: none; font-weight: bold;">REBOOT SYSTEM</button>
 </div>
 
 <div class="toggle-container" onclick="toggleSidebar()">
@@ -102,86 +148,98 @@
 <nav class="sidebar" id="mainSidebar">
     <h2>OUR THOUGHTS</h2>
     <div class="nav-links-wrapper">
-        <p style="font-size: 12px; color: #888; line-height: 1.6;">
-            Chào mừng đến với không gian ký ức. 35 bong bóng đang bay lơ lửng đại diện cho những suy nghĩ của chúng ta. Hãy chạm vào chúng.
+        <p style="font-size: 13px; color: #aaa; line-height: 1.8;">
+            Mỗi bong bóng là một mảnh tâm tư của tập thể A. Chạm vào để lắng nghe ước mơ và những lời nhắn nhủ thân thương nhất.
         </p>
     </div>
-    <a href="home.html" style="margin-top: auto; color: #9dffb3; text-decoration: none;">← Quay lại</a>
+    <a href="home.html" style="margin-top: auto; color: #9dffb3; text-decoration: none; font-weight: bold;">← Quay lại</a>
 </nav>
 
 <div id="bubble-container"></div>
 
 <script>
+    // DANH SÁCH DỮ LIỆU THÀNH VIÊN
+    const thoughtsData = [
+        { name: "Trần Huỳnh Thảo Nhi", nick: "Tnhi", dream: "Đậu nguyện vọng 1, đậu nguyện vọng 1, đậu nguyện vọng 1!!!", msg: "Chúc tất cả các bạn đều đậu nguyện vọng 1" },
+        { name: "Hồng Quỳnh Anh", nick: "Cáo", dream: "Làm truyền thông và có sự nghiệp, thu nhập ổn định", msg: "Chúc tất cả mọi người đậu nguyện vọng 1 và thành công trên hành trình tiếp theo của mình hihiii" },
+        { name: "Hồng Như Ý", nick: "Ruji", dream: "Thành phú bà", msg: "Chúc lớp thành công như ý muốn" },
+        { name: "Nguyễn Huỳnh Minh Anh", nick: "Manh", dream: "Đậu nguyện vọng 1", msg: "Chúc mọi người thành công trên con đường mà mọi người đã chọn. Phải thật rực rỡ, thật bùng nổ nha" },
+        { name: "Trần Khả Di", nick: "Tôn Ngộ Không", dream: "Tỷ phú", msg: "Đại đại tới đâu hay tới đó" },
+        { name: "Lưu Nguyễn Bích Trâm", nick: "Bích Trâm", dream: "Làm giáo viên", msg: "3 năm cấp 3 không dài cũng không nhắn, đến rồi cũng đi nhưng dù vậy mình thật sự rất biết ơn mọi người vì là một phần thanh xuân của mình. Chúc các bạn đỗ nguyện cọng 1 và vững bước trên con đường mà các bạn đã chọn." },
+        { name: "Trần Thị Xuân Duyên", nick: "xd", dream: "Trillionaire", msg: "Đỗ nguyện vọng 1" },
+        { name: "Lê Nguyễn My My", nick: "vợ iu Hứa Quang Hán", dream: "Trở thành phú bà", msg: "Chúc cả lớp chúng ta mãi hạnh phúc!" },
+        { name: "Trần Tuệ Tâm", nick: "Tem Tem", dream: "Có một cuộc sống an nhàn, được đi du lịch khắp nơi", msg: "Mình yêu lớp, yêu thầy cô, yêu trường. Từng đoạn đường đã trải qua cùng mọi người là thanh xuân và ký ức vô cùng quý giá trong cuộc đời. Mãi yêu 10A, 11A, 12A!!!" },
+        { name: "Trần Ngọc Lê", nick: "Lia Pear", dream: "Giáo viên Tiếng Anh", msg: "Nỗ lực và biến ước mơ thành hiện thực" },
+        { name: "Dương Thái Ngọc", nick: "Magiury", dream: "Uh…Made moni I guess", msg: "Good luck I supposed" },
+        { name: "Lê Anh Khoa", nick: "Khoa", dream: "Sống một cuộc đời rực rỡ", msg: "Cảm ơn lớp chuyên Anh khóa 2023-22026 đã cho mình một nơi để nương tựa, phát triển và bay xa hơn nữa. Trí nhớ của mình sẽ mãi lưu giữ kí ức về các bạn!" },
+        { name: "Lê Phạm Kiều Hân", nick: "Lê Khan", dream: "Làm tỷ phú", msg: "Maybe có rất nhiều chuyện cảy ra nhưng mà vẫn iu lắm" },
+        { name: "Huỳnh Phước Hưng", nick: "Bel", dream: "Sống, hết mình, tận hưởng", msg: "Đừng do dự, đừng để lại tiếc nuối" },
+        { name: "Lê Phúc Khang", nick: "Hay Thế", dream: "Họa sĩ", msg: "Bye" }
+    ];
+
     const container = document.getElementById('bubble-container');
     const errorOverlay = document.getElementById('error-overlay');
+    const modal = document.getElementById('thoughtModal');
     
     let activeBubbles = new Set();
-    const TOTAL_MEMORIES = 35;
     const MAX_ON_SCREEN = 8;
     let isPhysicsError = false;
-
-    // Khởi tạo danh sách ID từ 1 đến 35
-    let memoryPool = Array.from({length: TOTAL_MEMORIES}, (_, i) => i + 1);
 
     function spawnBubble() {
         if (isPhysicsError || activeBubbles.size >= MAX_ON_SCREEN) return;
 
-        // Lấy một ID chưa xuất hiện trên màn hình
-        const availableIds = memoryPool.filter(id => !Array.from(activeBubbles).some(b => b.id === id));
-        if (availableIds.length === 0) return;
+        // Lọc những người chưa có bong bóng trên màn hình
+        const availablePeople = thoughtsData.filter(p => !Array.from(activeBubbles).some(b => b.person.name === p.name));
+        if (availablePeople.length === 0) return;
 
-        const id = availableIds[Math.floor(Math.random() * availableIds.length)];
+        const person = availablePeople[Math.floor(Math.random() * availablePeople.length)];
         const bubble = document.createElement('div');
         bubble.className = 'bubble';
         
-        // Random vị trí ngang (tránh Sidebar 260px)
-        const startX = Math.random() * (window.innerWidth - 400); 
+        const startX = Math.random() * (window.innerWidth - 450); 
         bubble.style.left = `${startX}px`;
         
-        // Nội dung bong bóng (Ảnh placeholder cho mỗi ID)
+        // Random 1 ảnh đại diện giả lập từ tên
+        const avatarId = person.name.length + 10;
         bubble.innerHTML = `
-            <img src="https://picsum.photos/id/${id + 10}/200/200" alt="Memory">
-            <div class="bubble-label">THOUGHT #${id}</div>
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${person.nick}" alt="Avatar">
+            <div class="bubble-name">${person.nick}</div>
         `;
 
         container.appendChild(bubble);
 
-        // THÔNG SỐ VẬT LÝ
-        const duration = 8000 + Math.random() * 7000; // 8s - 15s để bay hết màn hình
+        const duration = 10000 + Math.random() * 8000; 
         let startTime = Date.now();
-        let startPos = window.innerHeight + 100;
-        let bubbleData = { id, element: bubble, expired: false };
+        let startPos = window.innerHeight + 150;
+        let bubbleData = { person, element: bubble };
         activeBubbles.add(bubbleData);
 
         function animate() {
             if (isPhysicsError) return;
-
             let elapsed = Date.now() - startTime;
             let progress = elapsed / duration;
+            let currentY = startPos - (startPos + 200) * progress;
 
-            // Tính toán vị trí Y (bay từ dưới lên)
-            let currentY = startPos - (startPos + 150) * progress;
             bubble.style.transform = `translateY(${currentY - startPos}px)`;
 
-            // KIỂM TRA LỖI VẬT LÝ (Yêu cầu của bạn)
             if (elapsed >= duration && currentY > 0) {
                 triggerPhysicsError();
                 return;
             }
 
-            // Nếu chạm nóc thành công
-            if (currentY <= -150) {
+            if (currentY <= -200) {
                 activeBubbles.delete(bubbleData);
                 bubble.remove();
                 return;
             }
-
             requestAnimationFrame(animate);
         }
 
-        bubble.onclick = () => {
+        bubble.onclick = (e) => {
+            e.stopPropagation();
+            showModal(person);
+            // Sau khi xem, bong bóng sẽ biến mất để nhường chỗ
             bubble.style.opacity = '0';
-            bubble.style.transform += ' scale(2)';
             setTimeout(() => {
                 activeBubbles.delete(bubbleData);
                 bubble.remove();
@@ -191,21 +249,28 @@
         requestAnimationFrame(animate);
     }
 
+    function showModal(person) {
+        document.getElementById('m-name').innerText = person.name;
+        document.getElementById('m-nickname').innerText = person.nick;
+        document.getElementById('m-dream').innerText = person.dream;
+        document.getElementById('m-message').innerText = person.msg || "Không có lời nhắn.";
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
     function triggerPhysicsError() {
         isPhysicsError = true;
         errorOverlay.style.display = 'flex';
         container.innerHTML = '';
-        console.error("VẬT LÝ LỖI: Bong bóng không kịp chạm đích trong thời gian quy định!");
     }
 
-    // Vòng lặp kiểm tra để luôn spawn bóng nếu thiếu
     setInterval(() => {
-        if (!isPhysicsError && activeBubbles.size < MAX_ON_SCREEN) {
-            spawnBubble();
-        }
-    }, 1000);
+        if (!isPhysicsError && activeBubbles.size < MAX_ON_SCREEN) spawnBubble();
+    }, 1500);
 
-    // Sidebar Logic
     function toggleSidebar() {
         document.body.classList.toggle('shifted');
         document.getElementById('mainSidebar').classList.toggle('extended');
@@ -213,9 +278,13 @@
 
     window.addEventListener('load', () => { 
         document.body.classList.add('page-loaded'); 
-        // Khởi tạo đợt bóng đầu tiên
-        for(let i=0; i<MAX_ON_SCREEN; i++) setTimeout(spawnBubble, i * 800);
+        for(let i=0; i<MAX_ON_SCREEN; i++) setTimeout(spawnBubble, i * 1000);
     });
+
+    // Đóng modal khi click ra ngoài
+    window.onclick = (event) => {
+        if (event.target == modal) closeModal();
+    }
 </script>
 
 </body>

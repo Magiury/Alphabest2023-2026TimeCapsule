@@ -222,6 +222,53 @@ body::before {
 .branch:nth-child(2){animation-delay:.4s;}
 .branch:nth-child(3){animation-delay:.8s;}
 .branch:nth-child(4){animation-delay:1.2s;}
+.pin {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-8deg);
+
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, #b80000);
+    border-radius: 50%;
+
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.4),
+        inset 0 2px 2px rgba(255,255,255,0.5);
+
+    z-index: 5;
+}
+
+/* Kim ghim */
+.pin::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 2px;
+    height: 26px;
+    background: linear-gradient(#bbb, #666);
+    transform: translateX(-50%) rotate(10deg);
+    border-radius: 2px;
+}
+/* PAPER PLANE */
+.paper-plane {
+    position: absolute;
+    top: 60px;
+    right: -42px;
+
+    font-size: 26px;
+    color: #ffffff;
+    opacity: 0.85;
+
+    transform: rotate(15deg);
+    transition: transform 0.15s linear;
+    pointer-events: none;
+    z-index: 6;
+
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
+}
 
 </style>
 </head>
@@ -246,6 +293,10 @@ body::before {
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
         <div class="letter">
+           <div class="pin"></div>
+           <div class="paper-plane">✈</div>
+
+
            <p>
                Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
                <br><br>
@@ -253,6 +304,7 @@ body::before {
                <br><br>
                Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
            </p>
+           
            <div class="signatures">
                <div class="signature">— Alphabest</div>
                <div class="signature">Class of 12A</div>
@@ -325,7 +377,29 @@ document.getElementById("returnBtn").addEventListener("click", e => {
     document.getElementById("fade-out").classList.add("active");
     setTimeout(() => location.href = "home.html", 1200);
 });
+<script>
+let lastScroll = window.scrollY;
+let plane = document.querySelector(".paper-plane");
+
+window.addEventListener("scroll", () => {
+    const currentScroll = window.scrollY;
+    const delta = currentScroll - lastScroll;
+    lastScroll = currentScroll;
+
+    // hướng bay ngẫu nhiên nhẹ
+    const x = Math.min(Math.max(delta * 0.6, -20), 20);
+    const y = Math.min(Math.max(-delta * 0.4, -15), 15);
+    const rotate = x * 1.5;
+
+    plane.style.transform = `
+        translate(${x}px, ${y}px)
+        rotate(${rotate}deg)
+    `;
+});
+</script>
+
 </script>
 
 </body>
 </html>
+

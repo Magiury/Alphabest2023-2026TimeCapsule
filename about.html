@@ -217,7 +217,14 @@ body::before {
 .branch::after { content: ""; position: absolute; top: 50%; width: 10px; height: 10px; background: #9dffb3; border-radius: 50%; transform: translateY(-50%); }
 .branch.left::after { right: -45px; }
 .branch.right::after { left: -45px; }
-.branch img { width: 160px; height: 110px; object-fit: cover; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+.branch img {
+    width: 208px;   /* tăng 30% */
+    height: 143px;  /* tăng 30% */
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+}
+
 .branch-text { font-family: "Merriweather", serif; font-size: 15px; line-height: 1.7; color: #e5e5e5; max-width: 260px; }
 .branch:nth-child(2){animation-delay:.4s;}
 .branch:nth-child(3){animation-delay:.8s;}

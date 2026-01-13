@@ -1,235 +1,377 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alphabest – Journey Album</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabest – Journey Album</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Bangers&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<style>
-*{box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif}
-html{scroll-behavior:smooth}
+    <style>
+        html { scroll-behavior: smooth; }
+        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
 
-body{
-    margin:0;
-    min-height:100vh;
-    background:#000;
-    color:#eaeaea;
-    overflow-x:hidden;
-}
+        /* Hiệu ứng Fade In toàn trang khi load */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000;
+            color: #eaeaea;
+            display: flex;
+            overflow-x: hidden;
+            overflow-y: auto;
+            opacity: 0; /* Mặc định ẩn để fade in */
+            transition: opacity 1s ease-in-out;
+        }
+        body.page-loaded { opacity: 1; }
+        body.fade-out { opacity: 0; }
 
-/* background */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:url("class.jpg") center/cover no-repeat fixed;
-    opacity:.5;
-    z-index:0;
-}
+        /* Ảnh nền cố định */
+        body::before {
+            content: "";
+            position: fixed; inset: 0;
+            background: url("class.jpg") center / cover no-repeat fixed;
+            opacity: 0.5;
+            z-index: 0;
+        }
 
-/* ================= PAGE TRANSITION ================= */
-#page-transition{
-    position:fixed;
-    inset:0;
-    background:black;
-    opacity:1;
-    pointer-events:none;
-    z-index:99999;
-    transition:opacity 1.2s ease;
-}
-body.loaded #page-transition{opacity:0}
-body.fade-out #page-transition{
-    opacity:1;
-    pointer-events:all;
-}
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0;
+            width: 260px;
+            height: 100vh;
+            padding: 40px 30px;
+            background: rgba(15, 15, 15, 0.6); 
+            backdrop-filter: blur(8px);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .sidebar::-webkit-scrollbar { display: none; }
 
-/* ================= SIDEBAR ================= */
-.sidebar{
-    position:fixed;
-    left:0;top:0;
-    width:260px;height:100vh;
-    padding:40px 30px;
-    background:rgba(15,15,15,.6);
-    backdrop-filter:blur(8px);
-    border-right:1px solid rgba(255,255,255,.1);
-    z-index:10;
-    display:flex;
-    flex-direction:column;
-}
+        .sidebar.extended { 
+            width: 50vw; 
+            background: rgba(10, 10, 10, 0.75); 
+            backdrop-filter: blur(25px); 
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+        }
 
-.sidebar h2{
-    font-size:14px;
-    letter-spacing:2px;
-    margin-bottom:40px;
-    color:#9dffb3;
-}
+        .sidebar h2 { 
+            font-size: 14px; 
+            letter-spacing: 2px; 
+            margin-bottom: 40px; 
+            color: #9dffb3; 
+            white-space: nowrap;
+            display: inline-block;
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .sidebar.extended h2 {
+            transform: scale(1.5);
+            align-self: center;
+            margin-bottom: 80px;
+            background: #9dffb3;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(157, 255, 179, 0.5);
+        }
 
-.sidebar a{
-    color:#ddd;
-    text-decoration:none;
-    margin-bottom:20px;
-    transition:.3s;
-}
-.sidebar a:hover{color:#9dffb3;padding-left:5px}
+        .nav-links-wrapper { transition: opacity 0.5s; }
+        .sidebar.extended .nav-links-wrapper { opacity: 0; visibility: hidden; height: 0; overflow: hidden; }
 
-/* ================= CONTENT ================= */
-.content{
-    position:relative;
-    z-index:1;
-    margin-left:260px;
-    padding:80px;
-}
+        .sidebar a.nav-link { display: block; color: #ddd; text-decoration: none; margin-bottom: 22px; transition: 0.3s; white-space: nowrap; }
+        .sidebar a.nav-link:hover { color:#9dffb3; padding-left: 5px; }
 
-.section{margin-bottom:100px}
-.section h1{
-    font-family:"Merriweather";
-    font-size:32px;
-    border-left:5px solid #9dffb3;
-    padding-left:20px;
-    margin-bottom:30px;
-}
+        /* ================= NÚT TAM GIÁC ================= */
+        .toggle-container {
+            position: fixed;
+            left: 200px; top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            transition: left 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            cursor: pointer;
+            padding: 15px;
+        }
+        body.shifted .toggle-container { left: calc(50vw - 7px); }
+        .triangle-btn {
+            width: 0; height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 18px solid #9dffb3; 
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 5px rgba(157, 255, 179, 0.5));
+        }
+        body.shifted .triangle-btn { transform: rotate(180deg); }
 
-/* ================= GRID ================= */
-.photo-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-    gap:22px;
-}
+        /* ================= TIMELINE ================= */
+        .timeline-container {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 40px 0;
+            position: relative;
+        }
+        .sidebar.extended .timeline-container { display: flex; }
 
-.gallery-item{
-    height:250px;
-    border-radius:12px;
-    overflow:hidden;
-    background:#111;
-}
-.gallery-item img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:.5s;
-}
-.gallery-item:hover img{transform:scale(1.1)}
+        .timeline-container::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(157, 255, 179, 0.4), transparent);
+            transform: translateX(-50%);
+            z-index: 1;
+        }
 
-.add-photo-box,
-.view-more-box{
-    height:250px;
-    border-radius:12px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    cursor:pointer;
-    text-decoration:none;
-    transition:.3s;
-}
+        .timeline-box-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
 
-.add-photo-box{
-    border:2px dashed rgba(157,255,179,.3);
-    color:#9dffb3;
-}
-.add-photo-box:hover{
-    background:rgba(157,255,179,.1);
-    border-color:#9dffb3;
-}
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 14px; height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            opacity: 0;
+        }
 
-.view-more-box{
-    border:2px solid rgba(255,255,255,.15);
-    color:#aaa;
-}
-.view-more-box:hover{
-    color:#fff;
-    border-color:#9dffb3;
-    background:rgba(157,255,179,.08);
-}
+        .sidebar.extended .timeline-dot {
+            animation: dotGrow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 1.5s; 
+        }
+        @keyframes dotGrow { to { opacity: 1; } }
 
-/* ================= RETURN ================= */
-.return{
-    margin-top:auto;
-    color:#fff;
-    opacity:.6;
-    text-decoration:none;
-    transition:.3s;
-}
-.return:hover{opacity:1;color:#9dffb3}
-</style>
+        .dot-10 { border: 2px solid #3498db; box-shadow: 0 0 15px #3498db; }
+        .dot-11 { border: 2px solid #2ecc71; box-shadow: 0 0 15px #2ecc71; }
+        .dot-12 { border: 2px solid #e74c3c; box-shadow: 0 0 15px #e74c3c; }
+        .dot-mystery { border: 2px solid #bc13fe; box-shadow: 0 0 15px #bc13fe; }
+
+        .timeline-box { 
+            width: 180px; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; text-decoration: none;
+            background-size: cover; background-position: center;
+            border-radius: 12px; overflow: hidden;
+            transition: 0.4s; z-index: 5;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+
+        .sidebar.extended .timeline-box { animation: boxFadeIn 0.8s both; }
+        @keyframes boxFadeIn {
+            from { opacity: 0; transform: translateX(var(--start-x)) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        .timeline-box-wrapper:nth-child(odd) { justify-content: flex-start; padding-left: 8%; --start-x: -30px; }
+        .timeline-box-wrapper:nth-child(even) { justify-content: flex-end; padding-right: 8%; --start-x: 30px; }
+
+        .box-10 { background-image: url(https://i.ibb.co/FLvm3RQj/Gemini-Generated-Image-sb1ntesb1ntesb1n-1.png); border: 2px solid #3498db; }
+        .box-11 { background-image: url(https://i.ibb.co/WNsJK9V3/image-2026-01-13-040629956.png); border: 2px solid #2ecc71; }
+        .box-12 { background-image: url(https://i.ibb.co/Zpzd7nSY/image-2026-01-13-040507521.png); border: 2px solid #e74c3c; }
+        
+        /* MYSTERY BOX VỚI ĐÁM MÂY */
+        .box-mystery { 
+            background: #1a0b2e; 
+            border: 2px solid #bc13fe; 
+            position: relative;
+            overflow: hidden; 
+        }
+
+        .cloud-inner-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cloud-icon {
+            position: absolute;
+            color: #bc13fe; 
+            filter: blur(1.5px); 
+            opacity: 0;
+            animation: sharpPulse var(--dur) infinite ease-in-out;
+            text-shadow: 0 0 5px rgba(188, 19, 254, 0.4);
+        }
+
+        .sidebar.extended .cloud-icon {
+            animation: 
+                cloudSlideIn 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
+                sharpPulse var(--dur) infinite ease-in-out 1.2s;
+        }
+
+        @keyframes cloudSlideIn {
+            from { opacity: 0; transform: translateX(var(--slide-dist)) scale(0.5); }
+            to { opacity: 0.5; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes sharpPulse {
+            0%, 100% { opacity: 0.3; transform: translate(0, 0) scale(1); }
+            50% { opacity: 0.7; transform: translate(var(--mx), var(--my)) scale(1.08); }
+        }
+
+        .c1 { font-size: 70px; --dur: 4s; --mx: -3px; --my: 2px; --slide-dist: -60px; left: 5px; }
+        .c2 { font-size: 50px; --dur: 5s; --mx: 4px; --my: -3px; --slide-dist: 60px; right: 5px; }
+        .c3 { font-size: 45px; --dur: 4.5s; --mx: 2px; --my: 4px; --slide-dist: 0; top: 5px; }
+
+        .timeline-box span { font-family: 'Bangers'; font-size: 20px; z-index: 10; color: #fff; text-shadow: 0 2px 4px #000; }
+
+        .return { margin-top: auto; margin-bottom: 30px; align-self: center; color: #fff; text-decoration: none; font-size: 18px; opacity: 0.6; transition: 0.3s; cursor: pointer; }
+        .return:hover { opacity: 1; color: #9dffb3; }
+
+        /* ================= CONTENT ================= */
+        .content {
+            position: relative; z-index: 1;
+            margin-left: 260px; padding: 80px;
+            width: calc(100% - 260px);
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        body.shifted .content { margin-left: 50vw; width: 50vw; }
+
+        .section { margin-bottom: 100px; }
+        .section h1 { font-family: 'Merriweather'; font-size: 32px; border-left: 5px solid #9dffb3; padding-left: 20px; margin-bottom: 30px; }
+
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+        .gallery-item { height: 250px; border-radius: 12px; overflow: hidden; background: #1a1a1a; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        .add-photo-box {
+            height: 250px; border: 2px dashed rgba(157, 255, 179, 0.3); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; color: #9dffb3; transition: 0.3s; background: rgba(157, 255, 179, 0.02);
+            text-decoration: none; gap: 8px;
+        }
+        .add-photo-box:hover { background: rgba(157, 255, 179, 0.1); border-color: #9dffb3; }
+
+        .view-more-box {
+            height: 250px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-decoration: none; color: #888; transition: 0.3s; gap: 8px;
+        }
+        .view-more-box:hover { color: #fff; border-color: #9dffb3; background: rgba(157,255,179,0.05); }
+    </style>
 </head>
 
 <body>
 
-<!-- FADE OVERLAY -->
-<div id="page-transition"></div>
+<div class="toggle-container" onclick="toggleSidebar()">
+    <div class="triangle-btn"></div>
+</div>
 
-<nav class="sidebar">
+<nav class="sidebar" id="mainSidebar">
     <h2>ALPHABEST</h2>
-    <a href="#grade10">📘 Năm lớp 10</a>
-    <a href="#grade11">📗 Năm lớp 11</a>
-    <a href="#grade12">📕 Năm lớp 12</a>
+    
+    <div class="nav-links-wrapper">
+        <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
+        <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
+        <a href="#grade12" class="nav-link">📕 Năm lớp 12</a>
+    </div>
 
-    <a href="home.html" class="return">← Return</a>
+    <div class="timeline-container">
+        <div class="timeline-box-wrapper">
+            <a href="#grade10" class="timeline-box box-10"><span>LỚP 10</span></a>
+            <div class="timeline-dot dot-10"></div>
+        </div>
+        <div class="timeline-box-wrapper">
+            <div class="timeline-dot dot-11"></div>
+            <a href="#grade11" class="timeline-box box-11"><span>LỚP 11</span></a>
+        </div>
+        <div class="timeline-box-wrapper">
+            <a href="#grade12" class="timeline-box box-12"><span>LỚP 12</span></a>
+            <div class="timeline-dot dot-12"></div>
+        </div>
+        <div class="timeline-box-wrapper">
+            <div class="timeline-dot dot-mystery"></div>
+            <div class="timeline-box box-mystery">
+                <span>???</span>
+                <div class="cloud-inner-container">
+                    <i class="fas fa-cloud cloud-icon c1"></i>
+                    <i class="fas fa-cloud cloud-icon c2"></i>
+                    <i class="fas fa-cloud cloud-icon c3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a onclick="fadeExit('home.html')" class="return">← Return</a>
 </nav>
 
 <main class="content">
+    <section class="section" id="grade10">
+        <h1>NĂM LỚP 10</h1>
+        <div class="photo-grid">
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1a3a5f/ffffff?text=Lớp+10+Memory"></div>
+            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="album-10.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+        </div>
+    </section>
 
-<section class="section" id="grade10">
-<h1>NĂM LỚP 10</h1>
-<div class="photo-grid">
-    <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Grade+10"></div>
-    <a class="add-photo-box"><i class="fas fa-plus-circle"></i>Thêm ảnh</a>
-    <a href="album-10.html" class="view-more-box"><i class="fas fa-images"></i>Xem thêm</a>
-</div>
-</section>
+    <section class="section" id="grade11">
+        <h1>NĂM LỚP 11</h1>
+        <div class="photo-grid">
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/1b4d3e/ffffff?text=Lớp+11+Memory"></div>
+            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="album-11.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+        </div>
+    </section>
 
-<section class="section" id="grade11">
-<h1>NĂM LỚP 11</h1>
-<div class="photo-grid">
-    <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Grade+11"></div>
-    <a class="add-photo-box"><i class="fas fa-plus-circle"></i>Thêm ảnh</a>
-    <a href="album-11.html" class="view-more-box"><i class="fas fa-images"></i>Xem thêm</a>
-</div>
-</section>
-
-<section class="section" id="grade12">
-<h1>NĂM LỚP 12</h1>
-<div class="photo-grid">
-    <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Grade+12"></div>
-    <a class="add-photo-box"><i class="fas fa-plus-circle"></i>Thêm ảnh</a>
-    <a href="album-12.html" class="view-more-box"><i class="fas fa-images"></i>Xem thêm</a>
-</div>
-</section>
-
+    <section class="section" id="grade12">
+        <h1>NĂM LỚP 12</h1>
+        <div class="photo-grid">
+            <div class="gallery-item"><img src="https://via.placeholder.com/400x300/5e1a1a/ffffff?text=Lớp+12+Memory"></div>
+            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a href="album-12.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
+        </div>
+    </section>
 </main>
 
 <script>
-/* FADE IN */
-window.addEventListener("load",()=>{
-    document.body.classList.add("loaded");
+// Hiệu ứng Fade In khi vào trang
+window.addEventListener('load', () => {
+    document.body.classList.add('page-loaded');
 });
 
-/* FADE OUT + REDIRECT */
-function fadeTo(url){
-    document.body.classList.add("fade-out");
-    setTimeout(()=>location.href=url,1200);
+// Hiệu ứng Fade Out khi thoát trang
+function fadeExit(url) {
+    document.body.classList.add('fade-out');
+    setTimeout(() => {
+        window.location.href = url;
+    }, 1000); 
 }
 
-/* bắt link xem thêm */
-document.querySelectorAll(".view-more-box").forEach(btn=>{
-    btn.onclick=e=>{
-        e.preventDefault();
-        fadeTo(btn.href);
-    }
-});
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    const isExtended = sidebar.classList.contains('extended');
+    
+    document.body.classList.toggle('shifted');
+    sidebar.classList.toggle('extended');
 
-/* bắt return */
-document.querySelectorAll(".return").forEach(btn=>{
-    btn.onclick=e=>{
-        e.preventDefault();
-        fadeTo(btn.href);
+    if (!isExtended) {
+        const elements = document.querySelectorAll('.timeline-box, .timeline-dot, .cloud-icon');
+        elements.forEach(el => {
+            el.style.animation = 'none';
+            el.offsetHeight; 
+            el.style.animation = null;
+        });
     }
-});
+}
 </script>
 
 </body>

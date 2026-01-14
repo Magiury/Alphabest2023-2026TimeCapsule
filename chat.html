@@ -29,7 +29,6 @@ body{
 }
 
 body.page-loaded{opacity:1}
-body.fade-out{opacity:0 !important}
 
 /* overlay */
 body::before{
@@ -120,6 +119,20 @@ body::before{
     white-space:pre-wrap;
     word-break:break-word;
 }
+/* ===== FADE TO BLACK ===== */
+#fade-overlay{
+    position:fixed;
+    inset:0;
+    background:#000;
+    opacity:0;
+    pointer-events:none;
+    z-index:9999;
+    transition:opacity 1s ease;
+}
+
+#fade-overlay.active{
+    opacity:1;
+}
 
 /* input */
 #input{
@@ -138,6 +151,8 @@ body::before{
 </head>
 
 <body>
+    
+<div id="fade-overlay"></div>
 
 <div id="ui">
 
@@ -225,7 +240,6 @@ function exitChat(e){
     e.preventDefault();
     document.body.classList.remove("page-loaded");
     void document.body.offsetWidth;
-    document.body.classList.add("fade-out");
     setTimeout(()=>location.href="home.html",900);
 }
 

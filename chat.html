@@ -24,11 +24,12 @@ html,body{
 body{
     background:url("class.jpg") center/cover no-repeat fixed;
     color:#fff;
-    opacity:0.55;
+    opacity:0;
     transition:opacity 1s ease;
 }
 
 body.page-loaded{opacity:1}
+body.fade-out{opacity:0 !important}
 
 /* overlay */
 body::before{
@@ -95,14 +96,12 @@ body::before{
 
 /* ===== CHAT ===== */
 .chat{
-    position:fixed;
-    inset:0;
+    flex:1;
     padding:20px;
-    padding-top:70px; /* chừa chỗ cho nút Exit Chat */
     display:flex;
     flex-direction:column;
+    justify-content:flex-end;
 }
-
 
 #messages{
     flex:1;
@@ -123,20 +122,6 @@ body::before{
     white-space:pre-wrap;
     word-break:break-word;
 }
-/* ===== FADE TO BLACK ===== */
-#fade-overlay{
-    position:fixed;
-    inset:0;
-    background:#000;
-    opacity:0;
-    pointer-events:none;
-    z-index:9999;
-    transition:opacity 1s ease;
-}
-
-#fade-overlay.active{
-    opacity:1;
-}
 
 /* input */
 #input{
@@ -155,8 +140,6 @@ body::before{
 </head>
 
 <body>
-    
-<div id="fade-overlay"></div>
 
 <div id="ui">
 
@@ -244,6 +227,7 @@ function exitChat(e){
     e.preventDefault();
     document.body.classList.remove("page-loaded");
     void document.body.offsetWidth;
+    document.body.classList.add("fade-out");
     setTimeout(()=>location.href="home.html",900);
 }
 

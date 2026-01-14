@@ -21,11 +21,11 @@ body {
     background: url("class.jpg") center / cover no-repeat fixed;
     color: #eaeaea;
     display: flex;
-    /* Hiệu ứng Fade In khi vào trang */
-    animation: fadeInPage 1.5s ease forwards;
+    /* Hiệu ứng Fade In toàn trang khi vào */
+    animation: pageFadeIn 1.5s ease-out forwards;
 }
 
-@keyframes fadeInPage {
+@keyframes pageFadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
@@ -50,7 +50,7 @@ body::before {
 }
 #fade-out.active { opacity: 1; }
 
-/* ================= SIDEBAR (CẤU TRÚC MỚI) ================= */
+/* ================= SIDEBAR (CÁU TRÚC MỚI) ================= */
 
 .sidebar {
     position: fixed;
@@ -63,11 +63,8 @@ body::before {
     backdrop-filter: blur(6px);
     border-right: 1px solid rgba(255,255,255,0.08);
     z-index: 2;
-
-    /* Dùng Flexbox để đẩy nút Return xuống đáy */
     display: flex;
     flex-direction: column;
-
     opacity: 0;
     transform: translateX(-20px);
     animation: sidebarIn 1.6s ease forwards;
@@ -82,38 +79,56 @@ body::before {
     animation-delay: 0.8s;
 }
 
-/* CLASS ĐIỀU HƯỚNG MỚI */
+/* CÁCH ĐIỆU LẠI NAV-LINK */
 .sidebar a.nav-link {
     display: block;
     color: #ddd;
     text-decoration: none;
-    margin-bottom: 18px;
-    font-size: 15px;
-
+    margin-bottom: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    padding-left: 15px;
+    transition: 0.3s;
     opacity: 0;
     transform: translateX(-6px);
     animation: fadeLeft 1.2s ease forwards;
 }
 
+.sidebar a.nav-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #9dffb3;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.sidebar a.nav-link:hover { color:#9dffb3; padding-left: 20px; }
+.sidebar a.nav-link:hover::before { width: 10px; border-radius: 2px; }
+
 .sidebar a.nav-link:nth-child(2){animation-delay:1s;}
 .sidebar a.nav-link:nth-child(3){animation-delay:1.2s;}
 .sidebar a.nav-link:nth-child(4){animation-delay:1.4s;}
 
-.sidebar a.nav-link:hover { color:#9dffb3; }
-
 /* ================= VỊ TRÍ NÚT RETURN MỚI ================= */
 
 .return {
-    margin-top: auto; /* Đẩy xuống đáy Sidebar */
+    margin-top: auto; 
     margin-bottom: 30px;
-    align-self: center; /* Căn giữa ngang Sidebar */
+    align-self: center; 
     color: #fff;
     text-decoration: none;
     font-size: 19px;
     transition: 0.3s;
     cursor: pointer;
     z-index: 3;
-
     opacity: 0;
     transform: translateX(-12px);
     animation: fadeLeft 1.4s ease forwards;
@@ -128,7 +143,7 @@ body::before {
 .return:hover { color:#9dffb3; transform: translateX(-3px); }
 .return:hover span { transform: translateX(-4px); }
 
-/* ================= CONTENT (GIỮ NGUYÊN NỘI DUNG) ================= */
+/* ================= CONTENT ================= */
 
 .content {
     position: relative;
@@ -136,44 +151,162 @@ body::before {
     margin-left: 260px;
     padding: 80px 80px 140px;
     max-width: 1000px;
-    transition: filter 0.5s ease;
 }
 
-/* Hiệu ứng mờ nền khi mở thư */
-body.letter-open .content {
-    filter: blur(5px) brightness(0.5);
+/* Lớp phủ mờ khi mở thư */
+#letter-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    backdrop-filter: blur(0px);
+    z-index: 100;
+    pointer-events: none;
+    transition: all 0.8s ease;
+}
+#letter-overlay.active {
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+    pointer-events: auto;
 }
 
 .section {
     margin-bottom: 140px;
 }
 
-/* CÁCH ĐIỆU TIÊU ĐỀ */
 .section h1 {
-    font-size: 42px;
+    font-size: 36px;
     margin-bottom: 26px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    background: linear-gradient(to right, #9dffb3, #ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    border-left: 5px solid #9dffb3;
-    padding-left: 20px;
+    letter-spacing: 1px;
     opacity: 0;
     transform: translateY(15px);
     animation: fadeUp 1.4s ease forwards;
 }
 
-.section p {
-    font-family: "Merriweather", serif;
-    font-size: 17px;
-    line-height: 1.9;
-    opacity: 0;
-    transform: translateY(10px);
-    animation: fadeUp 1.4s ease forwards;
+/* ================= PHẦN BỨC THƯ (VỎ THƯ VÀ GIẤY) ================= */
+
+.letter-wrapper {
+    position: relative;
+    width: 400px;
+    height: 280px;
+    margin-top: 50px;
+    cursor: pointer;
+    perspective: 1500px;
+    z-index: 101;
 }
 
-/* LEADER BLOCK */
+/* Vỏ thư màu vàng cổ điển */
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #e3c08d;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: 0.5s;
+    transform-style: preserve-3d;
+}
+
+.envelope-front {
+    position: absolute;
+    width: 0; height: 0;
+    border-top: 140px solid transparent;
+    border-bottom: 140px solid #d4ae7b;
+    border-left: 200px solid #d4ae7b;
+    border-right: 200px solid #d4ae7b;
+    z-index: 3;
+}
+
+/* Nắp thư có sáp */
+.envelope-flap {
+    position: absolute;
+    top: 0; width: 0; height: 0;
+    border-left: 200px solid transparent;
+    border-right: 200px solid transparent;
+    border-top: 150px solid #c9a06a;
+    transform-origin: top;
+    transition: transform 0.6s ease;
+    z-index: 4;
+}
+
+/* Sáp đóng dấu màu đỏ */
+.wax-seal {
+    position: absolute;
+    top: 120px; left: 50%;
+    width: 50px; height: 50px;
+    background: #a31d1d;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    z-index: 5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: #701111;
+    transition: opacity 0.4s;
+}
+
+/* Giấy thư bên trong */
+.paper {
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 380px; height: 260px;
+    background: #fff;
+    padding: 30px;
+    color: #2b2b2b;
+    font-family: "Merriweather", serif;
+    font-size: 14px;
+    line-height: 1.6;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+    overflow-y: auto;
+    opacity: 0.8;
+}
+
+/* Trạng thái mở thư (Animation) */
+.letter-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+.letter-wrapper.open .wax-seal { opacity: 0; }
+.letter-wrapper.open .paper {
+    top: -150px;
+    height: auto;
+    max-height: 80vh;
+    width: 600px;
+    left: -100px;
+    z-index: 102;
+    transform: scale(1.2) translateY(100px);
+    opacity: 1;
+    cursor: default;
+}
+
+/* TRẠNG THÁI RÁCH (Khi đã mở rồi) */
+.letter-wrapper.opened-state .envelope-flap { transform: rotateX(180deg); opacity: 0.5; border-top-color: #b08d5d; }
+.letter-wrapper.opened-state .wax-seal { display: none; }
+.letter-wrapper.opened-state .paper {
+    top: 10px; left: 10px; width: 380px; height: 260px; transform: scale(1.05); z-index: 6;
+}
+
+/* ZOOM KHI CLICK LẠI */
+.letter-wrapper.opened-state.zoomed .paper {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 700px; max-height: 85vh;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 1000;
+}
+
+/* CÁC MỨC ĐỘ Ố VÀNG */
+.level-1 { background: #fff !important; }
+.level-2 { background: #fdf5e6 !important; } /* Vàng nhẹ */
+.level-3 { background: #f4e4bc !important; } /* Vàng ố */
+.level-4 { 
+    background: #d2b48c !important; 
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.2); 
+    color: #4a3c2c !important;
+    border: 1px dashed #8b4513;
+} /* Mục rã */
+
+.paper h3 { margin-top: 0; text-align: center; color: #000; }
+.paper-content { font-size: 16px; line-height: 1.9; }
+.paper-footer { margin-top: 30px; text-align: right; font-family: "Brush Script MT", cursive; font-size: 24px; }
+
+/* ================= LEADER BLOCK ================= */
 .leader {
     display: flex;
     gap: 30px;
@@ -192,11 +325,10 @@ body.letter-open .content {
     height: 250px;
     object-fit: cover;
     object-position: center;
-    border-radius: 12px; /* tăng nhẹ cho cân */
+    border-radius: 12px;
     background: #222;
     box-shadow: 0 10px 24px rgba(0,0,0,0.4);
 }
-
 
 .leader-text { font-family: "Merriweather", serif; font-size: 16px; line-height: 1.8; color: #e0e0e0; }
 .teacher { display: inline-block; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 1.5px; color: #9dffb3; }
@@ -205,25 +337,6 @@ body.letter-open .content {
 @keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
 @keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
 @keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
-
-/* LETTER STYLE (Ổn định khung cũ) */
-.letter {
-    position: relative; margin-top: 30px; padding: 44px 48px 80px;
-    background: rgba(255, 252, 235, 0.88); backdrop-filter: blur(2px); border-radius: 6px;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(120,100,60,0.25);
-    font-family: "Merriweather", serif; color: #2b2b2b;
-    transform: rotate(-1.4deg); transform-origin: center;
-    opacity: 0; animation: letterFadeIn 1.8s ease forwards; animation-delay: 0.6s;
-}
-.letter::before {
-    content: ""; position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
-    background-size: 100% 28px, 3px 3px; opacity: 0.25; pointer-events: none; border-radius: 6px;
-}
-.letter p { margin: 0; font-size: 17px; line-height: 1.9; }
-.signatures { position: absolute; bottom: 26px; right: 40px; display: flex; gap: 26px; opacity: 0.65; }
-.signature { font-family: "Brush Script MT", cursive; font-size: 26px; color: rgba(60,60,60,0.8); transform: rotate(-4deg); }
-@keyframes letterFadeIn { to { opacity: 1; } }
 
 /* ACHIEVEMENT TREE */
 .achievement-tree { position: relative; margin-top: 60px; padding: 40px 0; }
@@ -243,106 +356,45 @@ body.letter-open .content {
 .branch:nth-child(3){animation-delay:.8s;}
 .branch:nth-child(4){animation-delay:1.2s;}
 
+.pin {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-8deg);
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, #b80000);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.5);
+    z-index: 5;
+}
+
+.pin::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 2px;
+    height: 26px;
+    background: linear-gradient(#bbb, #666);
+    transform: translateX(-50%) rotate(10deg);
+    border-radius: 2px;
+}
+
 /* PAPER PLANE */
 .paper-plane {
     position: absolute;
-    top: 60px;
-    right: -42px;
+    top: -40px;
+    right: -60px;
     font-size: 26px;
     color: #ffffff;
     opacity: 0.85;
     transform: rotate(15deg);
     transition: transform 0.15s linear;
     pointer-events: none;
-    z-index: 6;
+    z-index: 105;
     filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
 }
-
-/* ================= HỆ THỐNG BỨC THƯ MỚI (THAY KIM GHIM) ================= */
-
-.envelope-wrapper {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    cursor: pointer;
-}
-
-/* Vỏ thư màu vàng cổ điển */
-.envelope {
-    position: relative;
-    width: 60px;
-    height: 40px;
-    background: #e3c17e;
-    border-radius: 2px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: all 0.5s ease;
-}
-
-/* Sáp đóng dấu màu đỏ */
-.wax-seal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 18px;
-    height: 18px;
-    background: radial-gradient(circle, #b80000, #800000);
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    z-index: 2;
-}
-
-/* Trạng thái sau khi mở thư lần đầu */
-.envelope.opened {
-    background: #d4ae68;
-    clip-path: polygon(0% 100%, 100% 100%, 100% 40%, 50% 60%, 0% 40%); /* Vỏ thư bị rách */
-}
-
-/* Overlay Zoom giấy thư */
-#letter-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(8px);
-}
-
-.zoomed-paper {
-    background: #fff;
-    width: 80%;
-    max-width: 600px;
-    padding: 60px;
-    color: #2b2b2b;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    transform: scale(0.5);
-    opacity: 0;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    font-family: "Merriweather", serif;
-    position: relative;
-    border-radius: 4px;
-}
-
-#letter-overlay.active { display: flex; }
-#letter-overlay.active .zoomed-paper {
-    transform: scale(1);
-    opacity: 1;
-}
-
-/* Các cấp độ ố vàng */
-.level-1 { background-color: #ffffff; } /* Trắng */
-.level-2 { background-color: #fcf6e5; } /* Vàng nhẹ */
-.level-3 { background-color: #f2e3b1; } /* Vàng ố */
-.level-4 { 
-    background-color: #d9c58d; 
-    background-image: radial-gradient(circle at 10% 10%, rgba(0,0,0,0.05) 1px, transparent 50px);
-    box-shadow: inset 0 0 100px rgba(101, 67, 33, 0.3);
-    filter: contrast(1.1) sepia(0.3);
-} /* Mục rã */
 
 </style>
 </head>
@@ -350,11 +402,7 @@ body.letter-open .content {
 <body>
 
 <div id="fade-out"></div>
-
-<div id="letter-overlay">
-    <div class="zoomed-paper" id="paper-content">
-        </div>
-</div>
+<div id="letter-overlay"></div>
 
 <div class="sidebar">
     <h2>ABOUT</h2>
@@ -371,29 +419,30 @@ body.letter-open .content {
 
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
-        <div class="letter">
-           <div class="envelope-wrapper" id="envelopeTrigger">
-               <div class="envelope" id="mainEnvelope">
-                   <div class="wax-seal"></div>
-               </div>
-           </div>
-           
-           <div class="paper-plane">✈</div>
-
-           <div id="original-text">
-               <p>
-                   Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
-                   <br><br>
-                   Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
-                   <br><br>
-                   Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
-               </p>
-           </div>
-           
-           <div class="signatures">
-               <div class="signature">— Alphabest</div>
-               <div class="signature">Class of 12A</div>
-           </div>
+        
+        <div class="letter-wrapper" id="mainLetter">
+            <div class="paper-plane">✈</div>
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="wax-seal">A</div>
+                <div class="envelope-front"></div>
+                
+                <div class="paper" id="paper">
+                    <div class="pin"></div>
+                    <h3>A Message From 12A</h3>
+                    <div class="paper-content">
+                        Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
+                        <br><br>
+                        Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
+                        <br><br>
+                        Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
+                    </div>
+                    <div class="paper-footer">
+                        — Alphabest <br>
+                        Class of 12A
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -456,52 +505,14 @@ body.letter-open .content {
 </div>
 
 <script>
-// Biến đếm số lần xem thư (phiên làm việc hiện tại)
-let viewCount = 0;
-let isOpened = false;
-
-const trigger = document.getElementById('envelopeTrigger');
-const envelope = document.getElementById('mainEnvelope');
-const overlay = document.getElementById('letter-overlay');
-const paperContent = document.getElementById('paper-content');
-const originalText = document.getElementById('original-text').innerHTML;
-
-// Đồng bộ nội dung ban đầu vào giấy zoom
-paperContent.innerHTML = originalText;
-
-trigger.addEventListener('click', () => {
-    viewCount++;
-    document.body.classList.add('letter-open');
-    overlay.classList.add('active');
-    
-    // Xử lý trạng thái mở thư
-    if (!isOpened) {
-        envelope.classList.add('opened');
-        isOpened = true;
-    }
-
-    // Xử lý mức độ ố vàng
-    paperContent.className = 'zoomed-paper'; // reset classes
-    if (viewCount === 1) paperContent.classList.add('level-1');
-    else if (viewCount === 2) paperContent.classList.add('level-2');
-    else if (viewCount === 3) paperContent.classList.add('level-3');
-    else if (viewCount >= 4) paperContent.classList.add('level-4');
-});
-
-// Đóng zoom khi click ra ngoài
-overlay.addEventListener('click', () => {
-    overlay.classList.remove('active');
-    document.body.classList.remove('letter-open');
-});
-
-// Xử lý hiệu ứng chuyển trang cho nút Return
+// Xử lý nút Return và Fade Out
 document.getElementById("returnBtn").addEventListener("click", e => {
     e.preventDefault();
     document.getElementById("fade-out").classList.add("active");
     setTimeout(() => location.href = "home.html", 1200);
 });
 
-// Hiệu ứng máy bay giấy theo cuộn
+// Xử lý hiệu ứng Máy bay giấy khi cuộn
 let lastScroll = window.scrollY;
 let plane = document.querySelector(".paper-plane");
 
@@ -509,13 +520,62 @@ window.addEventListener("scroll", () => {
     const currentScroll = window.scrollY;
     const delta = currentScroll - lastScroll;
     lastScroll = currentScroll;
-
     const x = Math.min(Math.max(delta * 0.6, -20), 20);
     const y = Math.min(Math.max(-delta * 0.4, -15), 15);
     const rotate = x * 1.5;
-
     plane.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
 });
+
+// LOGIC BỨC THƯ (Chỉ tồn tại trong session này - F5 sẽ reset)
+const letterWrapper = document.getElementById('mainLetter');
+const overlay = document.getElementById('letter-overlay');
+const paper = document.getElementById('paper');
+let clickCount = 0; // Đếm số lần nhấn vào giấy
+let isFirstOpen = true; // Lần đầu mở thư
+
+letterWrapper.addEventListener('click', (e) => {
+    // Nếu đang ở trạng thái zoom, nhấn vào overlay để đóng
+    if (letterWrapper.classList.contains('zoomed')) return;
+
+    if (isFirstOpen) {
+        // Lần đầu mở thư
+        letterWrapper.classList.add('open');
+        overlay.classList.add('active');
+        isFirstOpen = false;
+        clickCount = 1;
+        updatePaperColor(clickCount);
+    } else {
+        // Những lần nhấn sau (khi thư đã rách)
+        letterWrapper.classList.remove('open');
+        letterWrapper.classList.add('opened-state');
+        
+        if (!letterWrapper.classList.contains('zoomed')) {
+            letterWrapper.classList.add('zoomed');
+            overlay.classList.add('active');
+            clickCount++;
+            if(clickCount > 4) clickCount = 4; // Max mức 4
+            updatePaperColor(clickCount);
+        }
+    }
+});
+
+// Nhấn vào overlay để thoát Zoom
+overlay.addEventListener('click', () => {
+    if (letterWrapper.classList.contains('open')) {
+        letterWrapper.classList.remove('open');
+        letterWrapper.classList.add('opened-state');
+    }
+    letterWrapper.classList.remove('zoomed');
+    overlay.classList.remove('active');
+});
+
+function updatePaperColor(count) {
+    // Xóa tất cả các level cũ
+    paper.classList.remove('level-1', 'level-2', 'level-3', 'level-4');
+    // Thêm level mới
+    paper.classList.add(`level-${count}`);
+}
+
 </script>
 
 </body>

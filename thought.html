@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
+        /* ===== FADE OUT KHI EXIT ===== */
+        body.fade-out {
+           opacity: 0;
+           transition: opacity 0.8s ease;
+        }
+
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; font-family: "Quicksand", "Segoe UI", sans-serif; }
 
@@ -152,7 +158,12 @@
             Mỗi bong bóng là một mảnh tâm tư của tập thể A. Chạm vào để lắng nghe ước mơ và những lời nhắn nhủ thân thương nhất.
         </p>
     </div>
-    <a href="home.html" style="margin-top: auto; color: #9dffb3; text-decoration: none; font-weight: bold;">← Exit Memory Realm?</a>
+    <a href="home.html"
+       onclick="handleExit(event)"
+       style="margin-top: auto; color: #9dffb3; text-decoration: none; font-weight: bold;">
+       ← Exit Memory Realm?
+    </a>
+
 </nav>
 
 <div id="bubble-container"></div>
@@ -285,6 +296,16 @@
     window.onclick = (event) => {
         if (event.target == modal) closeModal();
     }
+
+    function handleExit(e){
+    e.preventDefault();
+    document.body.classList.add("fade-out");
+
+    setTimeout(()=>{
+        window.location.href = "home.html";
+    }, 800);
+}
+
 </script>
 
 </body>

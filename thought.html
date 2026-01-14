@@ -11,8 +11,7 @@
     <style>
         /* ===== FADE OUT KHI EXIT ===== */
         body.fade-out {
-           opacity: 0;
-           transition: opacity 0.8s ease;
+            opacity: 0 !important;
         }
 
         html { scroll-behavior: smooth; }
@@ -298,12 +297,19 @@
     }
 
     function handleExit(e){
-    e.preventDefault();
-    document.body.classList.add("fade-out");
+        e.preventDefault();
 
-    setTimeout(()=>{
-        window.location.href = "home.html";
-    }, 800);
+        // Gỡ page-loaded để không đè opacity
+        document.body.classList.remove("page-loaded");
+
+        // Force browser repaint
+        void document.body.offsetWidth;
+
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 900);
 }
 
 </script>

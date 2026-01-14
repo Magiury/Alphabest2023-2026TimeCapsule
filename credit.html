@@ -5,228 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alphabest – Credits</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Minecraftia&display=swap'); /* Cố gắng dùng font Minecraft nếu có */
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Font dự phòng retro */
-
         body {
-            margin: 0;
-            height: 100vh;
-            overflow: hidden; /* Quan trọng để tạo hiệu ứng cuộn text */
-            background-color: #000;
-            color: #ccc;
-            font-family: 'Press Start 2P', cursive; /* Font chính cho cảm giác game */
-            text-align: center;
-            position: relative;
+            margin: 0; padding: 0;
+            background-color: #000; color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+            display: flex; justify-content: center;
         }
 
-        /* Dark overlay for cosmic feel (optional, but can enhance the look) */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8); /* Slightly darker */
-            z-index: 0;
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3; z-index: 0;
         }
 
-        /* --- THE SCROLLING TEXT CONTAINER --- */
-        .credits-container {
+        .scroll-wrapper {
             position: absolute;
-            top: 100%; /* Bắt đầu từ dưới màn hình */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 800px;
-            padding: 20px 0;
-            animation: scrollCredits 150s linear forwards; /* Điều chỉnh thời gian cho phù hợp */
+            top: 100%;
+            width: 85%; max-width: 800px;
+            text-align: center;
+            animation: scrollUp 105s linear forwards;
             z-index: 1;
-            white-space: pre-wrap; /* Giữ định dạng xuống dòng và khoảng trắng */
-            font-size: 1.1em;
-            line-height: 1.8;
-            color: #fff;
-            text-shadow: 0 0 5px #0a0; /* Hiệu ứng xanh nhẹ */
         }
 
-        .credits-container h1 {
-            color: #9dffb3;
-            font-size: 2.5em;
-            margin-bottom: 50px;
-            text-shadow: 0 0 10px #9dffb3, 0 0 20px #9dffb3;
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-450%); } 
         }
 
-        .credits-section {
-            margin-bottom: 80px; /* Khoảng cách giữa các phần */
-            padding-top: 30px;
+        h1 { color: #9dffb3; font-size: 3rem; margin-bottom: 150px; text-shadow: 0 0 15px #3f3; }
+        h2 { color: #9dffb3; margin-top: 100px; font-size: 1.8rem; letter-spacing: 5px; }
+        
+        /* ROLE XÁM NEON */
+        .role { 
+            color: #4a4a4a; 
+            font-size: 0.9rem; 
+            margin-bottom: 8px; 
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 5px rgba(157, 255, 179, 0.3); /* Ánh neon xám nhẹ */
+        }
+        .name { color: #fff; font-size: 1.4rem; margin-bottom: 40px; font-weight: bold; }
+
+        /* ĐOẠN TRÒ CHUYỆN TÁCH BIỆT */
+        .dialogue-box {
+            margin-top: 100vh; /* Ngắt hoàn toàn khỏi phần trên */
+            padding: 60px 20px;
+            border-top: 1px solid #1a1a1a;
+            line-height: 2.5;
+            text-align: left;
+            display: inline-block;
         }
 
-        .credits-section h2 {
-            color: #9dffb3;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            text-shadow: 0 0 8px #9dffb3;
-        }
+        .chat { margin-bottom: 20px; font-size: 1.2rem; transition: 0.3s; cursor: help; }
+        
+        /* MÀU SẮC THOẠI */
+        .male-text { color: #55acee; }
+        .female-text { color: #f48fb1; }
 
-        .contributor {
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-        .contributor strong {
-            color: #fff;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .contributor span {
-            color: #aaa;
-            font-size: 0.9em;
-            display: block;
-        }
-
-        .dialogue-section {
-            margin-top: 100px;
-            font-size: 1.2em;
-            line-height: 2;
-        }
-
-        .dialogue-section h2 {
-            margin-bottom: 40px;
-            color: #9dffb3;
-        }
-
-        .dialogue-line {
-            margin-bottom: 15px;
-        }
-
-        .dialogue-line.male { color: #87CEEB; } /* Màu xanh nhạt cho nam */
-        .dialogue-line.female { color: #FFB6C1; } /* Màu hồng nhạt cho nữ */
-        .dialogue-line em {
-            font-style: normal;
+        /* KÝ TỰ HỖN LOẠN (OBFUSCATED) */
+        .obfuscated {
+            display: inline-block;
             font-weight: bold;
+            color: #9dffb3;
+            margin-right: 10px;
+            min-width: 100px;
+        }
+
+        .chat:hover .obfuscated {
             color: #fff;
         }
 
-        /* --- THE RETURN BUTTON --- */
         .return-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(157, 255, 179, 0.2);
-            color: #9dffb3;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-family: "Segoe UI", Arial, sans-serif;
-            font-size: 1.1em;
-            font-weight: bold;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.8s ease, transform 0.6s ease;
-            z-index: 10;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 15px rgba(157, 255, 179, 0.4);
-            letter-spacing: 1px;
+            position: fixed; bottom: 30px; right: 30px;
+            padding: 12px 25px; background: rgba(0,0,0,0.8);
+            border: 1px solid #4a4a4a; color: #4a4a4a;
+            text-decoration: none; font-size: 12px;
+            opacity: 0; transition: 1s; z-index: 10;
+            letter-spacing: 2px;
         }
-
-        .return-btn.show {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateX(-50%) scale(1);
-            animation: fadeInBtn 1s ease forwards;
-            animation-delay: 140s; /* Xuất hiện gần cuối animation cuộn text */
-        }
-
-        .return-btn:hover {
-            background: rgba(157, 255, 179, 0.4);
-            transform: translateX(-50%) scale(1.05);
-        }
-
-        /* --- ANIMATION --- */
-        @keyframes scrollCredits {
-            0% { transform: translate(-50%, 100%); }
-            100% { transform: translate(-50%, -100%); } /* Cuộn lên trên cho đến khi biến mất */
-        }
-
-        @keyframes fadeInBtn {
-            from { opacity: 0; transform: translateX(-50%) scale(0.9); }
-            to { opacity: 1; transform: translateX(-50%) scale(1); }
-        }
+        .return-btn.show { opacity: 1; border-color: #9dffb3; color: #9dffb3; }
     </style>
 </head>
 <body>
 
-    <div class="credits-container" id="creditsContainer">
-        <h1>ALPHABEST CREDITS</h1>
+    <div class="stars"></div>
 
-        <div class="credits-section">
+    <div class="scroll-wrapper">
+        <h1>ALPHABEST</h1>
+
+        <div class="credits-main">
             <h2>CONTRIBUTORS</h2>
-            <div class="contributor">
-                <strong>QUỲNH ANH</strong>
-                <span>Viết lời giới thiệu, kỷ niệm, timeline, lời nhắn của thầy cô và học sinh.</span>
+            
+            <div class="role">STORY & TIMELINE</div>
+            <div class="name">Quỳnh Anh</div>
+
+            <div class="role">VISUAL DESIGN</div>
+            <div class="name">Tâm</div>
+
+            <div class="role">QUALITY ASSURANCE</div>
+            <div class="name">MyMy</div>
+
+            <div class="role">PROJECT MANAGER</div>
+            <div class="name">Ngọc Lê</div>
+
+            <div class="role">SOFTWARE ENGINEERS</div>
+            <div class="name">Hưng — Ngọc — Khang</div>
+
+            <div class="role">CONTENT RESEARCHER</div>
+            <div class="name">Khoa</div>
+
+            <div class="role">HUMAN RESOURCES</div>
+            <div class="name">Thọ</div>
+        </div>
+
+        <div class="dialogue-box">
+            <div class="chat" data-real="Quỳnh Anh:">
+                <span class="obfuscated"></span><span class="female-text">Không ngờ lại nhanh như vậy, mới đó mà đã xong rồi.</span>
             </div>
-            <div class="contributor">
-                <strong>TÂM</strong>
-                <span>Làm banner, logo, hình ảnh minh họa, chỉnh sửa ảnh lớp.</span>
+            <div class="chat" data-real="Tâm:">
+                <span class="obfuscated"></span><span class="female-text">Giờ thì mỗi đứa một nơi, nhưng 3 năm sau, mình sẽ gặp lại.</span>
             </div>
-            <div class="contributor">
-                <strong>MYMY</strong>
-                <span>Test website trên nhiều thiết bị, báo lỗi cho coder, góp ý cải thiện.</span>
+            <div class="chat" data-real="MyMy:">
+                <span class="obfuscated"></span><span class="female-text">Time skip! Hẹn nhau ở cổng trường cũ nhé.</span>
             </div>
-            <div class="contributor">
-                <strong>NGỌC LÊ</strong>
-                <span>Điều phối tiến độ, phân công, nhắc deadline, đảm bảo mọi thứ chạy đúng kế hoạch.</span>
+            <div class="chat" data-real="Ngọc Lê:">
+                <span class="obfuscated"></span><span class="female-text">Nhớ mang theo câu chuyện của riêng mỗi người đấy.</span>
             </div>
-            <div class="contributor">
-                <strong>HƯNG, NGỌC, KHANG</strong>
-                <span>Code và code.</span>
+            <div class="chat" data-real="Hưng:">
+                <span class="obfuscated"></span><span class="male-text">Hãy sống vì "Hồng Trà".</span>
             </div>
-            <div class="contributor">
-                <strong>KHOA</strong>
-                <span>Tìm ảnh, video, kỷ niệm, phỏng vấn bạn bè để đưa vào web.</span>
+            <div class="chat" data-real="Ngọc:">
+                <span class="obfuscated"></span><span class="male-text">Tôi yêu mọi người.</span>
             </div>
-            <div class="contributor">
-                <strong>THỌ</strong>
-                <span>Tổng cục chỉ huy quản lý con người (Human Resources).</span>
+            <div class="chat" data-real="Khang:">
+                <span class="obfuscated"></span><span class="male-text">Get minecraft-roll jerks.</span>
+            </div>
+            <div class="chat" data-real="Khoa:">
+                <span class="obfuscated"></span><span class="male-text">Ước gì hồi đó mình năng nổ hơn chút nữa.</span>
+            </div>
+            <div class="chat" data-real="Thọ:">
+                <span class="obfuscated"></span><span class="male-text">Hối hận vì vào trường nhưng tự hào vì anh em.</span>
             </div>
         </div>
 
-        <div class="credits-section dialogue-section">
-            <h2>THE JOURNEY CONTINUES...</h2>
-            <div class="dialogue-line"><em>Quỳnh Anh:</em> Không ngờ lại nhanh như vậy, mới đó mà đã xong rồi.</div>
-            <div class="dialogue-line"><em>Tâm:</em> Giờ thì mỗi đứa một nơi, nhưng 3 năm sau, mình sẽ gặp lại.</div>
-            <div class="dialogue-line"><em>MyMy:</em> Time skip! Hẹn nhau ở cổng trường cũ nhé.</div>
-            <div class="dialogue-line"><em>Ngọc Lê:</em> Nhớ mang theo câu chuyện của riêng mỗi người đấy.</div>
-            <div class="dialogue-line"><em>Hưng:</em> <em>(nam)</em> Hãy sống vì "Hồng Trà".</div>
-            <div class="dialogue-line"><em>Ngọc:</em> <em>(nam)</em> Tôi yêu mọi người.</div>
-            <div class="dialogue-line"><em>Khang:</em> <em>(nam)</em> Get minecraft-roll jerks.</div>
-            <div class="dialogue-line"><em>Khoa:</em> Ước gì hồi đó mình năng nổ hơn chút nữa.</div>
-            <div class="dialogue-line"><em>Thọ:</em> <em>(nam)</em> Hối hận vì vào trường nhưng tự hào vì anh em.</div>
+        <div style="margin-top: 100vh; padding-bottom: 200px;">
+            <h2 style="font-size: 2.5rem;">THE END</h2>
+            <p style="color: #4a4a4a; letter-spacing: 10px;">Wake up.</p>
         </div>
-
-        <div class="credits-section" style="margin-top: 150px;">
-            <h2>ALPHABEST FOREVER</h2>
-            <p>Thanks for being part of this journey.</p>
-            <p>See you again, in 3 years.</p>
-            <p style="font-size: 0.8em; margin-top: 50px;">Inspired by Minecraft's Ending Poem.</p>
-        </div>
-
     </div>
 
-    <a href="home.html" class="return-btn" id="returnBtn">RETURN TO REALITY</a>
+    <a href="home.html" class="return-btn" id="backBtn">RETURN TO REALITY</a>
 
     <script>
-        const creditsContainer = document.getElementById('creditsContainer');
-        const returnBtn = document.getElementById('returnBtn');
+        // Hiệu ứng ký tự hỗn loạn Minecraft
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+        const obfuscatedElements = document.querySelectorAll('.obfuscated');
 
-        // Tính toán thời gian animation dựa trên chiều cao nội dung
-        // (Có thể điều chỉnh thêm để phù hợp với tốc độ mong muốn)
-        const contentHeight = creditsContainer.scrollHeight;
-        const viewportHeight = window.innerHeight;
-        const animationDuration = (contentHeight + viewportHeight) / 50; // Ví dụ: 50px/giây
-        creditsContainer.style.animationDuration = `${animationDuration}s`;
+        function scrambleText() {
+            obfuscatedElements.forEach(el => {
+                const parent = el.parentElement;
+                // Nếu đang hover thì hiện tên thật
+                if (parent.matches(':hover')) {
+                    el.innerText = parent.getAttribute('data-real');
+                    el.style.fontFamily = 'inherit';
+                } else {
+                    // Nếu không thì nhảy ký tự
+                    let result = "";
+                    for(let i = 0; i < 8; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    el.innerText = result;
+                    el.style.fontFamily = 'monospace';
+                }
+            });
+            requestAnimationFrame(scrambleText);
+        }
 
-        // Hiện nút Return khi animation sắp kết thúc
+        scrambleText();
+
+        // Hiện nút Return
         setTimeout(() => {
-            returnBtn.classList.add('show');
-        }, (animationDuration * 1000) - 10000); // 10 giây trước khi kết thúc
+            document.getElementById('backBtn').classList.add('show');
+        }, 5000);
     </script>
 </body>
 </html>

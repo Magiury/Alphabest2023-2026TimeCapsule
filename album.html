@@ -9,6 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
+        #uploadNotice{
+           position: fixed;
+           bottom: 20px;
+           left: 50%;
+           transform: translateX(-50%);
+           background: rgba(0,0,0,0.6);
+           padding: 10px 18px;
+           border-radius: 6px;
+           font-size: 13px;
+           color: #fff;
+           z-index: 9999;
+           opacity: 0;
+           pointer-events: none;
+           transition: opacity 1s ease;
+       }
+       #uploadNotice.show{
+           opacity: 1;
+       }
+             
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
 
@@ -289,6 +308,10 @@
 <nav class="sidebar" id="mainSidebar">
     <h2>ALPHABEST</h2>
     
+    <div id="uploadNotice">
+         Your picture is processing by an admin, please wait until further notice
+    </div>
+
     <div class="nav-links-wrapper">
         <a href="#grade10" class="nav-link">📘 Năm lớp 10</a>
         <a href="#grade11" class="nav-link">📗 Năm lớp 11</a>
@@ -322,7 +345,11 @@
         <h1>NĂM LỚP 10</h1>
         <div class="photo-grid">
             <div class="gallery-item"><img src="album10cover.jpg"></div>
-            <a href="albumspaces.html" class="add-photo-box"><i class="fas fa-plus-circle"></i> <span>Thêm ảnh</span></a>
+            <a class="add-photo-box">
+              <i class="fas fa-plus-circle"></i>
+              <span>Thêm ảnh</span>
+              <input type="file" accept="image/*" hidden class="imageUploader">
+            </a>
             <a href="album-10.html" class="view-more-box"><i class="fas fa-images"></i> <span>Nhấn để xem thêm</span></a>
         </div>
     </section>
@@ -345,6 +372,50 @@
         </div>
     </section>
 </main>
+    
+<script>
+function showNotice(){
+    const n = document.getElementById("uploadNotice");
+    n.classList.add("show");
+    setTimeout(()=>n.classList.remove("show"), 10000);
+}
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const uploadBoxes = document.querySelectorAll(".add-photo-box");
+
+uploadBoxes.forEach(box=>{
+    const input = box.querySelector(".imageUploader");
+
+    box.addEventListener("click", ()=>{
+        input.click();
+    });
+
+    input.addEventListener("change", ()=>{
+        const file = input.files[0];
+        if(!file) return;
+
+        if(file.size > 400 * 1024){
+            alert("Image too large. Please use image under 400KB.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = ()=>{
+            firebase.database().ref("pending_images").push({
+                image: reader.result,
+                time: Date.now(),
+                status: "pending"
+            });
+            showNotice();
+        };
+        reader.readAsDataURL(file);
+    });
+});
+</script>
 
 <script>
 function toggleSidebar() {

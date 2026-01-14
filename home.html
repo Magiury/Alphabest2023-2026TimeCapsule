@@ -29,12 +29,6 @@ body::before {
     z-index: 0;
 }
 
-/* Animation đặc biệt cho About Us */
-body.sink-in-leftleft {
-    background-size: calc(100% - 8px) auto;
-    background-position: left center;
-}
-
 /* ================= APP WRAPPER ================= */
 #app {
     position: relative;
@@ -68,7 +62,7 @@ body.sink-in-leftleft {
     filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));
 }
 
-/* ================= SEARCH (SỬA THEO YÊU CẦU) ================= */
+/* ================= SEARCH ================= */
 .search-bar {
     margin: 18px auto 10px;
     width: 520px;
@@ -94,11 +88,6 @@ body.sink-in-leftleft {
     transition: all 0.3s ease;
 }
 
-.search-bar input:focus {
-    border-color: rgba(157, 255, 179, 0.5);
-    background: rgba(0,0,0,0.8);
-}
-
 .search-results {
     position: absolute;
     top: 105%;
@@ -113,7 +102,6 @@ body.sink-in-leftleft {
     z-index: 1000;
     display: none;
     text-align: left;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .result-item {
@@ -125,7 +113,7 @@ body.sink-in-leftleft {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: white; /* Màu mặc định là trắng theo yêu cầu */
+    color: white;
 }
 
 .result-item:hover {
@@ -133,7 +121,7 @@ body.sink-in-leftleft {
     color: #9dffb3;
 }
 
-/* ================= MENU TẢN RA (SỬA THEO YÊU CẦU) ================= */
+/* ================= MENU ================= */
 .menu {
     display: flex;
     justify-content: center;
@@ -156,20 +144,12 @@ body.sink-in-leftleft {
     display: inline-block;
 }
 
-/* Trạng thái khi đang search: Tản ra 2 bên và biến mất */
 .search-active .menu a:nth-child(1),
-.search-active .menu a:nth-child(2) {
-    transform: translateX(-150px);
-    opacity: 0;
-}
-
+.search-active .menu a:nth-child(2) { transform: translateX(-150px); opacity: 0; }
 .search-active .menu a:nth-child(3),
-.search-active .menu a:nth-child(4) {
-    transform: translateX(150px);
-    opacity: 0;
-}
+.search-active .menu a:nth-child(4) { transform: translateX(150px); opacity: 0; }
 
-/* ================= COUNTDOWN (SỬA THEO YÊU CẦU) ================= */
+/* ================= COUNTDOWN HUD (SỬA THEO YÊU CẦU) ================= */
 .countdown-hud {
     position: fixed;
     top: 42%;
@@ -178,16 +158,27 @@ body.sink-in-leftleft {
     text-align: center;
     z-index: 5;
     pointer-events: none;
-    transition: all 0.8s ease;
-}
-
-/* Đồng hồ chính biến mất khi search */
-.search-active .countdown-hud {
+    /* Fade in lúc vào trang */
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.8);
+    animation: countdownFadeIn 2.5s ease forwards;
+    animation-delay: 2s;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-/* Đồng hồ mini ở đít trang */
+@keyframes countdownFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Mờ dần khi search hoặc chuyển trang */
+.search-active .countdown-hud,
+.navigating .countdown-hud {
+    opacity: 0 !important;
+    transform: translate(-50%, -60%) scale(0.9);
+}
+
+.cd-title { font-size: 14px; letter-spacing: 3px; color: rgba(180,255,200,0.7); margin-bottom: 10px; text-transform: uppercase; }
+.cd-time { font-size: 64px; font-weight: 700; letter-spacing: 4px; color: #9dffb3; text-shadow: 0 0 10px rgba(157,255,179,0.4); }
+.cd-sub { margin-top: 12px; font-size: 13px; letter-spacing: 2px; color: rgba(180,255,200,0.5); }
+
+/* ================= MINI COUNTDOWN (SỬA THEO YÊU CẦU) ================= */
 .mini-countdown {
     position: fixed;
     bottom: 20px;
@@ -197,7 +188,7 @@ body.sink-in-leftleft {
     z-index: 5;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.8s ease;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
 .search-active .mini-countdown {
@@ -205,24 +196,13 @@ body.sink-in-leftleft {
     visibility: visible;
 }
 
-.mini-cd-time {
-    font-size: 20px;
-    font-weight: 700;
-    color: #9dffb3;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(157,255,179,0.5);
+/* Fade out khi chuyển trang từ suggestion */
+.navigating .mini-countdown {
+    opacity: 0 !important;
 }
 
-.mini-cd-sub {
-    font-size: 10px;
-    color: rgba(180,255,200,0.5);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.cd-title { font-size: 14px; letter-spacing: 3px; color: rgba(180,255,200,0.7); margin-bottom: 10px; text-transform: uppercase; }
-.cd-time { font-size: 64px; font-weight: 700; letter-spacing: 4px; color: #9dffb3; text-shadow: 0 0 10px rgba(157,255,179,0.4), 0 0 25px rgba(157,255,179,0.2); }
-.cd-sub { margin-top: 12px; font-size: 13px; letter-spacing: 2px; color: rgba(180,255,200,0.5); }
+.mini-cd-time { font-size: 20px; font-weight: 700; color: #9dffb3; letter-spacing: 2px; }
+.mini-cd-sub { font-size: 10px; color: rgba(180,255,200,0.5); text-transform: uppercase; }
 
 @keyframes logoFade { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes searchFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -264,7 +244,6 @@ body.sink-in-leftleft {
 </div>
 
 <script>
-/* ================= AI SEARCH LOGIC ================= */
 const searchInput = document.getElementById('ai-search-input');
 const resultsBox = document.getElementById('ai-results');
 const mainBody = document.getElementById('mainBody');
@@ -272,47 +251,49 @@ const mainBody = document.getElementById('mainBody');
 const albumKeywords = ['lớp 10', 'lớp 11', 'lớp 12', 'mdmx', 'mừng đảng mừng xuân', 'mđmx', 'culture night', 'cn', 'vhdg', 'văn học dân gian', 'ghat', 'gian hàng ẩm thực'];
 const teacherKeywords = ['giáo viên', 'thầy cô', 'nguyễn đình tùng', 'phạm trương thanh tùng', 'trần ngọc bích', 'chủ nhiệm'];
 
-// Khi nhấn vào Search Bar (SỬA THEO YÊU CẦU)
+// Focus Search
 searchInput.addEventListener('focus', () => {
     mainBody.classList.add('search-active');
 });
 
-// Khi nhấn ra ngoài (SỬA THEO YÊU CẦU)
+// Blur Search
 searchInput.addEventListener('blur', () => {
     setTimeout(() => {
         mainBody.classList.remove('search-active');
-        resultsBox.style.display = 'none'; // Luôn ẩn khi thoát dù có chữ hay không
+        resultsBox.style.display = 'none';
     }, 200);
 });
+
+// Chuyển trang dùng chung (để gọi từ suggestion)
+function triggerTransition(url) {
+    mainBody.classList.add('navigating'); // Kích hoạt fade out cho mọi countdown
+    document.getElementById("app").classList.add("fade-out");
+    setTimeout(() => { window.location.href = url; }, 1200);
+}
 
 searchInput.addEventListener('input', (e) => {
     const val = e.target.value.toLowerCase().trim();
     resultsBox.innerHTML = '';
-    
-    if (val.length < 1) {
-        resultsBox.style.display = 'none';
-        return;
-    }
+    if (val.length < 1) { resultsBox.style.display = 'none'; return; }
 
     let found = false;
     albumKeywords.forEach(k => {
         if (k.includes(val)) {
-            addResultItem(k.toUpperCase(), 'fa-images', () => { window.location.href = `album.html#${k.replace(/\s/g, '')}`; });
+            addResultItem(k.toUpperCase(), 'fa-images', () => { triggerTransition(`album.html#${k.replace(/\s/g, '')}`); });
             found = true;
         }
     });
 
     teacherKeywords.forEach(k => {
         if (k.includes(val)) {
-            addResultItem(k.toUpperCase(), 'fa-chalkboard-teacher', () => { window.location.href = `about.html#lead`; });
+            addResultItem(k.toUpperCase(), 'fa-chalkboard-teacher', () => { triggerTransition(`about.html#lead`); });
             found = true;
         }
     });
 
     if (!found && val.length > 1) {
-        addResultItem(`Tìm cảm nghĩ về: ${val.toUpperCase()}`, 'fa-comment-dots', () => { window.location.href = `thought.html?search=${val}`; });
+        addResultItem(`Tìm cảm nghĩ về: ${val.toUpperCase()}`, 'fa-comment-dots', () => { triggerTransition(`thought.html?search=${val}`); });
     }
-
     resultsBox.style.display = resultsBox.innerHTML === '' ? 'none' : 'block';
 });
 
@@ -324,7 +305,7 @@ function addResultItem(text, icon, action) {
     resultsBox.appendChild(div);
 }
 
-/* ================= COUNTDOWN ================= */
+/* ================= COUNTDOWN LOGIC ================= */
 const targetDate = new Date("2026-06-11T00:00:00").getTime();
 function updateCountdown() {
     const now = new Date().getTime();
@@ -341,13 +322,11 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-/* ================= PAGE TRANSITION ================= */
+/* ================= NAVIGATE MENU ================= */
 function navigate(e, url, isAbout = false) {
     e.preventDefault();
     if(isAbout) document.body.classList.add("sink-in-right");
-    document.getElementById("app").classList.add("fade-out");
-    document.querySelector(".countdown-hud").classList.add("fade-out");
-    setTimeout(() => { window.location.href = url; }, 1200);
+    triggerTransition(url);
 }
 </script>
 

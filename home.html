@@ -234,15 +234,25 @@ body.sink-in-leftleft {
 </div>
 
 <script>
-/* ================= AI SEARCH LOGIC ================= */
-const GH_USER = "YOUR_GITHUB_USERNAME"; 
-const GH_REPO = "YOUR_REPO_NAME"; 
-
+/* ================= AI SEARCH LOGIC (SỬA THEO YÊU CẦU) ================= */
 const searchInput = document.getElementById('ai-search-input');
 const resultsBox = document.getElementById('ai-results');
-const myKeywords = ['lớp 10', 'lớp 11', 'lớp 12', 'mdmx', 'culture night', 'graduation', 'kỷ niệm'];
 
-searchInput.addEventListener('input', async (e) => {
+// Danh sách từ khóa phân loại
+const albumKeywords = [
+    'lớp 10', 'lớp 11', 'lớp 12', 
+    'mdmx', 'mừng đảng mừng xuân', 'mđmx',
+    'culture night', 'cn',
+    'vhdg', 'văn học dân gian',
+    'ghat', 'gian hàng ẩm thực'
+];
+
+const teacherKeywords = [
+    'giáo viên', 'thầy cô', 'nguyễn đình tùng', 
+    'phạm trương thanh tùng', 'trần ngọc bích', 'chủ nhiệm'
+];
+
+searchInput.addEventListener('input', (e) => {
     const val = e.target.value.toLowerCase().trim();
     resultsBox.innerHTML = '';
     
@@ -251,21 +261,34 @@ searchInput.addEventListener('input', async (e) => {
         return;
     }
 
-    const matches = myKeywords.filter(k => k.includes(val));
-    matches.forEach(m => addResultItem(m, 'fa-star', () => {
-        window.location.href = `album.html#${m.replace(/\s/g, '')}`;
-    }));
+    let found = false;
 
-    try {
-        const response = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/`);
-        if (response.ok) {
-            const files = await response.json();
-            const fileMatches = files.filter(f => f.name.toLowerCase().includes(val));
-            fileMatches.forEach(f => addResultItem(f.name, 'fa-file-image', () => {
-                window.open(f.html_url, '_blank');
-            }));
+    // 1. Kiểm tra từ khóa Album
+    albumKeywords.forEach(k => {
+        if (k.includes(val)) {
+            addResultItem(k.toUpperCase(), 'fa-images', () => {
+                window.location.href = `album.html#${k.replace(/\s/g, '')}`;
+            });
+            found = true;
         }
-    } catch (err) { console.error("GitHub API Error"); }
+    });
+
+    // 2. Kiểm tra từ khóa Thầy cô
+    teacherKeywords.forEach(k => {
+        if (k.includes(val)) {
+            addResultItem(k.toUpperCase(), 'fa-chalkboard-teacher', () => {
+                window.location.href = `about.html#lead`;
+            });
+            found = true;
+        }
+    });
+
+    // 3. Nếu không thuộc 2 nhóm trên và có vẻ là tên người (có độ dài nhất định)
+    if (!found && val.length > 2) {
+        addResultItem(`Đọc suy nghĩ của: ${val.toUpperCase()}?`, 'fa-comment-dots', () => {
+            window.location.href = `thought.html?search=${val}`;
+        });
+    }
 
     resultsBox.style.display = resultsBox.innerHTML === '' ? 'none' : 'block';
 });
@@ -307,16 +330,13 @@ updateCountdown();
 function navigate(e, url, isAbout = false) {
     e.preventDefault();
     
-    // Nếu là nhấn vào About Us, kích hoạt animation Sink In cho background
     if(isAbout) {
         document.body.classList.add("sink-in-right");
     }
 
-    // Hiệu ứng mờ dần toàn bộ nội dung
     document.getElementById("app").classList.add("fade-out");
     document.querySelector(".countdown-hud").classList.add("fade-out");
 
-    // Chuyển trang sau khi kết thúc animation (1.2 giây)
     setTimeout(() => { 
         window.location.href = url; 
     }, 1200);

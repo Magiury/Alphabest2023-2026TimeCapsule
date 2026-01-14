@@ -24,13 +24,13 @@
             top: 100%;
             width: 85%; max-width: 800px;
             text-align: center;
-            animation: scrollUp 105s linear forwards;
+            animation: scrollUp 95s linear forwards; /* Tăng thời gian để cuộn hết ảnh cuối */
             z-index: 1;
         }
 
         @keyframes scrollUp {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-450%); } 
+            100% { transform: translateY(-550%); } 
         }
 
         h1 { color: #9dffb3; font-size: 3rem; margin-bottom: 150px; text-shadow: 0 0 15px #3f3; }
@@ -43,13 +43,13 @@
             margin-bottom: 8px; 
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 0 0 5px rgba(157, 255, 179, 0.3); /* Ánh neon xám nhẹ */
+            text-shadow: 0 0 5px rgba(157, 255, 179, 0.3);
         }
         .name { color: #fff; font-size: 1.4rem; margin-bottom: 40px; font-weight: bold; }
 
         /* ĐOẠN TRÒ CHUYỆN TÁCH BIỆT */
         .dialogue-box {
-            margin-top: 100vh; /* Ngắt hoàn toàn khỏi phần trên */
+            margin-top: 100vh;
             padding: 60px 20px;
             border-top: 1px solid #1a1a1a;
             line-height: 2.5;
@@ -58,12 +58,10 @@
         }
 
         .chat { margin-bottom: 20px; font-size: 1.2rem; transition: 0.3s; cursor: help; }
-        
-        /* MÀU SẮC THOẠI */
         .male-text { color: #55acee; }
         .female-text { color: #f48fb1; }
 
-        /* KÝ TỰ HỖN LOẠN (OBFUSCATED) */
+        /* KÝ TỰ HỖN LOẠN */
         .obfuscated {
             display: inline-block;
             font-weight: bold;
@@ -72,8 +70,28 @@
             min-width: 100px;
         }
 
-        .chat:hover .obfuscated {
-            color: #fff;
+        /* PHẦN CUỐI CÙNG: THE END & IMAGE */
+        .final-section {
+            margin-top: 100vh; /* Tách biệt hoàn toàn */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 300px;
+        }
+
+        .final-image {
+            width: 300px; /* Điều chỉnh kích thước hình ảnh */
+            height: auto;
+            border: 2px solid #9dffb3;
+            margin-top: 30px;
+            box-shadow: 0 0 20px rgba(157, 255, 179, 0.4);
+        }
+
+        .scan-text {
+            color: #9dffb3;
+            margin-top: 15px;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
         }
 
         .return-btn {
@@ -138,9 +156,6 @@
             <div class="chat" data-real="Ngọc:">
                 <span class="obfuscated"></span><span class="male-text">Tôi yêu mọi người.</span>
             </div>
-            <div class="chat" data-real="Khang:">
-                <span class="obfuscated"></span><span class="male-text">Get minecraft-roll jerks.</span>
-            </div>
             <div class="chat" data-real="Khoa:">
                 <span class="obfuscated"></span><span class="male-text">Ước gì hồi đó mình năng nổ hơn chút nữa.</span>
             </div>
@@ -149,28 +164,28 @@
             </div>
         </div>
 
-        <div style="margin-top: 100vh; padding-bottom: 200px;">
-            <h2 style="font-size: 2.5rem;">THE END</h2>
-            <p style="color: #4a4a4a; letter-spacing: 10px;">Wake up.</p>
+        <div class="final-section">
+            <h2 style="font-size: 2.5rem; margin-bottom: 10px;">THE END</h2>
+            <p style="color: #4a4a4a; letter-spacing: 10px; margin-bottom: 50px;">Wake up.</p>
+            
+            <img src="URL_ANH_CUA_BABI_GUI.jpg" alt="Final Surprise" class="final-image">
+            <div class="scan-text">SCAN FOR A SURPRISE</div>
         </div>
     </div>
 
     <a href="home.html" class="return-btn" id="backBtn">RETURN TO REALITY</a>
 
     <script>
-        // Hiệu ứng ký tự hỗn loạn Minecraft
         const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
         const obfuscatedElements = document.querySelectorAll('.obfuscated');
 
         function scrambleText() {
             obfuscatedElements.forEach(el => {
                 const parent = el.parentElement;
-                // Nếu đang hover thì hiện tên thật
                 if (parent.matches(':hover')) {
                     el.innerText = parent.getAttribute('data-real');
                     el.style.fontFamily = 'inherit';
                 } else {
-                    // Nếu không thì nhảy ký tự
                     let result = "";
                     for(let i = 0; i < 8; i++) {
                         result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -184,7 +199,6 @@
 
         scrambleText();
 
-        // Hiện nút Return
         setTimeout(() => {
             document.getElementById('backBtn').classList.add('show');
         }, 5000);

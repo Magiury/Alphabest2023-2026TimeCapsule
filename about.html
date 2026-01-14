@@ -2,367 +2,166 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alphabest – About Us</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-/* TRẢI NGHIỆM CUỘN MƯỢT MÀ */
+/* --- TOÀN BỘ TRANG --- */
 html { scroll-behavior: smooth; }
-
-* {
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+* { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
 
 body {
-    margin: 0;
-    min-height: 100vh;
+    margin: 0; min-height: 100vh;
     background: url("class.jpg") center / cover no-repeat fixed;
-    color: #eaeaea;
-    display: flex;
+    color: #eaeaea; display: flex;
     animation: pageFadeIn 1.5s ease-out forwards;
+    overflow-x: hidden;
 }
 
-@keyframes pageFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+@keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 0;
+    content: ""; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 0;
 }
 
-#fade-out {
-    position: fixed;
-    inset: 0;
-    background: black;
+/* --- HIỆU ỨNG FOCUS & SIDEBAR HIDE (SỬA THEO YÊU CẦU) --- */
+/* Khi zoom: Sidebar biến mất hoàn toàn */
+.blur-active .sidebar {
     opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100px); /* Hiệu ứng trượt ra lề */
+    transition: all 0.6s ease;
+}
+
+/* Làm mờ và tối các phần khác trừ giấy thư */
+.blur-active .content > .section:not(#one), 
+.blur-active .envelope-static,
+.blur-active .section h1 {
+    filter: blur(15px) brightness(0.3);
     pointer-events: none;
-    transition: opacity 1.2s ease;
-    z-index: 9999;
+    transition: filter 0.8s ease;
 }
-#fade-out.active { opacity: 1; }
 
-/* ================= SIDEBAR ================= */
+#letter-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7); /* Tối nền xung quanh */
+    z-index: 0; opacity: 0;
+    pointer-events: none; transition: opacity 0.8s ease;
+}
+#letter-overlay.active { opacity: 1; pointer-events: auto; }
 
+/* --- SIDEBAR --- */
 .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 260px;
-    height: 100vh;
-    padding: 40px 30px;
-    background: rgba(10,10,10,0.65);
-    backdrop-filter: blur(6px);
-    border-right: 1px solid rgba(255,255,255,0.08);
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    transform: translateX(-20px);
-    animation: sidebarIn 1.6s ease forwards;
+    position: fixed; left: 0; top: 0; width: 260px; height: 100vh;
+    padding: 40px 30px; background: rgba(10,10,10,0.7);
+    backdrop-filter: blur(10px); border-right: 1px solid rgba(255,255,255,0.1);
+    z-index: 100; display: flex; flex-direction: column;
+    transition: all 0.6s ease; /* Thêm transition để ẩn/hiện mượt */
 }
-
-.sidebar h2 {
-    font-size: 14px;
-    letter-spacing: 2px;
-    margin-bottom: 30px;
-    opacity: 0;
-    animation: fadeUp 1.2s ease forwards;
-    animation-delay: 0.8s;
-}
-
+.sidebar h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 30px; color: #9dffb3; }
 .sidebar a.nav-link {
-    display: block;
-    color: #ddd;
-    text-decoration: none;
-    margin-bottom: 22px;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    position: relative;
-    padding-left: 15px;
-    transition: 0.3s;
-    opacity: 0;
-    transform: translateX(-6px);
-    animation: fadeLeft 1.2s ease forwards;
+    display: block; color: #ddd; text-decoration: none;
+    margin-bottom: 25px; font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 2px;
+    padding-left: 15px; position: relative;
 }
-
-.sidebar a.nav-link::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 4px;
-    background: #9dffb3;
-    border-radius: 50%;
-    transition: 0.3s;
-}
-
-.sidebar a.nav-link:hover { color:#9dffb3; padding-left: 20px; }
-.sidebar a.nav-link:hover::before { width: 10px; border-radius: 2px; }
-
-.sidebar a.nav-link:nth-child(2){animation-delay:1s;}
-.sidebar a.nav-link:nth-child(3){animation-delay:1.2s;}
-.sidebar a.nav-link:nth-child(4){animation-delay:1.4s;}
 
 .return {
-    margin-top: auto; 
-    margin-bottom: 30px;
-    align-self: center; 
-    color: #fff;
-    text-decoration: none;
-    font-size: 19px;
-    transition: 0.3s;
+    margin-top: auto; margin-bottom: 30px; align-self: center;
+    color: #fff; text-decoration: none; font-size: 18px;
     cursor: pointer;
-    z-index: 11;
-    opacity: 0;
-    transform: translateX(-12px);
-    animation: fadeLeft 1.4s ease forwards;
-    animation-delay: 1.8s;
 }
 
-.return span {
-    font-size: 22px;
-    margin-right: 6px;
-    transition: transform 0.2s ease;
-}
-.return:hover { color:#9dffb3; transform: translateX(-3px); }
-.return:hover span { transform: translateX(-4px); }
-
-/* ================= CONTENT ================= */
-
+/* --- CONTENT AREA --- */
 .content {
-    position: relative;
-    z-index: 1;
-    margin-left: 260px;
-    padding: 80px 80px 140px;
-    max-width: 1100px;
+    position: relative; z-index: 1;
+    margin-left: 260px; padding: 80px; width: calc(100% - 260px);
+    max-width: 1400px;
 }
+.section { margin-bottom: 250px; }
+.section h1 { font-size: 32px; margin-bottom: 60px; letter-spacing: 2px; border-left: 5px solid #9dffb3; padding-left: 20px; transition: 0.8s; }
 
-/* Lớp phủ mờ nền khi đọc thư */
-#letter-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0);
-    backdrop-filter: blur(0px);
-    z-index: 500; /* Dưới bức thư nhưng trên content */
-    pointer-events: none;
-    transition: all 0.8s ease;
-}
-#letter-overlay.active {
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
-    pointer-events: auto;
-}
-
-.section {
-    margin-bottom: 140px;
-}
-
-.section h1 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    letter-spacing: 1px;
-    opacity: 0;
-    transform: translateY(15px);
-    animation: fadeUp 1.4s ease forwards;
-}
-
-/* ================= CINEMATIC LETTER SYSTEM ================= */
-
+/* --- CINEMATIC SYSTEM --- */
 .letter-scene {
-    position: relative;
-    width: 100%;
-    height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 2000px;
+    position: relative; width: 100%; height: 600px;
+    display: flex; justify-content: center; align-items: center;
+    perspective: 2500px;
 }
 
-/* Wrapper tổng để xoay cả cụm */
-.letter-wrapper {
-    position: relative;
-    width: 550px; /* Tăng kích thước vỏ */
-    height: 380px;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transform: rotateZ(-5deg) rotateX(10deg); /* Dáng cinematic nghiêng */
-    transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0s;
-}
-
-/* Khi mở hoặc zoom, đưa cả cụm lên trên overlay và reset góc nghiêng để đọc dễ */
-.letter-wrapper.open, .letter-wrapper.zoomed {
-    z-index: 1001; /* Trên overlay */
-    transform: rotateZ(0deg) rotateX(0deg) scale(1.1);
-}
-
-.letter-wrapper.zoomed {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    margin: 0;
-}
-
-.envelope {
-    position: absolute;
-    inset: 0;
-    background: #e3c08d;
-    box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
-    transform-style: preserve-3d;
+.envelope-static {
+    position: absolute; width: 700px; height: 400px;
+    background: #c29a63; box-shadow: 10px 10px 40px rgba(0,0,0,0.5);
+    transform: rotateZ(-6deg) translate(-30px, 15px);
+    z-index: 5; display: none; overflow: hidden;
     transition: 0.8s;
 }
 
-.envelope-front {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    background: #d4ae7b;
-    /* Tạo hình chữ V cho mặt trước */
-    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+.paper-wrapper {
+    position: relative; width: 700px; height: 400px;
+    cursor: pointer; z-index: 10;
+    transform: rotateZ(2deg);
+    transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.8s ease;
+    will-change: transform;
 }
 
-.envelope-flap {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 50%;
-    background: #c9a06a;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: top;
-    transition: transform 0.6s ease;
-    z-index: 4;
+/* LOCK ĐỘ SÁNG GIẤY THƯ (SỬA THEO YÊU CẦU) */
+.paper-wrapper.zoomed {
+    position: fixed; top: 50%; left: 37%;
+    transform: translate(-50%, -50%) scale(1.6) rotateZ(0deg) !important;
+    z-index: 9001;
+    filter: brightness(1) !important; /* Luôn sáng 100% */
 }
 
-.wax-seal {
-    position: absolute;
-    top: 45%; left: 50%;
-    width: 65px; height: 65px;
-    background: #a31d1d;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
-    z-index: 5;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px; color: #701111; font-weight: bold;
-    transition: opacity 0.4s;
-}
-
-/* Trang giấy thư to và dài */
 .paper {
-    position: absolute;
-    top: 10px; left: 15px;
-    width: 520px;
-    min-height: 360px;
-    background: #fff;
-    padding: 50px 45px;
-    color: #2b2b2b;
-    font-family: "Merriweather", serif;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    transition: all 0.8s cubic-bezier(0.1, 0.9, 0.2, 1);
-    z-index: 2;
-    transform: translateY(0);
-    /* Bỏ cuộn bằng cách để chiều cao tự động khi zoom */
+    position: absolute; inset: 0;
+    background: #fdfaf0; padding: 40px 60px;
+    border: 1px solid #ddd; box-shadow: 0 15px 50px rgba(0,0,0,0.3);
     overflow: hidden;
 }
-
-/* Animation mở thư lần đầu */
-.letter-wrapper.open .envelope-flap { transform: rotateX(180deg); }
-.letter-wrapper.open .wax-seal { opacity: 0; }
-.letter-wrapper.open .paper {
-    transform: translateY(-100px) scale(1.2);
-    z-index: 10;
-    height: auto; /* Hiện đầy đủ */
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+.paper::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+    opacity: 0.5; pointer-events: none;
 }
 
-/* Trạng thái ngổn ngang sau khi mở */
-.letter-wrapper.opened-state .envelope {
-    transform: rotateZ(15deg) translate(20px, 30px); /* Vỏ nằm lệch ngổn ngang */
-    opacity: 0.7;
-}
-.letter-wrapper.opened-state .envelope-flap { transform: rotateX(180deg); opacity: 0.4; }
-.letter-wrapper.opened-state .wax-seal { display: none; }
-.letter-wrapper.opened-state .paper {
-    transform: rotateZ(0deg); /* Giấy nằm ngay ngắn */
-    z-index: 10;
-    width: 700px;
-    left: -75px;
-    top: -50px;
-}
+.paper-inner { position: relative; z-index: 2; color: #333; font-size: 11px; line-height: 1.7; text-align: justify; }
+.paper-inner h3 { text-align: center; font-size: 15px; margin-bottom: 20px; text-transform: uppercase; color: #000; }
+.paper-footer { margin-top: 20px; text-align: right; font-family: 'Brush Script MT', cursive; font-size: 24px; }
 
-/* Zoom tập trung (Focus Mode) */
-.letter-wrapper.zoomed .paper {
-    width: 850px;
-    padding: 60px 70px;
+.envelope-opening {
+    position: absolute; width: 700px; height: 400px;
+    z-index: 15; transform: rotateZ(-4deg);
+    transition: 0.8s;
 }
+.env-flap { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: #c9a06a; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: 0.6s; z-index: 3; }
+.env-body { position: absolute; inset: 0; background: #d4ae7b; z-index: 2; clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%); }
+.env-back { position: absolute; inset: 0; background: #e3c08d; z-index: 1; }
 
-/* CÁC MỨC ĐỘ Ố VÀNG */
-.level-1 { background: #fff !important; }
-.level-2 { background: #fffaf0 !important; }
-.level-3 { background: #f4e4bc !important; }
-.level-4 { 
-    background: #d2b48c !important; 
-    box-shadow: inset 0 0 80px rgba(139,69,19,0.3) !important; 
-    color: #4a3c2c !important;
-}
-
-.paper h3 { margin-top: 0; margin-bottom: 30px; text-align: center; font-size: 22px; color: #000; letter-spacing: 2px; }
-.paper-content { font-size: 18px; line-height: 2; text-align: justify; }
-.paper-footer { margin-top: 40px; text-align: right; font-family: "Brush Script MT", cursive; font-size: 32px; color: #444; }
-
-/* ================= LEADER & ACHIEVEMENTS (GIỮ NGUYÊN) ================= */
-
-.leader {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 60px;
-    align-items: center;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUp 1.4s ease forwards;
-}
-.leader img {
-    width: 250px; height: 250px; object-fit: cover; border-radius: 12px; background: #222; box-shadow: 0 10px 24px rgba(0,0,0,0.4);
-}
-.leader-text { font-family: "Merriweather", serif; font-size: 16px; line-height: 1.8; color: #e0e0e0; }
-.teacher { display: inline-block; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 1.5px; color: #9dffb3; }
+/* --- LEADERS & ACHIEVEMENTS (GIỮ NGUYÊN 100%) --- */
+.leader { display: flex; gap: 40px; margin-bottom: 80px; align-items: center; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 15px; }
+.leader img { width: 250px; height: 250px; object-fit: cover; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.leader-text { flex: 1; font-family: "Merriweather", serif; font-size: 16px; line-height: 1.8; }
+.teacher { color: #9dffb3; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 10px; }
 
 .achievement-tree { position: relative; margin-top: 60px; padding: 40px 0; }
-.tree-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.25); transform: translateX(-50%); }
-.branch { position: relative; display: flex; width: 50%; padding: 30px 40px; gap: 22px; align-items: center; opacity: 0; transform: translateY(20px); animation: fadeUp 1.4s ease forwards; }
+.tree-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(157, 255, 179, 0.3); transform: translateX(-50%); }
+.branch { position: relative; display: flex; width: 50%; padding: 40px; gap: 20px; align-items: center; }
 .branch.left { left: 0; justify-content: flex-end; text-align: right; }
 .branch.right { left: 50%; }
-.branch img { width: 208px; height: 143px; object-fit: cover; border-radius: 10px; box-shadow: 0 10px 24px rgba(0,0,0,0.45); }
-.branch-text { font-family: "Merriweather", serif; font-size: 15px; color: #e5e5e5; max-width: 260px; }
+.branch img { width: 280px; border-radius: 10px; filter: grayscale(30%); transition: 0.5s; }
 
-.pin {
-    position: absolute; top: -14px; left: 50%; transform: translateX(-50%) rotate(-8deg);
-    width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #ff6b6b, #b80000);
-    border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.4); z-index: 15;
-}
+.hidden { display: none !important; }
+.level-2 { background-color: #f7edcf !important; }
+.level-3 { background-color: #dec89e !important; }
 
-.paper-plane {
-    position: absolute; top: -60px; right: -80px; font-size: 30px; color: #fff; opacity: 0.8;
-    z-index: 105; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
-}
-
-@keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
-@keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
-@keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
-
+#fade-out { position: fixed; inset: 0; background: black; opacity: 0; pointer-events: none; transition: 1s; z-index: 9999; }
+#fade-out.active { opacity: 1; }
 </style>
 </head>
-
-<body>
+<body id="mainBody">
 
 <div id="fade-out"></div>
 <div id="letter-overlay"></div>
@@ -372,39 +171,31 @@ body::before {
     <a href="#one" class="nav-link">Together As One</a>
     <a href="#lead" class="nav-link">Lead The Way</a>
     <a href="#done" class="nav-link">Our Achievements</a>
-
-    <a href="home.html" class="return" id="returnBtn">
-        <span>←</span> Return
-    </a>
+    <a href="home.html" class="return" id="returnBtn"><span>←</span> Return</a>
 </div>
 
 <div class="content">
-
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
-        
-        <div class="letter-scene">
-            <div class="letter-wrapper" id="mainLetter">
-                <div class="paper-plane">✈</div>
-                <div class="envelope">
-                    <div class="envelope-flap"></div>
-                    <div class="wax-seal">A</div>
-                    <div class="envelope-front"></div>
-                    
-                    <div class="paper" id="paper">
-                        <div class="pin"></div>
+        <div class="letter-scene" id="parallaxArea">
+            <div class="envelope-static" id="envStatic">
+                <div style="position:absolute; inset:0; background: #c9a06a; clip-path: polygon(0 40%, 50% 60%, 100% 40%, 100% 100%, 0 100%);"></div>
+            </div>
+
+            <div class="envelope-opening" id="envOpening">
+                <div class="env-flap" id="flap"></div>
+                <div class="env-body"></div>
+                <div class="env-back"></div>
+            </div>
+
+            <div class="paper-wrapper" id="paperWrapper" style="opacity:0; transform: translateY(50px);">
+                <div class="paper" id="mainPaper">
+                    <div class="paper-inner">
                         <h3>A Message From 12A</h3>
-                        <div class="paper-content">
-                            Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
-                            <br><br>
-                            Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
-                            <br><br>
-                            Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
-                        </div>
-                        <div class="paper-footer">
-                            — Alphabest <br>
-                            Class of 12A
-                        </div>
+                        <p>Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.</p>
+                        <p>Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.</p>
+                        <p>Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.</p>
+                        <div class="paper-footer">— Alphabest <br> Class of 12A</div>
                     </div>
                 </div>
             </div>
@@ -413,27 +204,24 @@ body::before {
 
     <div class="section" id="lead">
         <h1>LEAD THE WAY</h1>
-
         <div class="leader">
             <img src="thanhtung.png">
             <div class="leader-text">
-                <span class="teacher">PHẠM TRƯƠNG THANH TÙNG</span><br>
+                <span class="teacher">PHẠM TRƯƠNG THANH TÙNG</span>
                 "Hình ảnh thầy Thanh Tùng thương mến với tâm hồn ấm áp ẩn sau gương mặt lạnh như tiền có lẽ đã hằn sâu vào trong trái tim của chúng em. Với vai trò là giáo viên chủ nhiệm lớp 10A khoá 2023-2024, thầy đã dẫn dắt chúng em nên người và sống vì tập thể. Với vai trò là một giáo viên tiếng Anh, thầy đã bồi đắp nền tảng cho chúng em vươn xa hơn nữa. Thầy có thể không phải là một người nổi bật, nhưng đối với tập thể học sinh chuyên Anh, thầy sẽ mãi là người anh hùng thầm lặng che chở cho thanh xuân rực rỡ của chúng em!"
             </div>
         </div>
-
         <div class="leader">
             <img src="doraemon.jpg">
             <div class="leader-text">
-                <span class="teacher">NGUYỄN ĐÌNH TÙNG</span><br>
-                "Trải qua nhiều năm gắn bó với trường học và gặp gỡ nhiều thầy cô khác nhau, chúng em vẫn vô cùng ngạc nhiên khi gặp được thầy Đình Tùng. Thầy có lẽ là một trong số những giáo viên có niềm đam mê cháy bỏng nhất với nghề giáo, và thầy cũng không ngần ngại đem cái "lửa" ấy truyền xuống cho chúng em. Trong suốt quãng thời gian dìu dắt tập thể 11A khoá 2024-2025, thầy luôn quan tâm đến chúng em theo những cách đặc biệt nhất ở mọi nơi và mọi thời điểm. Chúng em xin chân thành cảm ơn thầy!"
+                <span class="teacher">NGUYỄN ĐÌNH TÙNG</span>
+                "Trải qua nhiều năm gắn bó với trường học và gặp gỡ nhiều thầy cô khác nhau, chúng em vẫn vô cùng ngạc nhiên khi gặp được thầy Đình Tùng. Thầy có lẽ là một trong số những giáo viên có niềm đam mê cháy bỏng nhất với nghề giáo, và thầy cũng không ngần ngại đem cái 'lửa' ấy truyền xuống cho chúng em. Trong suốt quãng thời gian dìu dắt tập thể 11A khoá 2024-2025, thầy luôn quan tâm đến chúng em theo những cách đặc biệt nhất ở mọi nơi và mọi thời điểm. Chúng em xin chân thành cảm ơn thầy!"
             </div>
         </div>
-
         <div class="leader">
             <img src="chunhiem12a.jpg">
             <div class="leader-text">
-                <span class="teacher">TRẦN NGỌC BÍCH</span><br>
+                <span class="teacher">TRẦN NGỌC BÍCH</span>
                 "Ở chặng cuối của con đường cấp ba, tập thể lớp chúng em thật may mắn khi được đồng hành cùng cô Bích. Chính phong thái hiền dịu, kiên nhẫn đến mức đáng kinh ngạc của cô là thứ đã làm cô nổi bật hơn cả trong mắt chúng em. Không chỉ vậy, cô còn là một giáo viên ngữ văn tận tụy, luôn luôn quan tâm đến việc học của tất cả chúng em. Lớp chúng em xin cảm ơn cô vì đã góp phần vào thanh xuân rực rỡ của chúng em tại ngôi trường này!"
             </div>
         </div>
@@ -441,96 +229,86 @@ body::before {
 
     <div class="section" id="done">
         <h1>OUR ACHIEVEMENTS</h1>
-
         <div class="achievement-tree">
             <div class="tree-line"></div>
-
-            <div class="branch left">
-                <div class="branch-text">A memory worth keeping forever.</div>
-                <img src="mdmx1.jpg">
-            </div>
-
-            <div class="branch right">
-                <img src="mdmx2.jpg">
-                <div class="branch-text">Growth, effort, and unity.</div>
-            </div>
-
-            <div class="branch left">
-                <div class="branch-text">A moment that shaped who we are.</div>
-                <img src="culturenight1.jpg">
-            </div>
-
-            <div class="branch right">
-                <img src="cooking1.jpg">
-                <div class="branch-text">The peak before a new journey.</div>
-            </div>
+            <div class="branch left"><div><img src="mdmx1.jpg"><p>A memory worth keeping forever.</p></div></div>
+            <div class="branch right"><div><img src="mdmx2.jpg"><p>Growth, effort, and unity.</p></div></div>
+            <div class="branch left"><div><img src="culturenight1.jpg"><p>A moment that shaped who we are.</p></div></div>
+            <div class="branch right"><div><img src="cooking1.jpg"><p>The peak before a new journey.</p></div></div>
         </div>
     </div>
-
 </div>
 
 <script>
-document.getElementById("returnBtn").addEventListener("click", e => {
-    e.preventDefault();
-    document.getElementById("fade-out").classList.add("active");
-    setTimeout(() => location.href = "home.html", 1200);
-});
-
-let lastScroll = window.scrollY;
-let plane = document.querySelector(".paper-plane");
-window.addEventListener("scroll", () => {
-    const currentScroll = window.scrollY;
-    const delta = currentScroll - lastScroll;
-    lastScroll = currentScroll;
-    const x = Math.min(Math.max(delta * 0.6, -20), 20);
-    const y = Math.min(Math.max(-delta * 0.4, -15), 15);
-    const rotate = x * 1.5;
-    plane.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
-});
-
-const letterWrapper = document.getElementById('mainLetter');
+const envOpening = document.getElementById('envOpening');
+const envStatic = document.getElementById('envStatic');
+const paperWrapper = document.getElementById('paperWrapper');
+const parallaxArea = document.getElementById('parallaxArea');
+const flap = document.getElementById('flap');
 const overlay = document.getElementById('letter-overlay');
-const paper = document.getElementById('paper');
-let clickCount = 0;
-let isFirstOpen = true;
+const mainPaper = document.getElementById('mainPaper');
+const mainBody = document.getElementById('mainBody');
 
-letterWrapper.addEventListener('click', (e) => {
-    if (letterWrapper.classList.contains('zoomed')) return;
+let isOpened = false;
+let clickCount = 1;
 
-    if (isFirstOpen) {
-        letterWrapper.classList.add('open');
+envOpening.addEventListener('click', () => {
+    if(isOpened) return;
+    flap.style.transform = 'rotateX(180deg)';
+    setTimeout(() => {
+        paperWrapper.style.opacity = '1';
+        paperWrapper.style.transform = 'translateY(-20px) rotateZ(2deg)';
+        envOpening.classList.add('hidden');
+        envStatic.style.display = 'block';
+        isOpened = true;
+    }, 600);
+});
+
+paperWrapper.addEventListener('click', (e) => {
+    if (!isOpened) return;
+    e.stopPropagation();
+
+    // Nếu thư chưa phóng to -> Tiến hành phóng to
+    if (!paperWrapper.classList.contains('zoomed')) {
+        paperWrapper.classList.add('zoomed');
         overlay.classList.add('active');
-        isFirstOpen = false;
-        clickCount = 1;
-        updatePaperColor(clickCount);
-    } else {
-        letterWrapper.classList.remove('open');
-        letterWrapper.classList.add('opened-state');
+        mainBody.classList.add('blur-active');
+    } 
+    // Nếu thư ĐANG phóng to -> Khi click vào sẽ thu nhỏ và quay về ban đầu
+    else {
+        // 1. Gỡ bỏ trạng thái phóng to và mờ nền
+        paperWrapper.classList.remove('zoomed');
+        overlay.classList.remove('active');
+        mainBody.classList.remove('blur-active');
+
         
-        if (!letterWrapper.classList.contains('zoomed')) {
-            letterWrapper.classList.add('zoomed');
-            overlay.classList.add('active');
-            clickCount++;
-            if(clickCount > 4) clickCount = 4;
-            updatePaperColor(clickCount);
-        }
     }
 });
 
 overlay.addEventListener('click', () => {
-    if (letterWrapper.classList.contains('open')) {
-        letterWrapper.classList.remove('open');
-        letterWrapper.classList.add('opened-state');
-    }
-    letterWrapper.classList.remove('zoomed');
+    paperWrapper.classList.remove('zoomed');
     overlay.classList.remove('active');
+    mainBody.classList.remove('blur-active'); // Sidebar hiện lại
 });
 
-function updatePaperColor(count) {
-    paper.classList.remove('level-1', 'level-2', 'level-3', 'level-4');
-    paper.classList.add(`level-${count}`);
-}
+parallaxArea.addEventListener('mousemove', (e) => {
+    if (!isOpened || paperWrapper.classList.contains('zoomed')) return;
+    const rect = parallaxArea.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateX = (rect.height / 2 - y) / 20;
+    const rotateY = (x - rect.width / 2) / 35;
+    paperWrapper.style.transform = `translateY(-20px) rotateZ(2deg) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});
+
+parallaxArea.addEventListener('mouseleave', () => {
+    if (!isOpened || paperWrapper.classList.contains('zoomed')) return;
+    paperWrapper.style.transform = 'translateY(-20px) rotateZ(2deg)';
+});
 </script>
+
+</body>
+</html>
 
 </body>
 </html>

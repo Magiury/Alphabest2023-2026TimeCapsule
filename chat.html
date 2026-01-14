@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Minecraft Anonymous Chat</title>
 
+<!-- Minecraft font -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -15,11 +20,11 @@ body{
     margin:0;
     height:100vh;
     background:url("class.jpg") center/cover no-repeat fixed;
-    font-family:Arial, sans-serif;
-    overflow:hidden; /* ❌ không scroll toàn trang */
+    font-family: 'Minecraftia', monospace;
+    overflow:hidden;
 }
 
-/* overlay nền */
+/* overlay */
 body::before{
     content:"";
     position:fixed;
@@ -28,57 +33,60 @@ body::before{
     z-index:0;
 }
 
-/* ===== CHAT FULL SCREEN ===== */
+/* CHAT FULL SCREEN */
 .chat{
     position:fixed;
     inset:0;
-    padding:40px;
+    padding:20px;
     z-index:2;
     display:flex;
     flex-direction:column;
-    justify-content:flex-end; /* chat dồn xuống dưới */
-    pointer-events:auto;
+    justify-content:flex-end;
 }
 
 /* MESSAGE AREA */
 #messages{
+    flex:1;
     display:flex;
     flex-direction:column;
+    justify-content:flex-end;
     gap:4px;
-    overflow:hidden; /* ❌ KHÔNG SCROLLBAR */
+    overflow:hidden;
 }
 
 /* MESSAGE */
 .msg{
-    font-size:16px;
-    line-height:1.4;
-    color:#fff;
-    text-shadow:
-        2px 2px 0 #000,
-        -1px -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000;
-
-    white-space:normal;
+    font-size:13px;
+    line-height:1.5;
+    white-space:pre-wrap;
     word-break:break-word;
+    opacity:1;
+    transition:opacity 1s;
+}
+
+/* USER NAME */
+.username{
+    font-weight:bold;
 }
 
 /* INPUT */
 #input{
-    margin-top:12px;
     width:100%;
-    max-width:600px;
-    padding:8px 10px;
+    padding:10px 12px;
+    margin-top:10px;
     background:rgba(0,0,0,.35);
     border:none;
     outline:none;
     color:#fff;
-    font-size:16px;
+    font-size:13px;
+    resize:none;
+    white-space:pre-wrap;
+    overflow:hidden;
     text-shadow:1px 1px 0 #000;
 }
 
 #input::placeholder{
-    color:#ddd;
+    color:#ccc;
     opacity:.7;
 }
 </style>
@@ -88,7 +96,7 @@ body::before{
 
 <div class="chat">
     <div id="messages"></div>
-    <input id="input" placeholder="Nhấn Enter để chat...">
+    <textarea id="input" rows="2" placeholder="Press here to chat"></textarea>
 </div>
 
 <script>
@@ -104,46 +112,70 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const ref = firebase.database().ref("messages");
+const db = firebase.database();
+const ref = db.ref("messages");
 
-/* ===== ANON NAME ===== */
+/* ===== ANON + COLOR ===== */
 let anonName = localStorage.getItem("anonName");
+let anonColor = localStorage.getItem("anonColor");
+
 if(!anonName){
-    anonName = "Anon" + Math.floor(Math.random()*900);
+    anonName = "Anon" + Math.floor(Math.random()*900 + 100);
+    anonColor = `hsl(${Math.random()*360},70%,65%)`;
     localStorage.setItem("anonName", anonName);
+    localStorage.setItem("anonColor", anonColor);
 }
+
+/* ===== ANTI SPAM ===== */
+let lastSent = 0;
+const COOLDOWN = 2000; // 2s
 
 const input = document.getElementById("input");
 const messages = document.getElementById("messages");
+const MAX_LINES = 15;
 
 /* ===== SEND ===== */
 input.addEventListener("keydown", e=>{
-    if(e.key==="Enter" && input.value.trim()){
-        ref.push({
-            user: anonName,
-            text: input.value,
-            time: Date.now()
-        });
-        input.value="";
+    if(e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+
+        const now = Date.now();
+        if(now - lastSent < COOLDOWN) return;
+
+        if(input.value.trim()){
+            ref.push({
+                user: anonName,
+                color: anonColor,
+                text: input.value,
+                time: now
+            });
+            input.value="";
+            lastSent = now;
+        }
     }
 });
 
 /* ===== RECEIVE ===== */
 ref.limitToLast(50).on("child_added", snap=>{
-    const data = snap.val();
+    const d = snap.val();
 
     const div = document.createElement("div");
     div.className="msg";
-    div.textContent = `<${data.user}> ${data.text}`;
+
+    div.innerHTML = `
+        <span class="username" style="color:${d.color}">
+            &lt;${d.user}&gt;
+        </span>
+        <span> ${d.text}</span>
+    `;
 
     messages.appendChild(div);
 
-    /* auto fade + remove */
-    setTimeout(()=>{
-        div.style.opacity="0";
-        div.style.transition="opacity 1s";
-    },25000);
+    while(messages.children.length > MAX_LINES){
+        messages.removeChild(messages.firstChild);
+    }
 
+    setTimeout(()=>div.style.opacity="0",25000);
     setTimeout(()=>div.remove(),30000);
     setTimeout(()=>snap.ref.remove(),30000);
 });

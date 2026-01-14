@@ -21,7 +21,6 @@ body {
     background: url("class.jpg") center / cover no-repeat fixed;
     color: #eaeaea;
     display: flex;
-    /* Hiệu ứng Fade In toàn trang khi vào */
     animation: pageFadeIn 1.5s ease-out forwards;
 }
 
@@ -38,7 +37,6 @@ body::before {
     z-index: 0;
 }
 
-/* fade out overlay */
 #fade-out {
     position: fixed;
     inset: 0;
@@ -46,11 +44,11 @@ body::before {
     opacity: 0;
     pointer-events: none;
     transition: opacity 1.2s ease;
-    z-index: 999;
+    z-index: 9999;
 }
 #fade-out.active { opacity: 1; }
 
-/* ================= SIDEBAR (CÁU TRÚC MỚI) ================= */
+/* ================= SIDEBAR ================= */
 
 .sidebar {
     position: fixed;
@@ -62,7 +60,7 @@ body::before {
     background: rgba(10,10,10,0.65);
     backdrop-filter: blur(6px);
     border-right: 1px solid rgba(255,255,255,0.08);
-    z-index: 2;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -79,7 +77,6 @@ body::before {
     animation-delay: 0.8s;
 }
 
-/* CÁCH ĐIỆU LẠI NAV-LINK */
 .sidebar a.nav-link {
     display: block;
     color: #ddd;
@@ -117,8 +114,6 @@ body::before {
 .sidebar a.nav-link:nth-child(3){animation-delay:1.2s;}
 .sidebar a.nav-link:nth-child(4){animation-delay:1.4s;}
 
-/* ================= VỊ TRÍ NÚT RETURN MỚI ================= */
-
 .return {
     margin-top: auto; 
     margin-bottom: 30px;
@@ -128,7 +123,7 @@ body::before {
     font-size: 19px;
     transition: 0.3s;
     cursor: pointer;
-    z-index: 3;
+    z-index: 11;
     opacity: 0;
     transform: translateX(-12px);
     animation: fadeLeft 1.4s ease forwards;
@@ -150,22 +145,22 @@ body::before {
     z-index: 1;
     margin-left: 260px;
     padding: 80px 80px 140px;
-    max-width: 1000px;
+    max-width: 1100px;
 }
 
-/* Lớp phủ mờ khi mở thư */
+/* Lớp phủ mờ nền khi đọc thư */
 #letter-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0);
     backdrop-filter: blur(0px);
-    z-index: 100;
+    z-index: 500; /* Dưới bức thư nhưng trên content */
     pointer-events: none;
     transition: all 0.8s ease;
 }
 #letter-overlay.active {
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
     pointer-events: auto;
 }
 
@@ -175,138 +170,157 @@ body::before {
 
 .section h1 {
     font-size: 36px;
-    margin-bottom: 26px;
+    margin-bottom: 40px;
     letter-spacing: 1px;
     opacity: 0;
     transform: translateY(15px);
     animation: fadeUp 1.4s ease forwards;
 }
 
-/* ================= PHẦN BỨC THƯ (VỎ THƯ VÀ GIẤY) ================= */
+/* ================= CINEMATIC LETTER SYSTEM ================= */
 
-.letter-wrapper {
-    position: relative;
-    width: 400px;
-    height: 280px;
-    margin-top: 50px;
-    cursor: pointer;
-    perspective: 1500px;
-    z-index: 101;
-}
-
-/* Vỏ thư màu vàng cổ điển */
-.envelope {
+.letter-scene {
     position: relative;
     width: 100%;
-    height: 100%;
-    background: #e3c08d;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: 0.5s;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 2000px;
+}
+
+/* Wrapper tổng để xoay cả cụm */
+.letter-wrapper {
+    position: relative;
+    width: 550px; /* Tăng kích thước vỏ */
+    height: 380px;
+    cursor: pointer;
     transform-style: preserve-3d;
+    transform: rotateZ(-5deg) rotateX(10deg); /* Dáng cinematic nghiêng */
+    transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0s;
+}
+
+/* Khi mở hoặc zoom, đưa cả cụm lên trên overlay và reset góc nghiêng để đọc dễ */
+.letter-wrapper.open, .letter-wrapper.zoomed {
+    z-index: 1001; /* Trên overlay */
+    transform: rotateZ(0deg) rotateX(0deg) scale(1.1);
+}
+
+.letter-wrapper.zoomed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    margin: 0;
+}
+
+.envelope {
+    position: absolute;
+    inset: 0;
+    background: #e3c08d;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
+    transform-style: preserve-3d;
+    transition: 0.8s;
 }
 
 .envelope-front {
     position: absolute;
-    width: 0; height: 0;
-    border-top: 140px solid transparent;
-    border-bottom: 140px solid #d4ae7b;
-    border-left: 200px solid #d4ae7b;
-    border-right: 200px solid #d4ae7b;
+    inset: 0;
     z-index: 3;
+    background: #d4ae7b;
+    /* Tạo hình chữ V cho mặt trước */
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
 }
 
-/* Nắp thư có sáp */
 .envelope-flap {
     position: absolute;
-    top: 0; width: 0; height: 0;
-    border-left: 200px solid transparent;
-    border-right: 200px solid transparent;
-    border-top: 150px solid #c9a06a;
+    top: 0; left: 0; width: 100%; height: 50%;
+    background: #c9a06a;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
     transform-origin: top;
     transition: transform 0.6s ease;
     z-index: 4;
 }
 
-/* Sáp đóng dấu màu đỏ */
 .wax-seal {
     position: absolute;
-    top: 120px; left: 50%;
-    width: 50px; height: 50px;
+    top: 45%; left: 50%;
+    width: 65px; height: 65px;
     background: #a31d1d;
     border-radius: 50%;
-    transform: translateX(-50%);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    transform: translate(-50%, -50%);
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
     z-index: 5;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px; color: #701111;
+    font-size: 24px; color: #701111; font-weight: bold;
     transition: opacity 0.4s;
 }
 
-/* Giấy thư bên trong */
+/* Trang giấy thư to và dài */
 .paper {
     position: absolute;
-    top: 10px; left: 10px;
-    width: 380px; height: 260px;
+    top: 10px; left: 15px;
+    width: 520px;
+    min-height: 360px;
     background: #fff;
-    padding: 30px;
+    padding: 50px 45px;
     color: #2b2b2b;
     font-family: "Merriweather", serif;
-    font-size: 14px;
-    line-height: 1.6;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    transition: all 0.8s cubic-bezier(0.1, 0.9, 0.2, 1);
     z-index: 2;
-    overflow-y: auto;
-    opacity: 0.8;
+    transform: translateY(0);
+    /* Bỏ cuộn bằng cách để chiều cao tự động khi zoom */
+    overflow: hidden;
 }
 
-/* Trạng thái mở thư (Animation) */
-.letter-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+/* Animation mở thư lần đầu */
+.letter-wrapper.open .envelope-flap { transform: rotateX(180deg); }
 .letter-wrapper.open .wax-seal { opacity: 0; }
 .letter-wrapper.open .paper {
-    top: -150px;
-    height: auto;
-    max-height: 80vh;
-    width: 600px;
-    left: -100px;
-    z-index: 102;
-    transform: scale(1.2) translateY(100px);
-    opacity: 1;
-    cursor: default;
+    transform: translateY(-100px) scale(1.2);
+    z-index: 10;
+    height: auto; /* Hiện đầy đủ */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
-/* TRẠNG THÁI RÁCH (Khi đã mở rồi) */
-.letter-wrapper.opened-state .envelope-flap { transform: rotateX(180deg); opacity: 0.5; border-top-color: #b08d5d; }
+/* Trạng thái ngổn ngang sau khi mở */
+.letter-wrapper.opened-state .envelope {
+    transform: rotateZ(15deg) translate(20px, 30px); /* Vỏ nằm lệch ngổn ngang */
+    opacity: 0.7;
+}
+.letter-wrapper.opened-state .envelope-flap { transform: rotateX(180deg); opacity: 0.4; }
 .letter-wrapper.opened-state .wax-seal { display: none; }
 .letter-wrapper.opened-state .paper {
-    top: 10px; left: 10px; width: 380px; height: 260px; transform: scale(1.05); z-index: 6;
+    transform: rotateZ(0deg); /* Giấy nằm ngay ngắn */
+    z-index: 10;
+    width: 700px;
+    left: -75px;
+    top: -50px;
 }
 
-/* ZOOM KHI CLICK LẠI */
-.letter-wrapper.opened-state.zoomed .paper {
-    position: fixed;
-    top: 50%; left: 50%;
-    width: 700px; max-height: 85vh;
-    transform: translate(-50%, -50%) scale(1);
-    z-index: 1000;
+/* Zoom tập trung (Focus Mode) */
+.letter-wrapper.zoomed .paper {
+    width: 850px;
+    padding: 60px 70px;
 }
 
 /* CÁC MỨC ĐỘ Ố VÀNG */
 .level-1 { background: #fff !important; }
-.level-2 { background: #fdf5e6 !important; } /* Vàng nhẹ */
-.level-3 { background: #f4e4bc !important; } /* Vàng ố */
+.level-2 { background: #fffaf0 !important; }
+.level-3 { background: #f4e4bc !important; }
 .level-4 { 
     background: #d2b48c !important; 
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.2); 
+    box-shadow: inset 0 0 80px rgba(139,69,19,0.3) !important; 
     color: #4a3c2c !important;
-    border: 1px dashed #8b4513;
-} /* Mục rã */
+}
 
-.paper h3 { margin-top: 0; text-align: center; color: #000; }
-.paper-content { font-size: 16px; line-height: 1.9; }
-.paper-footer { margin-top: 30px; text-align: right; font-family: "Brush Script MT", cursive; font-size: 24px; }
+.paper h3 { margin-top: 0; margin-bottom: 30px; text-align: center; font-size: 22px; color: #000; letter-spacing: 2px; }
+.paper-content { font-size: 18px; line-height: 2; text-align: justify; }
+.paper-footer { margin-top: 40px; text-align: right; font-family: "Brush Script MT", cursive; font-size: 32px; color: #444; }
 
-/* ================= LEADER BLOCK ================= */
+/* ================= LEADER & ACHIEVEMENTS (GIỮ NGUYÊN) ================= */
+
 .leader {
     display: flex;
     gap: 30px;
@@ -316,85 +330,34 @@ body::before {
     transform: translateY(20px);
     animation: fadeUp 1.4s ease forwards;
 }
-.leader:nth-child(2){animation-delay:1.4s;}
-.leader:nth-child(3){animation-delay:1.8s;}
-.leader:nth-child(4){animation-delay:2.2s;}
-
 .leader img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 12px;
-    background: #222;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+    width: 250px; height: 250px; object-fit: cover; border-radius: 12px; background: #222; box-shadow: 0 10px 24px rgba(0,0,0,0.4);
 }
-
 .leader-text { font-family: "Merriweather", serif; font-size: 16px; line-height: 1.8; color: #e0e0e0; }
 .teacher { display: inline-block; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 1.5px; color: #9dffb3; }
 
-/* ANIMATIONS */
-@keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
-@keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
-@keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
-
-/* ACHIEVEMENT TREE */
 .achievement-tree { position: relative; margin-top: 60px; padding: 40px 0; }
 .tree-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.25); transform: translateX(-50%); }
 .branch { position: relative; display: flex; width: 50%; padding: 30px 40px; gap: 22px; align-items: center; opacity: 0; transform: translateY(20px); animation: fadeUp 1.4s ease forwards; }
 .branch.left { left: 0; justify-content: flex-end; text-align: right; }
 .branch.right { left: 50%; }
-.branch::before { content: ""; position: absolute; top: 50%; width: 40px; height: 2px; background: rgba(255,255,255,0.25); }
-.branch.left::before { right: -40px; }
-.branch.right::before { left: -40px; }
-.branch::after { content: ""; position: absolute; top: 50%; width: 10px; height: 10px; background: #9dffb3; border-radius: 50%; transform: translateY(-50%); }
-.branch.left::after { right: -45px; }
-.branch.right::after { left: -45px; }
 .branch img { width: 208px; height: 143px; object-fit: cover; border-radius: 10px; box-shadow: 0 10px 24px rgba(0,0,0,0.45); }
-.branch-text { font-family: "Merriweather", serif; font-size: 15px; line-height: 1.7; color: #e5e5e5; max-width: 260px; }
-.branch:nth-child(2){animation-delay:.4s;}
-.branch:nth-child(3){animation-delay:.8s;}
-.branch:nth-child(4){animation-delay:1.2s;}
+.branch-text { font-family: "Merriweather", serif; font-size: 15px; color: #e5e5e5; max-width: 260px; }
 
 .pin {
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-8deg);
-    width: 18px;
-    height: 18px;
-    background: radial-gradient(circle at 30% 30%, #ff6b6b, #b80000);
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.5);
-    z-index: 5;
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%) rotate(-8deg);
+    width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #ff6b6b, #b80000);
+    border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.4); z-index: 15;
 }
 
-.pin::after {
-    content: "";
-    position: absolute;
-    top: 16px;
-    left: 50%;
-    width: 2px;
-    height: 26px;
-    background: linear-gradient(#bbb, #666);
-    transform: translateX(-50%) rotate(10deg);
-    border-radius: 2px;
-}
-
-/* PAPER PLANE */
 .paper-plane {
-    position: absolute;
-    top: -40px;
-    right: -60px;
-    font-size: 26px;
-    color: #ffffff;
-    opacity: 0.85;
-    transform: rotate(15deg);
-    transition: transform 0.15s linear;
-    pointer-events: none;
-    z-index: 105;
-    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
+    position: absolute; top: -60px; right: -80px; font-size: 30px; color: #fff; opacity: 0.8;
+    z-index: 105; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
 }
+
+@keyframes sidebarIn { from {opacity:0; transform:translateX(-20px);} to {opacity:1; transform:translateX(0);} }
+@keyframes fadeUp { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
+@keyframes fadeLeft { from {opacity:0; transform:translateX(-10px);} to {opacity:1; transform:translateX(0);} }
 
 </style>
 </head>
@@ -420,26 +383,28 @@ body::before {
     <div class="section" id="one">
         <h1>TOGETHER AS ONE</h1>
         
-        <div class="letter-wrapper" id="mainLetter">
-            <div class="paper-plane">✈</div>
-            <div class="envelope">
-                <div class="envelope-flap"></div>
-                <div class="wax-seal">A</div>
-                <div class="envelope-front"></div>
-                
-                <div class="paper" id="paper">
-                    <div class="pin"></div>
-                    <h3>A Message From 12A</h3>
-                    <div class="paper-content">
-                        Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
-                        <br><br>
-                        Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
-                        <br><br>
-                        Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
-                    </div>
-                    <div class="paper-footer">
-                        — Alphabest <br>
-                        Class of 12A
+        <div class="letter-scene">
+            <div class="letter-wrapper" id="mainLetter">
+                <div class="paper-plane">✈</div>
+                <div class="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="wax-seal">A</div>
+                    <div class="envelope-front"></div>
+                    
+                    <div class="paper" id="paper">
+                        <div class="pin"></div>
+                        <h3>A Message From 12A</h3>
+                        <div class="paper-content">
+                            Chúng ta là một tập thể được tạo nên từ rất nhiều cá tính khác nhau, nhưng lại hòa vào nhau như một gia đình thực thụ trong những năm tháng cuối cùng của tuổi học trò. Ở đó có những bạn trầm lặng, có những người sôi nổi, có những học sinh luôn đứng đầu thành tích và cũng có những người phải cố gắng từng ngày, nhưng tất cả đều cùng chung một nhịp bước trên hành trình hướng tới ngày ra trường.
+                            <br><br>
+                            Mỗi buổi học, mỗi giờ sinh hoạt, mỗi lần cả lớp cùng nhau trải qua áp lực bài vở hay niềm vui sau những kỳ thi đều góp phần tạo nên bản sắc rất riêng của 12A. Đó là một lớp học không chỉ gắn với bảng đen, phấn trắng, mà còn gắn với tình bạn, sự đoàn kết và những ký ức không thể thay thế.
+                            <br><br>
+                            Khi cánh cửa trường học dần khép lại, 12A không chỉ là một cái tên, mà sẽ trở thành một phần không thể phai mờ trong thanh xuân của tất cả những người đã từng thuộc về nơi này.
+                        </div>
+                        <div class="paper-footer">
+                            — Alphabest <br>
+                            Class of 12A
+                        </div>
                     </div>
                 </div>
             </div>
@@ -505,17 +470,14 @@ body::before {
 </div>
 
 <script>
-// Xử lý nút Return và Fade Out
 document.getElementById("returnBtn").addEventListener("click", e => {
     e.preventDefault();
     document.getElementById("fade-out").classList.add("active");
     setTimeout(() => location.href = "home.html", 1200);
 });
 
-// Xử lý hiệu ứng Máy bay giấy khi cuộn
 let lastScroll = window.scrollY;
 let plane = document.querySelector(".paper-plane");
-
 window.addEventListener("scroll", () => {
     const currentScroll = window.scrollY;
     const delta = currentScroll - lastScroll;
@@ -526,26 +488,22 @@ window.addEventListener("scroll", () => {
     plane.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
 });
 
-// LOGIC BỨC THƯ (Chỉ tồn tại trong session này - F5 sẽ reset)
 const letterWrapper = document.getElementById('mainLetter');
 const overlay = document.getElementById('letter-overlay');
 const paper = document.getElementById('paper');
-let clickCount = 0; // Đếm số lần nhấn vào giấy
-let isFirstOpen = true; // Lần đầu mở thư
+let clickCount = 0;
+let isFirstOpen = true;
 
 letterWrapper.addEventListener('click', (e) => {
-    // Nếu đang ở trạng thái zoom, nhấn vào overlay để đóng
     if (letterWrapper.classList.contains('zoomed')) return;
 
     if (isFirstOpen) {
-        // Lần đầu mở thư
         letterWrapper.classList.add('open');
         overlay.classList.add('active');
         isFirstOpen = false;
         clickCount = 1;
         updatePaperColor(clickCount);
     } else {
-        // Những lần nhấn sau (khi thư đã rách)
         letterWrapper.classList.remove('open');
         letterWrapper.classList.add('opened-state');
         
@@ -553,13 +511,12 @@ letterWrapper.addEventListener('click', (e) => {
             letterWrapper.classList.add('zoomed');
             overlay.classList.add('active');
             clickCount++;
-            if(clickCount > 4) clickCount = 4; // Max mức 4
+            if(clickCount > 4) clickCount = 4;
             updatePaperColor(clickCount);
         }
     }
 });
 
-// Nhấn vào overlay để thoát Zoom
 overlay.addEventListener('click', () => {
     if (letterWrapper.classList.contains('open')) {
         letterWrapper.classList.remove('open');
@@ -570,12 +527,9 @@ overlay.addEventListener('click', () => {
 });
 
 function updatePaperColor(count) {
-    // Xóa tất cả các level cũ
     paper.classList.remove('level-1', 'level-2', 'level-3', 'level-4');
-    // Thêm level mới
     paper.classList.add(`level-${count}`);
 }
-
 </script>
 
 </body>

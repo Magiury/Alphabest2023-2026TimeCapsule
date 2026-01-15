@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>S.Y.S_RECOVERY_LOG_#042</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #00ff41; /* Màu xanh terminal */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        /* Hiệu ứng nhiễu toàn màn hình */
+        .scanline {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 80%;
+            max-width: 700px;
+            border: 2px solid #00ff41;
+            padding: 5px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        video {
+            width: 100%;
+            filter: grayscale(0.5) contrast(1.2) brightness(0.8);
+            display: block;
+        }
+
+        .status-bar {
+            width: 100%;
+            background: #00ff41;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 5px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* Nút bấm kiểu hack game */
+        .btn-decode {
+            margin-top: 20px;
+            background: transparent;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-decode:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 15px #00ff41;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanline"></div>
+
+    <div class="video-wrapper">
+        <div class="status-bar">
+            <span>FILE: UNKNOWN_FOOTAGE.MP4</span>
+            <span>REC ●</span>
+        </div>
+        
+        <video id="myVideo">
+            <source src="your-video-file.mp4" type="video/mp4">
+        </video>
+
+        <div class="overlay-text">
+            DATE: 14/01/2026<br>
+            LOC: [REDACTED]
+        </div>
+    </div>
+
+    <button class="btn-decode" onclick="playVideo()">GIẢI MÃ DỮ LIỆU</button>
+
+    <script>
+        function playVideo() {
+            var v = document.getElementById("myVideo");
+            if (v.paused) {
+                v.play();
+                document.querySelector('.btn-decode').innerText = "ĐANG TRÍCH XUẤT...";
+            } else {
+                v.pause();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -36,6 +36,7 @@
             border: 2px solid #00ff41;
             padding: 5px;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            box-sizing: border-box; /* Đảm bảo padding không làm tràn */
         }
 
         video {
@@ -53,6 +54,7 @@
             font-size: 12px;
             display: flex;
             justify-content: space-between;
+            box-sizing: border-box; /* Đảm bảo padding không làm tràn */
         }
 
         .overlay-text {
@@ -61,6 +63,8 @@
             left: 20px;
             font-size: 14px;
             pointer-events: none;
+            color: rgba(0, 255, 65, 0.7); /* Mờ hơn một chút */
+            z-index: 5;
         }
 
         /* Nút bấm kiểu hack game */
@@ -72,12 +76,29 @@
             padding: 10px 20px;
             cursor: pointer;
             transition: 0.3s;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            text-shadow: 0 0 5px #00ff41;
+            outline: none; /* Bỏ outline khi focus */
         }
 
         .btn-decode:hover {
             background: #00ff41;
             color: #000;
             box-shadow: 0 0 15px #00ff41;
+        }
+
+        /* Thêm hiệu ứng glitch nhẹ cho video khi phát */
+        video.glitch-effect {
+            animation: glitch 0.1s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(1px, 1px); opacity: 0.98; }
+            25% { transform: translate(-1px, -1px); opacity: 1; }
+            50% { transform: translate(1px, -1px); opacity: 0.97; }
+            75% { transform: translate(-1px, 1px); opacity: 1; }
+            100% { transform: translate(0, 0); opacity: 0.99; }
         }
     </style>
 </head>
@@ -88,31 +109,64 @@
     <div class="video-wrapper">
         <div class="status-bar">
             <span>FILE: UNKNOWN_FOOTAGE.MP4</span>
-            <span>REC ●</span>
+            <span id="rec-status">STANDBY</span>
         </div>
         
-        <video id="myVideo">
-            <source src="your-video-file.mp4" type="video/mp4">
+        <video id="myVideo" loop> <source src="your-video-file.mp4" type="video/mp4">
+            <p>ERROR: VIDEO_FEED_OFFLINE. Contact System Administrator.</p>
         </video>
 
         <div class="overlay-text">
             DATE: 14/01/2026<br>
-            LOC: [REDACTED]
+            LOC: [REDACTED]<br>
+            STATUS: OFFLINE
         </div>
     </div>
 
-    <button class="btn-decode" onclick="playVideo()">GIẢI MÃ DỮ LIỆU</button>
+    <button class="btn-decode" onclick="playVideo()">PHÂN TÍCH DỮ LIỆU</button>
+
+    <audio id="backgroundNoise" loop>
+        <source src="static_noise.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ audio.
+    </audio>
 
     <script>
+        // Console Log ẩn:
+        console.log("------------------------------------------");
+        console.log(">>> SYSTEM ALERT: Unauthorised access detected.");
+        console.log(">>> Data integrity compromised. Seek immediate termination protocol.");
+        console.log(">>> Location: Unknown. Source: Unknown.");
+        console.log("------------------------------------------");
+        console.warn("WARNING: This terminal is under surveillance. Do not proceed.");
+
         function playVideo() {
             var v = document.getElementById("myVideo");
+            var btn = document.querySelector('.btn-decode');
+            var recStatus = document.getElementById("rec-status");
+            var backgroundNoise = document.getElementById("backgroundNoise");
+
             if (v.paused) {
                 v.play();
-                document.querySelector('.btn-decode').innerText = "ĐANG TRÍCH XUẤT...";
+                v.classList.add('glitch-effect'); // Thêm hiệu ứng glitch
+                btn.innerText = "ĐANG TRÍCH XUẤT...";
+                recStatus.innerHTML = 'REC <span style="color:red">●</span>'; // Đổi trạng thái REC
+                backgroundNoise.play().catch(e => console.log("Audio not played yet, waiting for user interaction.", e)); // Phát nhạc nền
             } else {
                 v.pause();
+                v.classList.remove('glitch-effect'); // Xóa hiệu ứng glitch
+                btn.innerText = "PHÂN TÍCH DỮ LIỆU";
+                recStatus.innerText = "PAUSED";
+                backgroundNoise.pause(); // Dừng nhạc nền
             }
         }
+        
+        // Tự động phát nhạc nền sau khi người dùng tương tác lần đầu (vì trình duyệt chặn autoplay)
+        document.body.addEventListener('click', function() {
+            var backgroundNoise = document.getElementById("backgroundNoise");
+            if (backgroundNoise.paused) {
+                backgroundNoise.play().catch(e => console.log("Autoplay blocked, user interaction needed for audio.", e));
+            }
+        }, { once: true }); // Chỉ chạy một lần
     </script>
 </body>
 </html>
